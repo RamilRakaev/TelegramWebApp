@@ -20,7 +20,7 @@ namespace TelegramBotService
             bot = new TelegramBotClient(apiKey);
         }
 
-        public Dictionary<string, string> Answers = new Dictionary<string, string>() 
+        public Dictionary<string, string> Text = new Dictionary<string, string>()
         {
             {"/saysomething", "тест"}
         };
@@ -38,7 +38,6 @@ namespace TelegramBotService
             if (cts != null)
             {
                 cts.Cancel();
-                cts = null;
             }
         }
 
@@ -59,15 +58,12 @@ namespace TelegramBotService
 
         private async Task ProcessTextMessage(Message message)
         {
-            foreach (var key in Answers.Keys)
+            if (Text.ContainsKey(message.Text))
             {
-                if (message.Text == key)
-                {
-                    await bot.SendTextMessageAsync(
-                        message.Chat.Id,
-                        Answers[key],
-                        replyToMessageId: message.MessageId);
-                }
+                await bot.SendTextMessageAsync(
+                    message.Chat.Id,
+                    Text[message.Text],
+                    replyToMessageId: message.MessageId);
             }
         }
 
