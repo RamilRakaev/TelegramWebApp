@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -25,6 +26,13 @@ namespace TelegramBotService
             {"/saysomething", "тест"}
         };
 
+        public List<TelegramImage> Images = new List<TelegramImage>()
+        {
+            new TelegramImage("/getimage", 
+                "http://aftamat4ik.ru/wp-content/uploads/2017/03/photo_2016-12-13_23-21-07.jpg", 
+                "Revolution!")
+        };
+
         public void Start()
         {
             cts = new CancellationTokenSource();
@@ -47,11 +55,6 @@ namespace TelegramBotService
             if (message.Type == MessageType.Text)
             {
                 await ProcessTextMessage(message);
-                //if (message.Text == "/saysomething")
-                //{
-                //    await bot.SendTextMessageAsync(message.Chat.Id, "тест",
-                //           replyToMessageId: message.MessageId);
-                //}
             }
             return "";
         }
@@ -64,6 +67,14 @@ namespace TelegramBotService
                     message.Chat.Id,
                     Text[message.Text],
                     replyToMessageId: message.MessageId);
+            }
+            var image = Images.FirstOrDefault(i => i.Command == message.Text);
+            if (image != null)
+            {
+                await bot.SendPhotoAsync(
+                    message.Chat.Id,
+                    image.Source,
+                    image.Title);
             }
         }
 
@@ -80,11 +91,7 @@ namespace TelegramBotService
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             var chatId = update.Message.Chat.Id;
-            var text = await AnswerAsync(update);
-            await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: text
-            );
+            await AnswerAsync(update);
         }
     }
 }

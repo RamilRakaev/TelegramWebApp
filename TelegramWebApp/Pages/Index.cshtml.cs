@@ -20,7 +20,8 @@ namespace TelegramWebApp.Pages
 
         public void OnGet()
         {
-            TelegramBot telegram = new TelegramBot("2099065574:AAH8g3Ja370fcWjagaV-K_4QvHHX2COLYFY");
+            //"2099065574:AAH8g3Ja370fcWjagaV-K_4QvHHX2COLYFY"
+            TelegramBot telegram = new TelegramBot("2049358621:AAEvQjcOTzQ9OQsEc073xrfg6jbRtWKhX-o");
             telegram.Start();
         }
     }
