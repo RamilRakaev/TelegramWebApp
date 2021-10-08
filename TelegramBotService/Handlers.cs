@@ -73,9 +73,9 @@ namespace TelegramBotService
 
             var action = (message.Text.Split(' ').First()) switch
             {
-                "/inline" => SendInlineKeyboard(botClient, message),
+                "/inline_mode" => SendInlineKeyboard(botClient, message),
                 "/keyboard" => SendReplyKeyboard(botClient, message),
-                "/remove" => RemoveKeyboard(botClient, message),
+                "/remove_keyboard" => RemoveKeyboard(botClient, message),
                 "/photo" => SendFile(botClient, message),
                 "/request" => RequestContactAndLocation(botClient, message),
                 _ => Usage(botClient, message)
@@ -156,6 +156,7 @@ namespace TelegramBotService
                 {
                     KeyboardButton.WithRequestLocation("Location"),
                     KeyboardButton.WithRequestContact("Contact"),
+                    KeyboardButton.WithRequestPoll("Poll"),
                 });
 
                 return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
@@ -166,9 +167,9 @@ namespace TelegramBotService
             async Task<Message> Usage(ITelegramBotClient botClient, Message message)
             {
                 const string usage = "Usage:\n" +
-                                     "/inline   - send inline keyboard\n" +
+                                     "/inline_mode   - send inline keyboard\n" +
                                      "/keyboard - send custom keyboard\n" +
-                                     "/remove   - remove custom keyboard\n" +
+                                     "/remove_keyboard   - remove custom keyboard\n" +
                                      "/photo    - send a photo\n" +
                                      "/request  - request location or contact";
 
