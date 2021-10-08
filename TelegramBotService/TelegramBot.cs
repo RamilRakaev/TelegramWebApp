@@ -8,6 +8,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotService
 {
@@ -21,16 +22,28 @@ namespace TelegramBotService
             bot = new TelegramBotClient(apiKey);
         }
 
-        public Dictionary<string, string> Text = new Dictionary<string, string>()
+        public List<TelegramText> TelegramText = new List<TelegramText>()
         {
-            {"/saysomething", "тест"}
+            new TelegramText("/saysomething", "просто текст", "тест")
         };
 
-        public List<TelegramImage> Images = new List<TelegramImage>()
+        public List<TelegramImage> TelegramImages = new List<TelegramImage>()
         {
-            new TelegramImage("/getimage", 
-                "http://aftamat4ik.ru/wp-content/uploads/2017/03/photo_2016-12-13_23-21-07.jpg", 
+            new TelegramImage("/getimage",
+                "http://aftamat4ik.ru/wp-content/uploads/2017/03/photo_2016-12-13_23-21-07.jpg",
                 "Revolution!")
+        };
+
+        public List<TelegramInlineButton> TelegramInlineButtons = new List<TelegramInlineButton>()
+        {
+            new TelegramInlineButton("/inlinebutton",
+                new List<TelegramCallbackQuery>(){
+
+                    new TelegramCallbackQuery("callback1", "300", "О***** у тракториста"),
+                    new TelegramCallbackQuery("callback2", "100", "Х** в очко")
+
+
+                })
         };
 
         public void Start()
@@ -39,7 +52,22 @@ namespace TelegramBotService
             bot.StartReceiving(
                 new DefaultUpdateHandler(HandleUpdateAsync, HandleErrorAsync),
                 cts.Token);
+            bot.OnCallbackQuery += async (object sc, Telegram.Bot.Args.CallbackQueryEventArgs ev) =>
+            {
+                var message = ev.CallbackQuery.Message;
+                if (ev.CallbackQuery.Data == "callback1")
+                {
+                    await bot.AnswerCallbackQueryAsync(ev.CallbackQuery.Id, "You hav choosen " + ev.CallbackQuery.Data, true);
+                }
+                else
+                if (ev.CallbackQuery.Data == "callback2")
+                {
+                    await bot.SendTextMessageAsync(message.Chat.Id, "тест", replyToMessageId: message.MessageId);
+                    await bot.AnswerCallbackQueryAsync(ev.CallbackQuery.Id); // отсылаем пустое, чтобы убрать "частики" на кнопке
+                }
+            };
         }
+
 
         public void Stop()
         {
@@ -52,7 +80,7 @@ namespace TelegramBotService
         private async Task<string> AnswerAsync(Update update)
         {
             var message = update.Message;
-            if (message.Type == MessageType.Text)
+            if (message != null && message.Type == MessageType.Text)
             {
                 await ProcessTextMessage(message);
             }
@@ -61,21 +89,37 @@ namespace TelegramBotService
 
         private async Task ProcessTextMessage(Message message)
         {
-            if (Text.ContainsKey(message.Text))
-            {
-                await bot.SendTextMessageAsync(
-                    message.Chat.Id,
-                    Text[message.Text],
-                    replyToMessageId: message.MessageId);
-            }
-            var image = Images.FirstOrDefault(i => i.Command == message.Text);
+            var image = TelegramImages.FirstOrDefault(i => i.Command == message.Text);
             if (image != null)
             {
                 await bot.SendPhotoAsync(
                     message.Chat.Id,
                     image.Source,
                     image.Title);
+                goto FinishMethod;
             }
+            var text = TelegramText.FirstOrDefault(i => i.Command == message.Text);
+            if (text != null)
+            {
+                await bot.SendTextMessageAsync(
+                    message.Chat.Id,
+                    text.Text,
+                    replyToMessageId: message.MessageId);
+                goto FinishMethod;
+            }
+            if (message.Text == "/ibuttons")
+            {
+                var keyboard = new InlineKeyboardMarkup(
+                    InlineKeyboardButton.WithCallbackData("300", "callback2")
+                    );
+                await bot.SendTextMessageAsync
+                    (message.Chat.Id,
+                    "Давай накатим, товарищ, по одной!",
+                    ParseMode.Default,
+                    replyMarkup: keyboard);
+                goto FinishMethod;
+            }
+        FinishMethod:;
         }
 
         async Task<string> HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -90,7 +134,6 @@ namespace TelegramBotService
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var chatId = update.Message.Chat.Id;
             await AnswerAsync(update);
         }
     }
