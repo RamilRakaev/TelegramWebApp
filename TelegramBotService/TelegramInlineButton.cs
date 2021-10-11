@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TelegramBotService
+namespace TelegramBotBusiness
 {
     public class TelegramInlineButton
     {
@@ -9,13 +9,13 @@ namespace TelegramBotService
 
         }
 
-        public TelegramInlineButton(string command, List<TelegramCallbackQuery> callbacks)
+        public TelegramInlineButton(string command, List<CallbackQueryMessageHandler> callbacks)
         {
             Command = command;
             Callbacks = callbacks;
         }
 
         public string Command { get; set; }
-        public List<TelegramCallbackQuery> Callbacks { get; set; }
+        public List<CallbackQueryMessageHandler> Callbacks { get; set; }
     }
 }

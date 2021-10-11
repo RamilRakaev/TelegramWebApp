@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TelegramBotService
+namespace TelegramBotBusiness
 {
     public class TelegramImage
     {

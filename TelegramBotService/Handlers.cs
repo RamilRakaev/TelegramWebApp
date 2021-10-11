@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -11,23 +10,14 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.Payments;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBotService;
 
-namespace TelegramBotService
+namespace TelegramBotBusiness
 {
-    public delegate Task MessageHandler(ITelegramBotClient botClient, Message message);
-    public delegate Task<Message> TextMessageHandler(ITelegramBotClient botClient, Message message);
-    public delegate Task CallbackQueryHandler(ITelegramBotClient botClient, CallbackQuery callbackQuery);
-    public delegate Task InlineQueryHandler(ITelegramBotClient botClient, InlineQuery inlineQuery);
-    public delegate Task ChosenInlineResultHandler(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult);
-    public delegate Task UnknownUpdateHandler(ITelegramBotClient botClient, Update update);
-    public delegate Task ShippingQueryHandler(ITelegramBotClient botClient, ShippingQuery shippingQuery);
-    public delegate Task PreCheckoutQueryHandler(ITelegramBotClient botClient, PreCheckoutQuery preCheckoutQuery);
-    public delegate Task PollHandler(ITelegramBotClient botClient, Poll poll);
-
-    public class Handlers : ITelegramHandlers
+    
+    public class Handlers : ITelegramHandler
     {
         public event MessageHandler MessageNotify;
         public event CallbackQueryHandler CallbackQueryNotify;
@@ -41,25 +31,17 @@ namespace TelegramBotService
         public event PreCheckoutQueryHandler PreCheckoutQueryNotify;
         public event PollHandler PollNotify;
 
-        public Dictionary<string, TextMessageHandler> MessageHandlers = new Dictionary<string, TextMessageHandler>()
-        {
-            { "/inline_mode",  (ITelegramBotClient botClient, Message message) => SendInlineKeyboard(botClient, message)},
-            { "/keyboard", (ITelegramBotClient botClient, Message message) => SendReplyKeyboard(botClient, message)},
-            { "/remove_keyboard", (ITelegramBotClient botClient, Message message) => RemoveKeyboard(botClient, message)},
-            { "/photo", (ITelegramBotClient botClient, Message message) => SendFile(botClient, message)},
-            { "/request", (ITelegramBotClient botClient, Message message) => RequestContactAndLocation(botClient, message)},
-        };
+        public List<TextMessageHandler> TextMessageHandlers;
+        public List<CallbackQueryMessageHandler> CallbackQueryHandlers;
 
-        public List<string> Users = new List<string>()
-        {
-            "MagnaPhysicus"
-        };
+        public readonly ILogger<Handlers> _logger;
+        private readonly TelegramOptions _options;
 
-        private readonly ILogger<Handlers> _logger;
-
-        public Handlers(ILogger<Handlers> logger)
+        public Handlers(ILogger<Handlers> logger, IOptions<TelegramOptions> options)
         {
             _logger = logger;
+            _options = options.Value;
+            HandlerConfiguration.Configuration(this);
             MessageNotify = BotOnMessageReceived;
             CallbackQueryNotify = BotOnCallbackQueryReceived;
             InlineQueryNotify = BotOnInlineQueryReceived;
@@ -85,9 +67,8 @@ namespace TelegramBotService
             bool access = true;
             if (message != null)
             {
-                access = Users.Contains(message.From.Username);
+                access = _options.Users.Contains(message.From.Username);
             }
-
             if (access)
             {
                 var handler = update.Type switch
@@ -105,7 +86,6 @@ namespace TelegramBotService
                     UpdateType.ChosenInlineResult => ChosenInlineResultNotify?.Invoke(botClient, update.ChosenInlineResult),
                     _ => UnknownUpdateNotify?.Invoke(botClient, update)
                 };
-
                 try
                 {
                     await handler;
@@ -132,11 +112,11 @@ namespace TelegramBotService
                 return;
             }
             string command = words.First();
-            foreach (var method in MessageHandlers)
+            foreach (var method in TextMessageHandlers)
             {
-                if (command == method.Key)
+                if (command == method.Command)
                 {
-                    action = method.Value(botClient, message);
+                    action = method.Handler(botClient, message);
                 }
             }
             if (action == null)
@@ -147,106 +127,33 @@ namespace TelegramBotService
             _logger.LogInformation($"The message was sent with id: {messageResult.MessageId}");
         }
 
-        static async Task<Message> SendInlineKeyboard(ITelegramBotClient botClient, Message message)
+        private async Task<Message> Usage(ITelegramBotClient botClient, Message message)
         {
-            await botClient.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-
-            var inlineKeyboard = new InlineKeyboardMarkup(new[]
+            string usage = "Usage:\n";
+            foreach (var command in TextMessageHandlers)
             {
-                    // first row
-                    new []
-                    {
-                        InlineKeyboardButton.WithCallbackData("1.1", "11"),
-                        InlineKeyboardButton.WithCallbackData("1.2", "12"),
-                    },
-                    // second row
-                    new []
-                    {
-                        InlineKeyboardButton.WithCallbackData("2.1", "21"),
-                        InlineKeyboardButton.WithCallbackData("2.2", "22"),
-                    },
-                });
-
-            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: "Choose",
-                                                        replyMarkup: inlineKeyboard);
-        }
-
-        static async Task<Message> SendReplyKeyboard(ITelegramBotClient botClient, Message message)
-        {
-            var replyKeyboardMarkup = new ReplyKeyboardMarkup(
-                new KeyboardButton[][]
-                {
-                        new KeyboardButton[] { "1.1", "1.2" },
-                        new KeyboardButton[] { "2.1", "2.2" },
-                })
-            {
-                ResizeKeyboard = true
-            };
-
-            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: "Choose",
-                                                        replyMarkup: replyKeyboardMarkup);
-        }
-
-        static async Task<Message> RemoveKeyboard(ITelegramBotClient botClient, Message message)
-        {
-            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: "Removing keyboard",
-                                                        replyMarkup: new ReplyKeyboardRemove());
-        }
-
-        static async Task<Message> SendFile(ITelegramBotClient botClient, Message message)
-        {
-            await botClient.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
-
-            const string filePath = @"Files/tux.png";
-            using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
-
-            return await botClient.SendPhotoAsync(chatId: message.Chat.Id,
-                                                  photo: new InputOnlineFile(fileStream, fileName),
-                                                  caption: "Nice Picture");
-        }
-
-        static async Task<Message> RequestContactAndLocation(ITelegramBotClient botClient, Message message)
-        {
-            var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-            {
-                    KeyboardButton.WithRequestLocation("Location"),
-                    KeyboardButton.WithRequestContact("Contact"),
-                    KeyboardButton.WithRequestPoll("Poll"),
-                });
-
-            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: "Who or Where are you?",
-                                                        replyMarkup: RequestReplyKeyboard);
-        }
-
-        static async Task<Message> Usage(ITelegramBotClient botClient, Message message)
-        {
-            const string usage = "Usage:\n" +
-                                 "/inline_mode   - send inline keyboard\n" +
-                                 "/keyboard - send custom keyboard\n" +
-                                 "/remove_keyboard   - remove custom keyboard\n" +
-                                 "/photo    - send a photo\n" +
-                                 "/request  - request location or contact";
-
+                usage += $"{command.Command} - {command.Description}\n";
+            }
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
                                                         text: usage,
                                                         replyMarkup: new ReplyKeyboardRemove());
         }
 
-        // Process Inline Keyboard callback data
         private async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
-            await botClient.AnswerCallbackQueryAsync(
-                callbackQueryId: callbackQuery.Id,
-                text: $"Received {callbackQuery.Data}");
+            var callbackQueryHandler = CallbackQueryHandlers.FirstOrDefault(c => c.Command == callbackQuery.Data);
+            if(callbackQueryHandler != null)
+            {
+                await callbackQueryHandler.Handler(botClient, callbackQuery);
+            }
 
-            await botClient.SendTextMessageAsync(
-                chatId: callbackQuery.Message.Chat.Id,
-                text: $"Received {callbackQuery.Data}");
+            //await botClient.AnswerCallbackQueryAsync(
+            //    callbackQueryId: callbackQuery.Id,
+            //    text: $"Received {callbackQuery.Data}");
+
+            //await botClient.SendTextMessageAsync(
+            //    chatId: callbackQuery.Message.Chat.Id,
+            //    text: $"Received {callbackQuery.Data}");
         }
 
         private async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
@@ -254,7 +161,6 @@ namespace TelegramBotService
             _logger.LogInformation($"Received inline query from: {inlineQuery.From.Id}");
 
             InlineQueryResultBase[] results = {
-                // displayed result
                 new InlineQueryResultArticle(
                     id: "3",
                     title: "TgBots",

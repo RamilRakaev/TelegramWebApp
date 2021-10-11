@@ -6,38 +6,38 @@ using Telegram.Bot.Extensions.Polling;
 
 namespace TelegramBotService
 {
-    //public class TelegramBot
-    //{
-    //    private TelegramBotClient _bot;
-    //    private CancellationTokenSource cts;
-    //    private readonly string _token;
-    //    private readonly ITelegramHandlers _handlers;
+    public class TelegramBot
+    {
+        private TelegramBotClient _bot;
+        private CancellationTokenSource cts;
+        private readonly string _token;
+        private readonly ITelegramHandler _handlers;
 
-    //    public TelegramBot(string token, ITelegramHandlers handlers)
-    //    {
-    //        _token = token;
-    //        _handlers = handlers;
-    //    }
+        public TelegramBot(string token, ITelegramHandler handlers)
+        {
+            _token = token;
+            _handlers = handlers;
+        }
 
-    //    public async Task Start()
-    //    {
-    //        _bot = new TelegramBotClient(_token);
+        public async Task Start()
+        {
+            _bot = new TelegramBotClient(_token);
 
-    //        var me = await _bot.GetMeAsync();
+            var me = await _bot.GetMeAsync();
 
-    //        cts = new CancellationTokenSource();
+            cts = new CancellationTokenSource();
 
-    //        // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
-    //        _bot.StartReceiving(
-    //            new DefaultUpdateHandler(
-    //            _handlers.HandleUpdateAsync, 
-    //            _handlers.HandleErrorAsync),
-    //                           cts.Token);
-    //    }
+            // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
+            _bot.StartReceiving(
+                new DefaultUpdateHandler(
+                _handlers.HandleUpdateAsync,
+                _handlers.HandleErrorAsync),
+                               cts.Token);
+        }
 
-    //    public void Stop()
-    //    {
-    //        cts.Cancel();
-    //    }
-    //}
+        public void Stop()
+        {
+            cts.Cancel();
+        }
+    }
 }

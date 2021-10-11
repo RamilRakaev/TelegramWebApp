@@ -8,7 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TelegramBotBusinnes;
+using TelegramBotService;
+using TelegramBotBusiness;
 
 namespace TelegramWebApp
 {
@@ -26,6 +27,7 @@ namespace TelegramWebApp
         {
             services.AddRazorPages();
             services.Configure<TelegramOptions>(Configuration.GetSection(TelegramOptions.position));
+            services.AddTransient<ITelegramHandler, Handlers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
