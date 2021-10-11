@@ -1,5 +1,4 @@
-﻿
-namespace TelegramBotService
+﻿namespace TelegramBotService
 {
     public class TelegramCallbackQuery
     {
