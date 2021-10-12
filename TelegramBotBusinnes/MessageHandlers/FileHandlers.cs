@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -14,10 +15,10 @@ namespace TelegramBotBusiness.MessageHandlers
         {
             await botClient.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
 
-            const string filePath = @"Files/tux.png";
+            string filePath = $"{Environment.CurrentDirectory}\\wwwroot\\img\\microsoft.jpg";
             using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
-
+            
             return await botClient.SendPhotoAsync(chatId: message.Chat.Id,
                                                   photo: new InputOnlineFile(fileStream, fileName),
                                                   caption: "Nice Picture");

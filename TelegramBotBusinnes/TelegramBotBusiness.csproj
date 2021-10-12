@@ -1,15 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\TelegramBotBusinnes\TelegramBotBusiness.csproj" />
     <ProjectReference Include="..\TelegramBotService\TelegramBotService.csproj" />
   </ItemGroup>
 

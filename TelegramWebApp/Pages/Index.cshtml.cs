@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TelegramBotService;
-using TelegramBotBusiness;
 
 namespace TelegramWebApp.Pages
 {
@@ -14,7 +13,7 @@ namespace TelegramWebApp.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger, ILogger<Handlers> logger1, ITelegramHandler handler)
+        public IndexModel(ILogger<IndexModel> logger, ILogger<ITelegramHandler> logger1, ITelegramHandler handler)
         {
             _logger = logger;
 
