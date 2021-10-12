@@ -11,10 +11,12 @@ namespace TelegramBotBusiness
     public class HandlerConfiguration : ITelegramConfiguration
     {
         OutputCallbackQueryHandler queryHandler;
+        CalendarHandlers calendarHandlers;
 
         public HandlerConfiguration(IGoogleCalendar googleCalendar)
         {
             queryHandler = new OutputCallbackQueryHandler(googleCalendar);
+            calendarHandlers = new CalendarHandlers(googleCalendar);
         }
         public void Configurate(ITelegramHandlers handlers)
         {
@@ -38,7 +40,11 @@ namespace TelegramBotBusiness
 
                 new TextMessageHandler("/request",
                 "request location or contact",
-                (ITelegramBotClient botClient, Message message) => RequestHandlers.RequestContactAndLocation(botClient, message))
+                (ITelegramBotClient botClient, Message message) => RequestHandlers.RequestContactAndLocation(botClient, message)),
+
+                new TextMessageHandler("/filtered_events",
+                "calendar events filtered by property",
+                (ITelegramBotClient botClient, Message message) => calendarHandlers.SendFilteredCalendarEvents(botClient, message))
             };
 
             handlers.CallbackQueryHandlers = new List<CallbackQueryMessageHandler>()
@@ -48,7 +54,10 @@ namespace TelegramBotBusiness
                     queryHandler.BotOnCallbackQueryReceived),
                 new CallbackQueryMessageHandler(
                     "/getallevents",
-                    queryHandler.BotOnGetAllEventsReceived)
+                    queryHandler.BotOnGetAllEventsReceived),
+                new CallbackQueryMessageHandler(
+                    "/filtered_events_query",
+                    queryHandler.BotOnGetFilteredEventsReceived)
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using GoogleCalendarService;
+using System;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -30,11 +31,22 @@ namespace TelegramBotBusiness.CallbackQueryHandlers
             var events = await _googleCalendar.ShowUpCommingEvents();
             await botClient.AnswerCallbackQueryAsync(
                 callbackQueryId: callbackQuery.Id,
-                text: events);
+                text: "/filtered_events");
 
             await botClient.SendTextMessageAsync(
                 chatId: callbackQuery.Message.Chat.Id,
                 text: events);
+        }
+
+        public async Task BotOnGetFilteredEventsReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
+        {
+            await botClient.AnswerCallbackQueryAsync(
+                callbackQueryId: callbackQuery.Id,
+                text: "Введите заголовок или описание события для фильтрации");
+
+            await botClient.SendTextMessageAsync(
+                chatId: callbackQuery.Message.Chat.Id,
+                text: "Введите заголовок или описание события для фильтрации");
         }
     }
 }

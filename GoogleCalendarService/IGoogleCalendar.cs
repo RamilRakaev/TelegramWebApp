@@ -29,6 +29,6 @@ namespace GoogleCalendarService
             string q = null,
             bool sortByModifiedDate = false);
 
-        public Task<string> ShowUpCommingEvents();
+        public Task<string> ShowUpCommingEvents(Event[] events = null);
     }
 }

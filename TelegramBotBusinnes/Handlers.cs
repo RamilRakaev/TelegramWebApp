@@ -13,12 +13,12 @@ using TelegramBotService;
 
 namespace TelegramBotBusiness
 {
-
     public class Handlers : ITelegramHandlers
     {
-        
-
-        public Handlers(ILogger<Handlers> logger, IOptions<TelegramOptions> options, ITelegramConfiguration configuration) 
+        public Handlers(
+            ILogger<Handlers> logger,
+            IOptions<TelegramOptions> options,
+            ITelegramConfiguration configuration)
             : base(logger, options, configuration)
         {
         }
@@ -32,11 +32,11 @@ namespace TelegramBotBusiness
             Task<Message> action = null;
             var me = await botClient.GetMeAsync();
             var name = me.Username;
-            var words = message.Text.Split(new char[] { ' ', '@' }, StringSplitOptions.RemoveEmptyEntries);
-            if (words.Length == 2 && words[1] != me.Username)
-            {
+            var words = message.Text.Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (words[0].Contains('@') && words[0].Contains(name) == false)
                 return;
-            }
+
             string command = words.First();
             foreach (var method in TextMessageHandlers)
             {

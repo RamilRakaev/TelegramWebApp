@@ -30,10 +30,10 @@ namespace GoogleCalendarBusiness
             _options = options.Value;
         }
 
-        public async Task<string> ShowUpCommingEvents()
+        public async Task<string> ShowUpCommingEvents(Event[] events = null)
         {
             string output = "";
-            var events = await GetEvents();
+            events = events ?? await GetEvents();
             if (events.Length > 0)
             {
                 foreach (var eventItem in events)
