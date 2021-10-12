@@ -63,6 +63,10 @@ namespace TelegramBotService
             if (message != null)
             {
                 access = _options.Users.Contains(message.From.Username);
+                if(access == false)
+                {
+                    await botClient.SendTextMessageAsync(chatId: message.Chat.Id, "У вас нет прав для использования бота");
+                }
             }
             if (access)
             {

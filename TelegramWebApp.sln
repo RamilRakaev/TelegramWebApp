@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotService", "Teleg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotBusiness", "TelegramBotBusinnes\TelegramBotBusiness.csproj", "{3C2297AE-E1B3-40A6-8236-BB53ADE5528B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleCalendarService", "GoogleCalendarService\GoogleCalendarService.csproj", "{BCDA457C-7D39-48C9-AEAE-9C88B75A4A7A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleCalendarBusiness", "GoogleCalendarBusiness\GoogleCalendarBusiness.csproj", "{D13EE7DE-81C7-4507-B149-6658E9524120}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{3C2297AE-E1B3-40A6-8236-BB53ADE5528B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C2297AE-E1B3-40A6-8236-BB53ADE5528B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C2297AE-E1B3-40A6-8236-BB53ADE5528B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCDA457C-7D39-48C9-AEAE-9C88B75A4A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCDA457C-7D39-48C9-AEAE-9C88B75A4A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCDA457C-7D39-48C9-AEAE-9C88B75A4A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCDA457C-7D39-48C9-AEAE-9C88B75A4A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D13EE7DE-81C7-4507-B149-6658E9524120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D13EE7DE-81C7-4507-B149-6658E9524120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D13EE7DE-81C7-4507-B149-6658E9524120}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D13EE7DE-81C7-4507-B149-6658E9524120}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

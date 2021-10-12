@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GoogleCalendarService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,17 +13,20 @@ namespace TelegramWebApp.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly IGoogleCalendar _google;
+        private readonly TelegramBot _telegram;
 
-        public IndexModel(ILogger<IndexModel> logger, ILogger<ITelegramHandler> logger1, TelegramBot telegram)
+        public IndexModel(ILogger<IndexModel> logger, ILogger<ITelegramHandler> logger1, TelegramBot telegram, IGoogleCalendar google)
         {
             _logger = logger;
-
-            TelegramBot _telegram = telegram;
-            _telegram.Start();
+            _google = google;
+            _telegram = telegram;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            var events = await _google.ShowUpCommingEvents();
+            //_telegram.Start();
         }
     }
 }

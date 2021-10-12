@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TelegramBotService;
 using TelegramBotBusiness;
+using GoogleCalendarService;
+using GoogleCalendarBusiness;
 
 namespace TelegramWebApp
 {
@@ -29,6 +31,9 @@ namespace TelegramWebApp
             services.Configure<TelegramOptions>(Configuration.GetSection(TelegramOptions.position));
             services.AddTransient<ITelegramHandler, Handlers>();
             services.AddTransient<TelegramBot, TelegramBot>();
+
+            services.Configure<GoogleCalendarOptions>(Configuration.GetSection("GoogleCalendarOptions"));
+            services.AddTransient<IGoogleCalendar, GoogleCalendar>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
