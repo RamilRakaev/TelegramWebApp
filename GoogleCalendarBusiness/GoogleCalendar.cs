@@ -38,12 +38,14 @@ namespace GoogleCalendarBusiness
             {
                 foreach (var eventItem in events)
                 {
-                    string when = eventItem.Start.DateTime.ToString();
-                    if (string.IsNullOrEmpty(when))
-                    {
-                        when = eventItem.Start.Date;
-                    }
-                    output += string.Concat($"{eventItem.Summary} ({when})\n");
+                    var description = eventItem.Description != null ? eventItem.Description : "Описание отсутствует";
+                    var start = eventItem.Start.DateTime != null ? eventItem.Start.DateTime.Value.ToString("g") : "";
+                    var end = eventItem.End.DateTime != null ? eventItem.End.DateTime.Value.ToString("g") : "";
+                    output += string
+                        .Concat($"{eventItem.Summary} " +
+                        $"({start} - " +
+                        $"{end}): \n" +
+                        $"{description}\n");
                 }
             }
             else
@@ -66,7 +68,7 @@ namespace GoogleCalendarBusiness
             CalendarService service = GetService();
 
             var request = service.Events.List(_options.CalendarId);
-            request.Fields = "items(summary,start,end)";
+            request.Fields = "items(summary,description,start,end)";
             request.TimeMin = timeMin;
             request.TimeMax = timeMax;
             request.ShowDeleted = showDeleted;
