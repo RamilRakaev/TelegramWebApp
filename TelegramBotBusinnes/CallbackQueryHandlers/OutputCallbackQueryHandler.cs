@@ -1,12 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using GoogleCalendarService;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace TelegramBotBusiness.CallbackQueryHandlers
 {
-    public static class OutputCallbackQueryHandler
+    public class OutputCallbackQueryHandler
     {
-        public static async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
+        private readonly IGoogleCalendar _googleCalendar;
+
+        public OutputCallbackQueryHandler(IGoogleCalendar googleCalendar)
+        {
+            _googleCalendar = googleCalendar;
+        }
+
+        public async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
             await botClient.AnswerCallbackQueryAsync(
                 callbackQueryId: callbackQuery.Id,
@@ -15,6 +23,18 @@ namespace TelegramBotBusiness.CallbackQueryHandlers
             await botClient.SendTextMessageAsync(
                 chatId: callbackQuery.Message.Chat.Id,
                 text: callbackQuery.Data);
+        }
+
+        public async Task BotOnGetAllEventsReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
+        {
+            var events = await _googleCalendar.ShowUpCommingEvents();
+            await botClient.AnswerCallbackQueryAsync(
+                callbackQueryId: callbackQuery.Id,
+                text: events);
+
+            await botClient.SendTextMessageAsync(
+                chatId: callbackQuery.Message.Chat.Id,
+                text: events);
         }
     }
 }

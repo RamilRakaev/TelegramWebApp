@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Telegram.Bot.Exceptions;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace TelegramBotService
 {
@@ -24,15 +25,20 @@ namespace TelegramBotService
     public delegate Task PollAnswerHandler(ITelegramBotClient botClient, PollAnswer pollAnswer);
     public delegate Task ChatMemberUpdatedHandler(ITelegramBotClient botClient, ChatMemberUpdated chatMemberUpdated);
 
-    public abstract class ITelegramHandler
+    public abstract class ITelegramHandlers
     {
         protected readonly TelegramOptions _options;
-        protected readonly ILogger<ITelegramHandler> _logger;
+        protected readonly ILogger<ITelegramHandlers> _logger;
+        public List<TextMessageHandler> TextMessageHandlers;
+        public List<CallbackQueryMessageHandler> CallbackQueryHandlers;
 
-        public ITelegramHandler(ILogger<ITelegramHandler> logger, IOptions<TelegramOptions> options)
+        public ITelegramHandlers(ILogger<ITelegramHandlers> logger,
+            IOptions<TelegramOptions> options,
+            ITelegramConfiguration configuration)
         {
             _logger = logger;
             _options = options.Value;
+            configuration.Configurate(this);
         }
 
         protected event MessageHandler ChannelPostNotify;

@@ -43,7 +43,7 @@ namespace GoogleCalendarBusiness
                     {
                         when = eventItem.Start.Date;
                     }
-                    output += string.Concat("{0} ({1})\n", eventItem.Summary, when);
+                    output += string.Concat($"{eventItem.Summary} ({when})\n");
                 }
             }
             else

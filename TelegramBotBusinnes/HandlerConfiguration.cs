@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GoogleCalendarService;
+using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBotBusiness.CallbackQueryHandlers;
@@ -7,9 +8,15 @@ using TelegramBotService;
 
 namespace TelegramBotBusiness
 {
-    public static class HandlerConfiguration
+    public class HandlerConfiguration : ITelegramConfiguration
     {
-        public static void Configuration(this Handlers handlers)
+        OutputCallbackQueryHandler queryHandler;
+
+        public HandlerConfiguration(IGoogleCalendar googleCalendar)
+        {
+            queryHandler = new OutputCallbackQueryHandler(googleCalendar);
+        }
+        public void Configurate(ITelegramHandlers handlers)
         {
             handlers.TextMessageHandlers = new List<TextMessageHandler>()
             {
@@ -38,7 +45,10 @@ namespace TelegramBotBusiness
             {
                 new CallbackQueryMessageHandler(
                     "Выведенное сообщение",
-                    OutputCallbackQueryHandler.BotOnCallbackQueryReceived)
+                    queryHandler.BotOnCallbackQueryReceived),
+                new CallbackQueryMessageHandler(
+                    "/getallevents",
+                    queryHandler.BotOnGetAllEventsReceived)
             };
         }
     }

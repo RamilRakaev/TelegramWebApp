@@ -14,14 +14,13 @@ using TelegramBotService;
 namespace TelegramBotBusiness
 {
 
-    public class Handlers : ITelegramHandler
+    public class Handlers : ITelegramHandlers
     {
-        public List<TextMessageHandler> TextMessageHandlers;
-        public List<CallbackQueryMessageHandler> CallbackQueryHandlers;
+        
 
-        public Handlers(ILogger<Handlers> logger, IOptions<TelegramOptions> options) : base(logger, options)
+        public Handlers(ILogger<Handlers> logger, IOptions<TelegramOptions> options, ITelegramConfiguration configuration) 
+            : base(logger, options, configuration)
         {
-            HandlerConfiguration.Configuration(this);
         }
 
         protected override async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)

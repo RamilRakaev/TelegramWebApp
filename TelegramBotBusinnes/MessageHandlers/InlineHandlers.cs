@@ -18,7 +18,7 @@ namespace TelegramBotBusiness.MessageHandlers
                     new []
                     {
                         InlineKeyboardButton.WithCallbackData("Вывести сообщение", "Выведенное сообщение"),
-                        InlineKeyboardButton.WithCallbackData("1.2", "12"),
+                        InlineKeyboardButton.WithCallbackData("Вывести все события календаря", "/getallevents"),
                     },
                     // second row
                     new []

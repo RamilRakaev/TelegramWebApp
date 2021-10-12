@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TelegramBotService;
 using TelegramBotBusiness;
 using GoogleCalendarService;
@@ -29,8 +24,9 @@ namespace TelegramWebApp
         {
             services.AddRazorPages();
             services.Configure<TelegramOptions>(Configuration.GetSection(TelegramOptions.position));
-            services.AddTransient<ITelegramHandler, Handlers>();
+            services.AddTransient<ITelegramHandlers, Handlers>();
             services.AddTransient<TelegramBot, TelegramBot>();
+            services.AddTransient<ITelegramConfiguration, HandlerConfiguration>();
 
             services.Configure<GoogleCalendarOptions>(Configuration.GetSection("GoogleCalendarOptions"));
             services.AddTransient<IGoogleCalendar, GoogleCalendar>();
