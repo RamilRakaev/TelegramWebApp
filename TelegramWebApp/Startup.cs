@@ -28,6 +28,7 @@ namespace TelegramWebApp
             services.AddRazorPages();
             services.Configure<TelegramOptions>(Configuration.GetSection(TelegramOptions.position));
             services.AddTransient<ITelegramHandler, Handlers>();
+            services.AddTransient<TelegramBot, TelegramBot>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

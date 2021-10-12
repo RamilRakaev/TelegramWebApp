@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -13,9 +13,9 @@ namespace TelegramBotService
         private readonly string _token;
         private readonly ITelegramHandler _handlers;
 
-        public TelegramBot(string token, ITelegramHandler handlers)
+        public TelegramBot(IOptions<TelegramOptions> options, ITelegramHandler handlers)
         {
-            _token = token;
+            _token = options.Value.Token;
             _handlers = handlers;
         }
 
