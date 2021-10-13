@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces;
 using Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,6 +54,11 @@ namespace Infrastructure.Repositories
         public async Task RemoveAsync(TelegramOptions element)
         {
             await Task.Run(() => _db.Remove(element));
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<TelegramOptions> elements)
+        {
+            await Task.Run(() => _db.Set<TelegramOptions>().RemoveRange(elements));
         }
 
         public async Task SaveAsync()

@@ -3,6 +3,7 @@ using Domain.Model;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Infrastructure.Repositories
 {
@@ -53,6 +54,11 @@ namespace Infrastructure.Repositories
         public async Task RemoveAsync(TelegramUser element)
         {
             await Task.Run(() => _db.Remove(element));
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<TelegramUser> elements)
+        {
+            await Task.Run(() => _db.Set<TelegramUser>().RemoveRange(elements));
         }
 
         public async Task SaveAsync()
