@@ -23,7 +23,7 @@ namespace TelegramBotBusiness.MessageHandlers
             string text;
             if (words.Length != 2)
             {
-                text = "Введите свойство по которому будет происходить фильтрация: /filtered_events?(property)";
+                text = "Введите свойство по которому будут фильтроваться элементы: /filtered_events?(property)";
             }
             else
             {

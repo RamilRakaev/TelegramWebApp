@@ -11,9 +11,9 @@ namespace TelegramBotService
         private TelegramBotClient _bot;
         private CancellationTokenSource cts;
         private readonly string _token;
-        private readonly ITelegramHandlers _handlers;
+        private readonly AbstractTelegramHandlers _handlers;
 
-        public TelegramBot(IOptions<TelegramOptions> options, ITelegramHandlers handlers)
+        public TelegramBot(IOptions<TelegramOptions> options, AbstractTelegramHandlers handlers)
         {
             _token = options.Value.Token;
             _handlers = handlers;

@@ -16,7 +16,7 @@ namespace TelegramWebApp.Pages
         private readonly IGoogleCalendar _google;
         private readonly TelegramBot _telegram;
 
-        public IndexModel(ILogger<IndexModel> logger, ILogger<ITelegramHandlers> logger1, TelegramBot telegram, IGoogleCalendar google)
+        public IndexModel(ILogger<IndexModel> logger, ILogger<AbstractTelegramHandlers> logger1, TelegramBot telegram, IGoogleCalendar google)
         {
             _logger = logger;
             _google = google;

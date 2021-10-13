@@ -18,7 +18,7 @@ namespace TelegramBotBusiness
             queryHandler = new OutputCallbackQueryHandler(googleCalendar);
             calendarHandlers = new CalendarHandlers(googleCalendar);
         }
-        public void Configurate(ITelegramHandlers handlers)
+        public void Configurate(AbstractTelegramHandlers handlers)
         {
             handlers.TextMessageHandlers = new List<TextMessageHandler>()
             {
@@ -53,7 +53,7 @@ namespace TelegramBotBusiness
                     "Выведенное сообщение",
                     queryHandler.BotOnCallbackQueryReceived),
                 new CallbackQueryMessageHandler(
-                    "/getallevents",
+                    "/all_events",
                     queryHandler.BotOnGetAllEventsReceived),
                 new CallbackQueryMessageHandler(
                     "/filtered_events_query",

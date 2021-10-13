@@ -10,12 +10,13 @@ using Microsoft.Extensions.Options;
 using Telegram.Bot.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotService
 {
     public delegate Task MessageHandler(ITelegramBotClient botClient, Message message);
     public delegate Task<Message> MessageHandlerReturningMessage(ITelegramBotClient botClient, Message message);
-    public delegate Task CallbackQueryHandler(ITelegramBotClient botClient, CallbackQuery callbackQuery);
+    public delegate Task<MessageHandlerReturningMessage> CallbackQueryHandler(ITelegramBotClient botClient, CallbackQuery callbackQuery);
     public delegate Task InlineQueryHandler(ITelegramBotClient botClient, InlineQuery inlineQuery);
     public delegate Task ChosenInlineResultHandler(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult);
     public delegate Task UnknownUpdateHandler(ITelegramBotClient botClient, Update update);
@@ -25,14 +26,15 @@ namespace TelegramBotService
     public delegate Task PollAnswerHandler(ITelegramBotClient botClient, PollAnswer pollAnswer);
     public delegate Task ChatMemberUpdatedHandler(ITelegramBotClient botClient, ChatMemberUpdated chatMemberUpdated);
 
-    public abstract class ITelegramHandlers
+    public abstract class AbstractTelegramHandlers
     {
         protected readonly TelegramOptions _options;
-        protected readonly ILogger<ITelegramHandlers> _logger;
+        protected readonly ILogger<AbstractTelegramHandlers> _logger;
         public List<TextMessageHandler> TextMessageHandlers;
         public List<CallbackQueryMessageHandler> CallbackQueryHandlers;
+        protected MessageHandlerReturningMessage PendingInput;
 
-        public ITelegramHandlers(ILogger<ITelegramHandlers> logger,
+        public AbstractTelegramHandlers(ILogger<AbstractTelegramHandlers> logger,
             IOptions<TelegramOptions> options,
             ITelegramConfiguration configuration)
         {
@@ -87,8 +89,8 @@ namespace TelegramBotService
                     UpdateType.MyChatMember => MyChatMemberUpdatedNotify?.Invoke(botClient, update.MyChatMember),
                     UpdateType.ChatMember => ChatMemberUpdatedNotify?.Invoke(botClient, update.ChatMember),
 
-                    UpdateType.Message => BotOnMessageReceived(botClient, update.Message),
-                    UpdateType.EditedMessage => BotOnMessageReceived(botClient, update.EditedMessage),
+                    UpdateType.Message => ProcessingTextMessages(botClient, update.Message),
+                    UpdateType.EditedMessage => ProcessingTextMessages(botClient, update.EditedMessage),
                     UpdateType.CallbackQuery => BotOnCallbackQueryReceived(botClient, update.CallbackQuery),
                     UpdateType.InlineQuery => BotOnInlineQueryReceived(botClient, update.InlineQuery),
                     UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(botClient, update.ChosenInlineResult),
@@ -105,9 +107,31 @@ namespace TelegramBotService
             }
         }
 
-        protected abstract Task BotOnMessageReceived(ITelegramBotClient botClient, Message message);
+        private async Task ProcessingTextMessages(ITelegramBotClient botClient, Message message)
+        {
+            if(PendingInput == null)
+            {
+                await BotOnMessageReceived(botClient, message);
+            }
+            else
+            {
+                await PendingInput(botClient, message);
+            }
+        }
 
-        protected abstract Task<Message> Usage(ITelegramBotClient botClient, Message message);
+        protected async Task<Message> Usage(ITelegramBotClient botClient, Message message)
+        {
+            string usage = "Usage:\n";
+            foreach (var command in TextMessageHandlers)
+            {
+                usage += $"{command.Command} - {command.Description}\n";
+            }
+            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                        text: usage,
+                                                        replyMarkup: new ReplyKeyboardRemove());
+        }
+
+        protected abstract Task BotOnMessageReceived(ITelegramBotClient botClient, Message message);
 
         protected abstract Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery);
 

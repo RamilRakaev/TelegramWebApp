@@ -13,7 +13,7 @@ using TelegramBotService;
 
 namespace TelegramBotBusiness
 {
-    public class Handlers : ITelegramHandlers
+    public class Handlers : AbstractTelegramHandlers
     {
         public Handlers(
             ILogger<Handlers> logger,
@@ -53,33 +53,13 @@ namespace TelegramBotBusiness
             _logger.LogInformation($"The message was sent with id: {messageResult.MessageId}");
         }
 
-        protected override async Task<Message> Usage(ITelegramBotClient botClient, Message message)
-        {
-            string usage = "Usage:\n";
-            foreach (var command in TextMessageHandlers)
-            {
-                usage += $"{command.Command} - {command.Description}\n";
-            }
-            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: usage,
-                                                        replyMarkup: new ReplyKeyboardRemove());
-        }
-
         protected override async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
             var callbackQueryHandler = CallbackQueryHandlers.FirstOrDefault(c => c.Command == callbackQuery.Data);
             if (callbackQueryHandler != null)
             {
-                await callbackQueryHandler.Handler(botClient, callbackQuery);
+                PendingInput = await callbackQueryHandler.Handler(botClient, callbackQuery);
             }
-
-            //await botClient.AnswerCallbackQueryAsync(
-            //    callbackQueryId: callbackQuery.Id,
-            //    text: $"Received {callbackQuery.Data}");
-
-            //await botClient.SendTextMessageAsync(
-            //    chatId: callbackQuery.Message.Chat.Id,
-            //    text: $"Received {callbackQuery.Data}");
         }
 
         protected override async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
