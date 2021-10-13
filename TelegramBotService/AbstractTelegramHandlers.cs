@@ -81,7 +81,8 @@ namespace TelegramBotService
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            if (RightsVerification(botClient, update))
+            bool access = await RightsVerification(botClient, update);
+            if (access)
             {
                 var handler = update.Type switch
                 {
@@ -121,6 +122,7 @@ namespace TelegramBotService
             else
             {
                 await PendingInput(botClient, message);
+                PendingInput = null;
             }
         }
 

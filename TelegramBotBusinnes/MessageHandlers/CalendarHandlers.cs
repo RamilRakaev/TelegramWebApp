@@ -31,7 +31,8 @@ namespace TelegramBotBusiness.MessageHandlers
                 text = await _googleCalendar.ShowUpCommingEvents(events);
             }
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: text);
+                                                        text: text,
+                                                        replyMarkup: new ReplyKeyboardRemove());
         }
     }
 }

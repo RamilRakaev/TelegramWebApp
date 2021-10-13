@@ -13,6 +13,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleCalendarService", "Go
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleCalendarBusiness", "GoogleCalendarBusiness\GoogleCalendarBusiness.csproj", "{D13EE7DE-81C7-4507-B149-6658E9524120}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{DFCC1A67-2FE0-44B3-926E-2FF470AD3B6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Model", "Domain.Model\Domain.Model.csproj", "{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Interfaces", "Domain.Interfaces\Domain.Interfaces.csproj", "{96857B58-3B13-44B2-8392-5AE8C6F95B46}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{524357B9-E796-4B5E-8235-95F266C068C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{C26671B0-317F-4886-AB55-932A8A0874DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Repositories", "Infrastructure.Repositories\Infrastructure.Repositories.csproj", "{74E3358A-F974-4BA8-B4CD-D533D87E2470}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +51,26 @@ Global
 		{D13EE7DE-81C7-4507-B149-6658E9524120}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D13EE7DE-81C7-4507-B149-6658E9524120}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D13EE7DE-81C7-4507-B149-6658E9524120}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96857B58-3B13-44B2-8392-5AE8C6F95B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96857B58-3B13-44B2-8392-5AE8C6F95B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96857B58-3B13-44B2-8392-5AE8C6F95B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96857B58-3B13-44B2-8392-5AE8C6F95B46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E3358A-F974-4BA8-B4CD-D533D87E2470}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E3358A-F974-4BA8-B4CD-D533D87E2470}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E3358A-F974-4BA8-B4CD-D533D87E2470}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E3358A-F974-4BA8-B4CD-D533D87E2470}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C} = {DFCC1A67-2FE0-44B3-926E-2FF470AD3B6F}
+		{96857B58-3B13-44B2-8392-5AE8C6F95B46} = {DFCC1A67-2FE0-44B3-926E-2FF470AD3B6F}
+		{74E3358A-F974-4BA8-B4CD-D533D87E2470} = {524357B9-E796-4B5E-8235-95F266C068C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {530204A6-4C5F-4CD1-AC35-36189F42EF5B}

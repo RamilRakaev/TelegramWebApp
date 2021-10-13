@@ -23,7 +23,7 @@ namespace TelegramWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.Configure<TelegramOptions>(Configuration.GetSection(TelegramOptions.position));
+            services.Configure<TelegramOptions>(Configuration.GetSection("TelegramOptions"));
             services.AddTransient<AbstractTelegramHandlers, Handlers>();
             services.AddTransient<TelegramBot, TelegramBot>();
             services.AddTransient<ITelegramConfiguration, HandlerConfiguration>();
