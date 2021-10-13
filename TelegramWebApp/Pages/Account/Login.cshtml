@@ -1,0 +1,32 @@
+﻿@page
+@model LibraryAccounting.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    ViewData["Login"] = "disabled";
+}
+<div class="row justify-content-center">
+    <div class="col-5">
+        <h1 class="display-8 text-center mt-3">Введите пароль и почту для входа в систему.</h1>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Login.Email"></label>
+                <input class="form-control" asp-for="@Model.Login.Email" />
+                <span asp-validation-for="@Model.Login.Email"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Login.Password"></label>
+                <input class="form-control" asp-for="@Model.Login.Password" />
+                <span asp-validation-for="@Model.Login.Password"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="@Model.Login.RememberMe" />
+                <label class="form-check-label" asp-for="@Model.Login.RememberMe"></label>
+            </div>
+            <div class="form-inline">
+                <button class="btn btn-dark">Авторизоваться</button>
+                <a class="btn btn-danger" asp-page="/Account/Register">Регистрация</a>
+            </div>
+        </form>
+    </div>
+</div>

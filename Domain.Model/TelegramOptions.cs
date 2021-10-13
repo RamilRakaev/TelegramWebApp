@@ -5,6 +5,6 @@ namespace Domain.Model
     {
         public int Id { get; set; }
         public string Token { get; set; }
-        public string[] Users { get; set; }
+        public TelegramUser[] Users { get; set; }
     }
 }

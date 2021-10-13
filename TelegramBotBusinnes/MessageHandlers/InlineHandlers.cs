@@ -14,13 +14,11 @@ namespace TelegramBotBusiness.MessageHandlers
 
             var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {
-                    // first row
                     new []
                     {
                         InlineKeyboardButton.WithCallbackData("Вывести сообщение", "Выведенное сообщение"),
                         InlineKeyboardButton.WithCallbackData("Все события календаря", "/all_events"),
                     },
-                    // second row
                     new []
                     {
                         InlineKeyboardButton.WithCallbackData("Отфильтрованные события", "/filtered_events_query"),
