@@ -64,19 +64,24 @@ namespace TelegramBotService
             return Task.CompletedTask;
         }
 
-        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        private async Task<bool> RightsVerification(ITelegramBotClient botClient, Update update)
         {
             var message = update.Message;
             bool access = true;
             if (message != null)
             {
                 access = _options.Users.Contains(message.From.Username);
-                if(access == false)
+                if (access == false)
                 {
                     await botClient.SendTextMessageAsync(chatId: message.Chat.Id, "У вас нет прав для использования бота");
                 }
             }
-            if (access)
+            return access;
+        }
+
+        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            if (RightsVerification(botClient, update))
             {
                 var handler = update.Type switch
                 {

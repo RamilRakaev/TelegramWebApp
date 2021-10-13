@@ -1,5 +1,4 @@
 ﻿using GoogleCalendarService;
-using System;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -50,8 +49,7 @@ namespace TelegramBotBusiness.CallbackQueryHandlers
             await botClient.SendTextMessageAsync(
                 chatId: callbackQuery.Message.Chat.Id,
                 text: "Введите заголовок или описание события для фильтрации");
-            MessageHandlerReturningMessage messageHandler = WaitForThePropertyToBeEntered;
-            return messageHandler;
+            return WaitForThePropertyToBeEntered;
         }
 
         private async Task<Message> WaitForThePropertyToBeEntered(ITelegramBotClient botClient, Message message)
