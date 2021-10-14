@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
-using TelegramWebApp.CQRSInfrastructure.Methods.Commands.Requests;
-using TelegramWebApp.Pages.ClientPages;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Infrastructure.CQRS.Commands.Request.User;
 
 namespace TelegramWebApp.Pages.Account
 {
@@ -32,11 +31,7 @@ namespace TelegramWebApp.Pages.Account
                 switch (_user.RoleId)
                 {
                     case 1:
-                        return RedirectToPage("/ClientPages/BookCatalog");
-                    case 2:
-                        return RedirectToPage("/AdminPages/UserList");
-                    case 3:
-                        return RedirectToPage("/LibrarianPages/BookCatalog");
+                        return RedirectToPage("/");
                 }
             return Page();
         }

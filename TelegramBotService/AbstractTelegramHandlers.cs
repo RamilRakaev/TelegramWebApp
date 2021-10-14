@@ -11,6 +11,7 @@ using Telegram.Bot.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Telegram.Bot.Types.ReplyMarkups;
+using Domain.Model;
 
 namespace TelegramBotService
 {
@@ -70,7 +71,7 @@ namespace TelegramBotService
             bool access = true;
             if (message != null)
             {
-                access = _options.Users.Contains(message.From.Username);
+                access = _options.Users.FirstOrDefault( u => u.UserName == message.From.Username) != null;
                 if (access == false)
                 {
                     await botClient.SendTextMessageAsync(chatId: message.Chat.Id, "У вас нет прав для использования бота");

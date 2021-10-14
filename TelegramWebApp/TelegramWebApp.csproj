@@ -11,6 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="..\GoogleCalendarBusiness\GoogleCalendarBusiness.csproj" />
     <ProjectReference Include="..\GoogleCalendarService\GoogleCalendarService.csproj" />
+    <ProjectReference Include="..\Infrastructure.CQRS\Infrastructure.CQRS.csproj" />
+    <ProjectReference Include="..\Infrastructure.Repositories\Infrastructure.Repositories.csproj" />
     <ProjectReference Include="..\TelegramBotBusinnes\TelegramBotBusiness.csproj" />
     <ProjectReference Include="..\TelegramBotService\TelegramBotService.csproj" />
   </ItemGroup>

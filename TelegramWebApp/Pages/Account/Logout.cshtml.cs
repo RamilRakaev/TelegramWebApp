@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using TelegramWebApp.Domain.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Domain.Model;
 
 namespace TelegramWebApp.Pages.Account
 {

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace TelegramBotService
 {
-    public class TelegramOptions
-    {
-        public string Token { get; set; }
-        public string[] Users { get; set; }
-    }
+    //public class TelegramOptions
+    //{
+    //    public string Token { get; set; }
+    //    public string[] Users { get; set; }
+    //}
 }

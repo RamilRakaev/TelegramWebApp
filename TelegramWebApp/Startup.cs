@@ -7,6 +7,13 @@ using TelegramBotService;
 using TelegramBotBusiness;
 using GoogleCalendarService;
 using GoogleCalendarBusiness;
+using Infrastructure.Repositories;
+using Domain.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
+using Infrastructure.CQRS;
+using TelegramWebApp.Pages.Account;
 
 namespace TelegramWebApp
 {
@@ -22,14 +29,22 @@ namespace TelegramWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>(op => op.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                   op => op.MigrationsAssembly("Infrastructure.Repositories")));
+            services.AddIdentity<ApplicationUser, ApplicationUserRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
             services.AddRazorPages();
             services.Configure<TelegramOptions>(Configuration.GetSection("TelegramOptions"));
             services.AddTransient<AbstractTelegramHandlers, Handlers>();
             services.AddTransient<TelegramBot, TelegramBot>();
             services.AddTransient<ITelegramConfiguration, HandlerConfiguration>();
 
+            services.AddTransient<UserProperties, UserProperties>();
+
             services.Configure<GoogleCalendarOptions>(Configuration.GetSection("GoogleCalendarOptions"));
             services.AddTransient<IGoogleCalendar, GoogleCalendar>();
+            services.AddMediatR(MethodsAssembly.GetAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

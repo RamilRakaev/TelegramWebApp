@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Domain.Model;
+using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
