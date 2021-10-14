@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Infrastructure.CQRS;
 using TelegramWebApp.Pages.Account;
+using Domain.Interfaces;
 
 namespace TelegramWebApp
 {
@@ -30,12 +31,16 @@ namespace TelegramWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(op => op.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                   op => op.MigrationsAssembly("Infrastructure.Repositories")));
+                   op => op.MigrationsAssembly(typeof(DataContext).Assembly.FullName)));
             services.AddIdentity<ApplicationUser, ApplicationUserRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
 
             services.AddRazorPages();
+            services.AddHostedService<MigrationManager>();
             services.Configure<TelegramOptions>(Configuration.GetSection("TelegramOptions"));
+            services.AddTransient<IRepository<TelegramOptions>, TelegramOptionsRepository>();
+            services.AddTransient<IRepository<TelegramUser>, TelegramUserRepository>();
+
             services.AddTransient<AbstractTelegramHandlers, Handlers>();
             services.AddTransient<TelegramBot, TelegramBot>();
             services.AddTransient<ITelegramConfiguration, HandlerConfiguration>();

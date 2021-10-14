@@ -15,21 +15,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleCalendarBusiness", "G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{DFCC1A67-2FE0-44B3-926E-2FF470AD3B6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Model", "Domain.Model\Domain.Model.csproj", "{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Model", "Domain.Model\Domain.Model.csproj", "{BBBA4984-13DA-4D08-8C86-3FEC9EDBF28C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Interfaces", "Domain.Interfaces\Domain.Interfaces.csproj", "{96857B58-3B13-44B2-8392-5AE8C6F95B46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Interfaces", "Domain.Interfaces\Domain.Interfaces.csproj", "{96857B58-3B13-44B2-8392-5AE8C6F95B46}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{524357B9-E796-4B5E-8235-95F266C068C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{C26671B0-317F-4886-AB55-932A8A0874DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Repositories", "Infrastructure.Repositories\Infrastructure.Repositories.csproj", "{74E3358A-F974-4BA8-B4CD-D533D87E2470}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Repositories", "Infrastructure.Repositories\Infrastructure.Repositories.csproj", "{74E3358A-F974-4BA8-B4CD-D533D87E2470}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{946D6F1C-B7E2-41B1-AD29-30698F7C1F0F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CQRS", "CQRS", "{17AA4CB5-F7BB-4C15-8F8D-8AF997DD1B24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.CQRS", "Infrastructure.CQRS\Infrastructure.CQRS.csproj", "{193B0BD8-83FC-44CE-9EB2-D5482BB281F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.CQRS", "Infrastructure.CQRS\Infrastructure.CQRS.csproj", "{193B0BD8-83FC-44CE-9EB2-D5482BB281F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

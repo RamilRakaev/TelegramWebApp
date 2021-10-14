@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Infrastructure.Repositories.Configuration;
 
 namespace Infrastructure.Repositories
 {
@@ -24,7 +25,8 @@ namespace Infrastructure.Repositories
             mb.Ignore<IdentityUserClaim<string>>();
             mb.Ignore<IdentityUserToken<string>>();
 
-
+            mb.ApplyConfiguration(new TelegramOptionsConfiguration());
+            mb.ApplyConfiguration(new UserConfiguration());
             base.OnModelCreating(mb);
         }
     }
