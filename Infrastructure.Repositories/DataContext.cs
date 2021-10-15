@@ -13,6 +13,7 @@ namespace Infrastructure.Repositories
 
         public DbSet<TelegramUser> TelegramUsers { get; set; }
         public DbSet<TelegramOptions> TelegramOptions { get; set; }
+        public DbSet<CalendarOptions> CalendarOptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {

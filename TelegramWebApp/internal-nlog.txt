@@ -82,3 +82,21 @@
 2021-10-14 18:02:33.7995 Info Adding target FileTarget(Name=allfile)
 2021-10-14 18:02:33.9721 Info Adding target FileTarget(Name=ownFile-web)
 2021-10-14 18:02:34.1403 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\A-156\source\repos\TelegramWebApp\TelegramWebApp\bin\Debug\netcoreapp3.1\nlog.config
+2021-10-14 22:01:15.4478 Info Message Template Auto Format enabled
+2021-10-14 22:01:15.5001 Info Loading assembly: NLog.Web.AspNetCore
+2021-10-14 22:01:15.6397 Info Adding target FileTarget(Name=allfile)
+2021-10-14 22:01:15.6397 Info Adding target FileTarget(Name=ownFile-web)
+2021-10-14 22:01:15.7100 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\A-156\source\repos\TelegramWebApp\TelegramWebApp\bin\Debug\netcoreapp3.1\NLog.config
+2021-10-14 22:01:15.7571 Info Configuration initialized.
+2021-10-14 22:01:15.7592 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.11.13229. Product version: 4.7.11+33ed3a9f86277651e93ddf39cda64a046a06778b. GlobalAssemblyCache: False
+2021-10-14 22:01:19.0441 Info AppDomain Shutting down. Logger closing...
+2021-10-14 22:01:19.0798 Info Logger has been shut down.
+2021-10-14 22:01:37.1375 Info Message Template Auto Format enabled
+2021-10-14 22:01:37.1550 Info Loading assembly: NLog.Web.AspNetCore
+2021-10-14 22:01:37.2946 Info Adding target FileTarget(Name=allfile)
+2021-10-14 22:01:37.2946 Info Adding target FileTarget(Name=ownFile-web)
+2021-10-14 22:01:37.3477 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\A-156\source\repos\TelegramWebApp\TelegramWebApp\bin\Debug\netcoreapp3.1\NLog.config
+2021-10-14 22:01:37.3828 Info Configuration initialized.
+2021-10-14 22:01:37.3828 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.11.13229. Product version: 4.7.11+33ed3a9f86277651e93ddf39cda64a046a06778b. GlobalAssemblyCache: False
+2021-10-14 22:01:41.1102 Info AppDomain Shutting down. Logger closing...
+2021-10-14 22:01:41.1546 Info Logger has been shut down.

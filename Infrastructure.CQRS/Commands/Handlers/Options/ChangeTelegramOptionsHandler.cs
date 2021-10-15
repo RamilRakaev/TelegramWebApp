@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.CQRS.Commands.Handlers.Options
 {
-    public class EditTelegramOptionsHandler : IRequestHandler<EditTelegramOptionsRequest, TelegramOptions>
+    public class ChangeTelegramOptionsHandler : IRequestHandler<ChangeTelegramOptionsCommand, TelegramOptions>
     {
         private readonly IRepository<TelegramOptions> _db;
 
-        public EditTelegramOptionsHandler(IRepository<TelegramOptions> db)
+        public ChangeTelegramOptionsHandler(IRepository<TelegramOptions> db)
         {
             _db = db;
         }
 
-        public async Task<TelegramOptions> Handle(EditTelegramOptionsRequest request, CancellationToken cancellationToken)
+        public async Task<TelegramOptions> Handle(ChangeTelegramOptionsCommand request, CancellationToken cancellationToken)
         {
             var options = await _db.FindAsync(request.Id);
             options.Token = request.Token;
