@@ -100,3 +100,16 @@
 2021-10-14 22:01:37.3828 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.11.13229. Product version: 4.7.11+33ed3a9f86277651e93ddf39cda64a046a06778b. GlobalAssemblyCache: False
 2021-10-14 22:01:41.1102 Info AppDomain Shutting down. Logger closing...
 2021-10-14 22:01:41.1546 Info Logger has been shut down.
+2021-10-15 09:19:32.2440 Info Message Template Auto Format enabled
+2021-10-15 09:19:32.4505 Info Loading assembly: NLog.Web.AspNetCore
+2021-10-15 09:19:32.9584 Info Adding target FileTarget(Name=allfile)
+2021-10-15 09:19:33.1345 Info Adding target FileTarget(Name=ownFile-web)
+2021-10-15 09:19:33.2872 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\A-156\source\repos\TelegramWebApp\TelegramWebApp\bin\Debug\netcoreapp3.1\nlog.config
+2021-10-15 09:19:37.5234 Info Shutdown() called. Logger closing...
+2021-10-15 09:19:37.5234 Info Closing old configuration.
+2021-10-15 09:19:37.6712 Info Logger has been closed down.
+2021-10-15 09:20:33.9750 Info Message Template Auto Format enabled
+2021-10-15 09:20:34.0871 Info Loading assembly: NLog.Web.AspNetCore
+2021-10-15 09:20:34.5079 Info Adding target FileTarget(Name=allfile)
+2021-10-15 09:20:34.5608 Info Adding target FileTarget(Name=ownFile-web)
+2021-10-15 09:20:34.7146 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\A-156\source\repos\TelegramWebApp\TelegramWebApp\bin\Debug\netcoreapp3.1\nlog.config
