@@ -18,9 +18,9 @@ namespace Infrastructure.CQRS.Commands.Handlers.Options
 
         public async Task<TelegramOptions> Handle(ChangeTelegramOptionsCommand request, CancellationToken cancellationToken)
         {
-            var options = await _db.FindAsync(request.Id);
-            options.Token = request.Token;
-            options.Users = request.Users;
+               var options = await _db.FindAsync(request.Options.Id);
+            options.Token = request.Options.Token;
+            options.Users = request.Options.Users;
             await _db.SaveAsync();
             return options;
         }
