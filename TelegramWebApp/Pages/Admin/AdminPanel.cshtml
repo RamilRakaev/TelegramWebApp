@@ -1,0 +1,24 @@
+﻿@page
+@model TelegramWebApp.Pages.Admin.AdminPanelModel
+@{
+}
+<div class="row justify-content-center">
+    <p>@Model.Warning</p>
+    <div class="col-6 d-inline">
+        <a class="btn btn-info" asp-page-handler="Turn">Включить прослушивание</a>
+        <a class="btn btn-info" asp-page-handler="TurnOff">Отключить прослушивание</a>
+        <a class="btn btn-info" asp-page="OptionsForm">Настройки</a>
+        <a class="btn btn-info" asp-page="AddTelegramUser">Добавить пользователя</a>
+    </div>
+</div>
+<div class="row justify-content-center">
+    @foreach (var user in Model.Users)
+    {
+        <div class="col-7">
+            <form method="post">
+                <input type="hidden" value="@user.Id" name="userId" />
+                <p>UserName: @user.UserName <button class="btn btn-danger">Удалить</button></p>
+            </form>
+        </div>
+    }
+</div>

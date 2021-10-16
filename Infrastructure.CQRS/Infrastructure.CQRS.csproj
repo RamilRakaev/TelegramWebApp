@@ -12,6 +12,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj" />
     <ProjectReference Include="..\Infrastructure.Repositories\Infrastructure.Repositories.csproj" />
+    <ProjectReference Include="..\TelegramBotBusinnes\TelegramBotBusiness.csproj" />
+    <ProjectReference Include="..\TelegramBotService\TelegramBotService.csproj" />
   </ItemGroup>
 
 </Project>

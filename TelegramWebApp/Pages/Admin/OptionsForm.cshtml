@@ -1,0 +1,23 @@
+﻿@page
+@model TelegramWebApp.Pages.Admin.OptionsFormModel
+@using Domain.Model;
+@{
+    var webAppOptions = new WebAppOptions();
+}
+<div class="row justify-content-center">
+    <form method="post">
+        <div class="form-group">
+            <label>ApiKey</label>
+            <input asp-for="@webAppOptions.ApiKey" />
+        </div>
+        <div class="form-group">
+            <label>CalandarId</label>
+            <input asp-for="@webAppOptions.CalandarId" />
+        </div>
+        <div class="form-group">
+            <label>Telegram Bot Token</label>
+            <input asp-for="@webAppOptions.Token" />
+        </div>
+        <button class="btn btn-dark">Отправить</button>
+    </form>
+</div>

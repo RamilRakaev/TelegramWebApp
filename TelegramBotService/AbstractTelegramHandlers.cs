@@ -6,7 +6,6 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.Payments;
 using System.Linq;
-using Microsoft.Extensions.Options;
 using Telegram.Bot.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -29,18 +28,19 @@ namespace TelegramBotService
 
     public abstract class AbstractTelegramHandlers
     {
-        protected readonly TelegramOptions _options;
+        protected readonly TelegramUser[] _users;
         protected readonly ILogger<AbstractTelegramHandlers> _logger;
         public List<TextMessageHandler> TextMessageHandlers;
         public List<CallbackQueryMessageHandler> CallbackQueryHandlers;
         protected MessageHandlerReturningMessage PendingInput;
 
-        public AbstractTelegramHandlers(ILogger<AbstractTelegramHandlers> logger,
-            IOptions<TelegramOptions> options,
+        public AbstractTelegramHandlers(
+            TelegramUser[] users,
+            ILogger<AbstractTelegramHandlers> logger,
             ITelegramConfiguration configuration)
         {
+            _users = users;
             _logger = logger;
-            _options = options.Value;
             configuration.Configurate(this);
         }
 
@@ -71,7 +71,7 @@ namespace TelegramBotService
             bool access = true;
             if (message != null)
             {
-                access = _options.Users.FirstOrDefault( u => u.UserName == message.From.Username) != null;
+                access = _users.FirstOrDefault( u => u.UserName == message.From.Username) != null;
                 if (access == false)
                 {
                     await botClient.SendTextMessageAsync(chatId: message.Chat.Id, "У вас нет прав для использования бота");

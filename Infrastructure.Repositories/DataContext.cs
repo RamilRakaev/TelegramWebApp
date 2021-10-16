@@ -12,8 +12,7 @@ namespace Infrastructure.Repositories
         { }
 
         public DbSet<TelegramUser> TelegramUsers { get; set; }
-        public DbSet<TelegramOptions> TelegramOptions { get; set; }
-        public DbSet<CalendarOptions> CalendarOptions { get; set; }
+        public DbSet<Option> Options { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
@@ -26,7 +25,6 @@ namespace Infrastructure.Repositories
             mb.Ignore<IdentityUserClaim<string>>();
             mb.Ignore<IdentityUserToken<string>>();
 
-            mb.ApplyConfiguration(new TelegramOptionsConfiguration());
             mb.ApplyConfiguration(new UserConfiguration());
             base.OnModelCreating(mb);
         }

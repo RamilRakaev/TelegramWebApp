@@ -13,20 +13,14 @@ namespace TelegramWebApp.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly IGoogleCalendar _google;
-        private readonly TelegramBot _telegram;
 
-        public IndexModel(ILogger<IndexModel> logger, ILogger<AbstractTelegramHandlers> logger1, TelegramBot telegram, IGoogleCalendar google)
+        public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
-            _google = google;
-            _telegram = telegram;
         }
 
-        public async Task OnGet()
+        public void OnGet()
         {
-            //var events = await _google.ShowUpCommingEvents();
-            await _telegram.Start();
         }
     }
 }

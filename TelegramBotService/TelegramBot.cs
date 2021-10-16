@@ -1,5 +1,6 @@
 ﻿using Domain.Model;
-using Microsoft.Extensions.Options;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -9,26 +10,27 @@ namespace TelegramBotService
 {
     public class TelegramBot
     {
-        private TelegramBotClient _bot;
-        private CancellationTokenSource cts;
-        private readonly string _token;
-        private readonly AbstractTelegramHandlers _handlers;
+        private static TelegramBotClient _bot;
+        private static CancellationTokenSource cts;
+        private static string _token;
+        private static AbstractTelegramHandlers _handlers;
 
-        public TelegramBot(IOptions<TelegramOptions> options, AbstractTelegramHandlers handlers)
+        public TelegramBot(Option[] options, AbstractTelegramHandlers handlers)
         {
-            _token = options.Value.Token;
+            _token = options.FirstOrDefault(o => o.PropertyName == "Token").Value;
+            if (_token == null)
+                throw new ArgumentNullException("Token is null");
             _handlers = handlers;
         }
 
         public async Task Start()
         {
-            _bot = new TelegramBotClient(_token);
+            _bot ??= new TelegramBotClient(_token);
 
             var me = await _bot.GetMeAsync();
 
-            cts = new CancellationTokenSource();
+            cts ??= new CancellationTokenSource();
 
-            // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
             _bot.StartReceiving(
                 new DefaultUpdateHandler(
                 _handlers.HandleUpdateAsync,
@@ -38,7 +40,7 @@ namespace TelegramBotService
 
         public void Stop()
         {
-            cts.Cancel();
+            if(cts != null) cts.Cancel();
         }
     }
 }

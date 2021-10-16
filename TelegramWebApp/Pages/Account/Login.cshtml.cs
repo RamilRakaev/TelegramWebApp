@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Infrastructure.CQRS.Commands.Request.User;
+using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 
 namespace TelegramWebApp.Pages.Account
 {
