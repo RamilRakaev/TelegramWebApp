@@ -38,7 +38,7 @@ namespace TelegramBotService
                                cts.Token);
         }
 
-        public void Stop()
+        public static void Stop()
         {
             if(cts != null) cts.Cancel();
         }
