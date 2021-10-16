@@ -22,9 +22,10 @@ namespace TelegramWebApp.Pages.Admin
         public void OnGet()
         { }
 
-        public async Task OnPost(WebAppOptions webAppOptions)
+        public async Task<IActionResult> OnPost(WebAppOptions webAppOptions)
         {
             await _mediator.Send(new ChangeOptionsCommand(webAppOptions));
+            return RedirectToPage("AdminPanel");
         }
     }
 }
