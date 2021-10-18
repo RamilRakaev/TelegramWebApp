@@ -9,6 +9,7 @@
         <div class="form-group">
             <label class="col-form-label">Имя пользователя</label>
             <input class="form-control" asp-for="@user.UserName"/>
+            <span asp-validation-for="@user.UserName"></span>
         </div>
         <button class="btn btn-dark">Добавить</button>
         <a class="btn btn-danger" asp-page="AdminPanel">Назад</a>

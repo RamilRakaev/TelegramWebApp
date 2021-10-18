@@ -44,13 +44,14 @@ namespace TelegramWebApp.Pages.Account
                 login.Page = this;
                 string message = await _mediator.Send(login);
                 ModelState.AddModelError(string.Empty, message);
+                return RedirectToPage("/Admin/AdminPanel");
             }
             else
             {
                 ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 _logger.LogWarning($"Incorrect username and (or) password");
+                return Page();
             }
-            return RedirectToPage("/Account/Login");
         }
     }
 }

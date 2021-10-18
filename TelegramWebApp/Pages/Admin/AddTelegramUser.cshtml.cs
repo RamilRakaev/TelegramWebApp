@@ -30,8 +30,12 @@ namespace TelegramWebApp.Pages.Admin
 
         public async Task<IActionResult> OnPost(TelegramUser user)
         {
-            await _mediator.Send(new AddUserCommand(user));
-            return RedirectToPage("AdminPanel");
+            if (ModelState.IsValid)
+            {
+                await _mediator.Send(new AddUserCommand(user));
+                return RedirectToPage("AdminPanel");
+            }
+            return Page();
         }
     }
 }

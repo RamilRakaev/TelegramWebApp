@@ -16,6 +16,7 @@ using TelegramWebApp.Pages.Account;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Domain.ModelValidators;
 
 namespace TelegramWebApp
 {
@@ -50,6 +51,10 @@ namespace TelegramWebApp
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(MethodsAssembly.GetAssembly());
             services.AddMediatR(MethodsAssembly.GetAssembly());
+
+            services.AddTransient<IValidator<WebAppOptions>, WebAppOptionsValidator>();
+            services.AddTransient<IValidator<ApplicationUser>, ApplicationUserValidator>();
+            services.AddTransient<IValidator<TelegramUser>, TelegramUserValidator>();
 
             services.AddRazorPages().AddFluentValidation();
         }

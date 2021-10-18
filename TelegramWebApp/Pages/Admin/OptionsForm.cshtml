@@ -1,22 +1,27 @@
 ﻿@page
 @model TelegramWebApp.Pages.Admin.OptionsFormModel
+@using Infrastructure.CQRS.Commands.Requests.Options;
 @using Domain.Model;
 @{
-    var webAppOptions = new WebAppOptions();
+    ViewData["Title"] = "Настройки";
+    var appOptions = new WebAppOptions();
 }
 <div class="row justify-content-center">
     <form method="post">
         <div class="form-group">
             <label class="col-form-label">ApiKey</label>
-            <input class="form-control" asp-for="@webAppOptions.ApiKey" />
+            <span asp-validation-for="@appOptions.ApiKey"></span>
+            <input class="form-control" asp-for="@appOptions.ApiKey" />
         </div>
         <div class="form-group">
             <label class="col-form-label">CalandarId</label>
-            <input class="form-control" asp-for="@webAppOptions.CalandarId" />
+            <span asp-validation-for="@appOptions.CalandarId"></span>
+            <input class="form-control" asp-for="@appOptions.CalandarId" />
         </div>
         <div class="form-group">
-            <label class="col-form-label">Telegram Bot Token</label>
-            <input class="form-control" asp-for="@webAppOptions.Token" />
+            <label class="col-form-label">Token</label>
+            <span asp-validation-for="@appOptions.Token"></span>
+            <input class="form-control" asp-for="@appOptions.Token" />
         </div>
         <button class="btn btn-dark">Отправить</button>
         <a class="btn btn-danger" asp-page="AdminPanel">Назад</a>

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domain.ModelValidators\Domain.ModelValidators.csproj" />
     <ProjectReference Include="..\GoogleCalendarBusiness\GoogleCalendarBusiness.csproj" />
     <ProjectReference Include="..\GoogleCalendarService\GoogleCalendarService.csproj" />
     <ProjectReference Include="..\Infrastructure.CQRS\Infrastructure.CQRS.csproj" />

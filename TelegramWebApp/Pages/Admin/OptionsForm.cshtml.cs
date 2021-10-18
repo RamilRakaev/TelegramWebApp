@@ -28,10 +28,18 @@ namespace TelegramWebApp.Pages.Admin
             return Page();
         }
 
-        public async Task<IActionResult> OnPost(WebAppOptions webAppOptions)
+        public async Task<IActionResult> OnPost(WebAppOptions appOptions)
         {
-            await _mediator.Send(new ChangeOptionsCommand(webAppOptions));
-            return RedirectToPage("AdminPanel");
+            if (ModelState.IsValid)
+            {
+                await _mediator.Send(new ChangeOptionsCommand(appOptions));
+                return RedirectToPage("AdminPanel");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Не должно быть пустых полей");
+                return Page();
+            }
         }
     }
 }
