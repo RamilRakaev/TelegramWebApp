@@ -33,7 +33,7 @@ namespace TelegramWebApp.Pages.Account
         {
             get
             {
-                var result = _httpContext.HttpContext.User.FindFirst("roleId"); 
+                var result = _httpContext.HttpContext.User.FindFirst("roleId");
                 if (result != null)
                 {
                     return Convert.ToInt32(result.Value);
