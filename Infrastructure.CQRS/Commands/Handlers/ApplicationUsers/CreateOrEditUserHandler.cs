@@ -21,7 +21,9 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
             var user = await _userManager.FindByIdAsync(request.User.Id.ToString());
             if(user == null)
             {
-                return await _userManager.CreateAsync(request.User);
+                var password = request.User.Password;
+                request.User.Password = null;
+                return await _userManager.CreateAsync(request.User, password);
             }
             else
             {

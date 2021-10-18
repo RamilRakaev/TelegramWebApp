@@ -12,7 +12,6 @@ namespace TelegramWebApp.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly IMediator _mediator;
         public readonly UserProperties _user;
-        public UserLoginCommand Login { get; set; }
 
         public LoginModel(IMediator mediator,
             ILogger<LoginModel> logger,
@@ -24,9 +23,10 @@ namespace TelegramWebApp.Pages.Account
             _user = userProperties;
         }
 
+        public UserLoginCommand Login { get; set; }
+
         public IActionResult OnGet()
         {
-            //var isauth = User.Identity.IsAuthenticated;
             _logger.LogInformation($"Login page visited");
             if (_user.IsAuthenticated)
                 switch (_user.RoleId)
