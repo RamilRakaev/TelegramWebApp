@@ -7,17 +7,18 @@
 <div class="row justify-content-center">
     <form method="post">
         <div class="form-group">
-            <label>ApiKey</label>
-            <input asp-for="@webAppOptions.ApiKey" />
+            <label class="col-form-label">ApiKey</label>
+            <input class="form-control" asp-for="@webAppOptions.ApiKey" />
         </div>
         <div class="form-group">
-            <label>CalandarId</label>
-            <input asp-for="@webAppOptions.CalandarId" />
+            <label class="col-form-label">CalandarId</label>
+            <input class="form-control" asp-for="@webAppOptions.CalandarId" />
         </div>
         <div class="form-group">
-            <label>Telegram Bot Token</label>
-            <input asp-for="@webAppOptions.Token" />
+            <label class="col-form-label">Telegram Bot Token</label>
+            <input class="form-control" asp-for="@webAppOptions.Token" />
         </div>
         <button class="btn btn-dark">Отправить</button>
+        <a class="btn btn-danger" asp-page="AdminPanel">Назад</a>
     </form>
 </div>

@@ -7,9 +7,10 @@
 <div class="row justify-content-center">
     <form method="post">
         <div class="form-group">
-            <label>Имя пользователя</label>
-            <input asp-for="@user.UserName"/>
+            <label class="col-form-label">Имя пользователя</label>
+            <input class="form-control" asp-for="@user.UserName"/>
         </div>
         <button class="btn btn-dark">Добавить</button>
+        <a class="btn btn-danger" asp-page="AdminPanel">Назад</a>
     </form>
 </div>

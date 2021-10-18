@@ -34,6 +34,7 @@ namespace TelegramWebApp.Pages.Admin
             {
                 return RedirectToPage("/Account/Login");
             }
+            Warning = await _mediator.Send(new GetBotStatusQuery());
             AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
             return Page();
@@ -42,6 +43,7 @@ namespace TelegramWebApp.Pages.Admin
         public async Task OnPost(int userId)
         {
             await _mediator.Send(new RemoveUserCommand(userId));
+            Warning = await _mediator.Send(new GetBotStatusQuery());
             AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
         }

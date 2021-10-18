@@ -1,12 +1,6 @@
-﻿using GoogleCalendarService;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TelegramBotService;
 using TelegramWebApp.Pages.Account;
 
 namespace TelegramWebApp.Pages

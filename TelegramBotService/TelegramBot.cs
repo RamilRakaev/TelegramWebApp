@@ -8,6 +8,7 @@ using Telegram.Bot.Extensions.Polling;
 
 namespace TelegramBotService
 {
+    public enum BotStatus{ On, Off }
     public class TelegramBot
     {
         private static TelegramBotClient _bot;
@@ -36,6 +37,15 @@ namespace TelegramBotService
                 _handlers.HandleUpdateAsync,
                 _handlers.HandleErrorAsync),
                                cts.Token);
+        }
+
+        public static bool IsIncluded()
+        {
+            if (_bot == null) 
+            {
+                return false;
+            }
+            return true;
         }
 
         public static void Stop()

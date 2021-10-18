@@ -4,8 +4,6 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 internal-nlog.txt
-2.txt
-*.txt
 
 # User-specific files
 *.rsuser
