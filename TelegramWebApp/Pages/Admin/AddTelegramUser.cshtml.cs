@@ -23,14 +23,15 @@ namespace TelegramWebApp.Pages.Admin
         {
             if (_user.RoleId != 1)
             {
-                return RedirectToPage("/");
+                return RedirectToPage("/Account/Login");
             }
             return Page();
         }
 
-        public async Task OnPost(TelegramUser user)
+        public async Task<IActionResult> OnPost(TelegramUser user)
         {
             await _mediator.Send(new AddUserCommand(user));
+            return RedirectToPage("AdminPanel");
         }
     }
 }

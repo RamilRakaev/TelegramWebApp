@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Domain.Model;
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -32,7 +33,6 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, request.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, true);
                     await _userManager.AddClaimAsync(user, new Claim("roleId", user.RoleId.ToString()));
                     await _userManager.UpdateAsync(user);
                     _logger.LogInformation("Succeeded login");

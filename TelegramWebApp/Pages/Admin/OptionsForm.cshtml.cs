@@ -23,7 +23,7 @@ namespace TelegramWebApp.Pages.Admin
         {
             if(_user.RoleId != 1)
             {
-                return RedirectToPage("/");
+                return RedirectToPage("/Account/Login");
             }
             return Page();
         }

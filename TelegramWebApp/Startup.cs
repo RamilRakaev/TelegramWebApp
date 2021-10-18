@@ -32,8 +32,8 @@ namespace TelegramWebApp
         {
             services.AddDbContext<DataContext>(op => op.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                    op => op.MigrationsAssembly(typeof(DataContext).Assembly.FullName)));
-            services.AddIdentity<ApplicationUser, ApplicationUserRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationUserRole>()
+                .AddEntityFrameworkStores<DataContext>();
 
             services.AddRazorPages();
             services.AddHostedService<MigrationManager>();
@@ -68,6 +68,7 @@ namespace TelegramWebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();    // подключение аутентификации
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

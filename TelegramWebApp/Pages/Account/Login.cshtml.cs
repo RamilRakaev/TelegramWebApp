@@ -26,12 +26,13 @@ namespace TelegramWebApp.Pages.Account
 
         public IActionResult OnGet()
         {
+            //var isauth = User.Identity.IsAuthenticated;
             _logger.LogInformation($"Login page visited");
             if (_user.IsAuthenticated)
                 switch (_user.RoleId)
                 {
                     case 1:
-                        return RedirectToPage("/");
+                        return RedirectToPage("/Index");
                 }
             return Page();
         }
@@ -43,7 +44,6 @@ namespace TelegramWebApp.Pages.Account
                 login.Page = this;
                 string message = await _mediator.Send(login);
                 ModelState.AddModelError(string.Empty, message);
-
             }
             else
             {

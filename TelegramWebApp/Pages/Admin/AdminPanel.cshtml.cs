@@ -31,7 +31,7 @@ namespace TelegramWebApp.Pages.Admin
         {
             if (_user.RoleId != 1)
             {
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Account/Login");
             }
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
             return Page();
