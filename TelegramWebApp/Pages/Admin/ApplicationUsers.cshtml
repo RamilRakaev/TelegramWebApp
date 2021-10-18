@@ -1,0 +1,27 @@
+﻿@page
+@model TelegramWebApp.Pages.Admin.ApplicationUsersModel
+@{
+}
+<div class="row justify-content-center">
+    <a class="btn btn-info" asp-page="ApplicationUserForm">Добавить пользователя</a>
+</div>
+<div class="row justify-content-center">
+    <div class="col-9">
+        <h5 class="mt-4 mb-3">Все пользователи админ панели:</h5>
+    </div>
+    @foreach (var user in Model.ApplicationUsers)
+    {
+        <div class="col-5 list-group-item">
+            <p>Имя: @user.UserName Почта: @user.Email</p>
+        </div>
+        <div class="col-2">
+            <form method="post">
+                <input type="hidden" name="userId" value="@user.Id" />
+                <button class="btn btn-danger m-3">Удалить</button>
+            </form>
+        </div>
+        <div class="col-3">
+            <a class="btn btn-dark m-3" asp-page="ApplicationUserForm" asp-route-userId="@user.Id">Редактировать</a>
+        </div>
+    }
+</div>

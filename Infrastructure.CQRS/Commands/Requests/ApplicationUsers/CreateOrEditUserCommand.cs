@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.CQRS.Commands.Requests.ApplicationUsers
 {
-    public class CreateUserCommand : IRequest<IdentityResult>
+    public class CreateOrEditUserCommand : IRequest<IdentityResult>
     {
-        public CreateUserCommand(ApplicationUser user)
+        public CreateOrEditUserCommand(ApplicationUser user)
         {
             User = user;
         }

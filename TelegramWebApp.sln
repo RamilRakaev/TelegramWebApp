@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CQRS", "CQRS", "{17AA4CB5-F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.CQRS", "Infrastructure.CQRS\Infrastructure.CQRS.csproj", "{193B0BD8-83FC-44CE-9EB2-D5482BB281F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.ModelValidators", "Domain.ModelValidators\Domain.ModelValidators.csproj", "{981F418E-8F82-4100-BB3F-9B65A738E283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.ModelValidators", "Domain.ModelValidators\Domain.ModelValidators.csproj", "{981F418E-8F82-4100-BB3F-9B65A738E283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

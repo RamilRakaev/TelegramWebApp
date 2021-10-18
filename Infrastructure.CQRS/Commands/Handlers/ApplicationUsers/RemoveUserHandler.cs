@@ -2,7 +2,6 @@
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 
         public async Task<ApplicationUser> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
+            var user = await _db.FindByIdAsync(request.Id.ToString());
             if (user == null)
             {
                 throw new ArgumentNullException();
