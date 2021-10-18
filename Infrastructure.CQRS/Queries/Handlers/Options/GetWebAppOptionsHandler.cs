@@ -23,8 +23,8 @@ namespace Infrastructure.CQRS.Queries.Handlers.Options
             var options = _db.GetAllAsNoTracking();
             foreach (var property in webAppOptions.GetType().GetProperties())
             {
-                var value = options.FirstOrDefault(o => o.PropertyName == property.Name) ?? new Option();
-                property.SetValue(webAppOptions, value);
+                var option = options.FirstOrDefault(o => o.PropertyName == property.Name) ?? new Option() { Value = "Значение не введено"};
+                property.SetValue(webAppOptions, option.Value);
             }
             return Task.FromResult(webAppOptions);
         }

@@ -1,23 +1,34 @@
 ﻿@page
 @model TelegramWebApp.Pages.Admin.AdminPanelModel
 @{
+    ViewData["Title"] = "Админ панель";
 }
 <div class="row justify-content-center">
     <p>@Model.Warning</p>
-    <div class="col-6 d-inline">
+    <div class=" d-inline">
         <a class="btn btn-info" asp-page-handler="Turn">Включить прослушивание</a>
         <a class="btn btn-info" asp-page-handler="TurnOff">Отключить прослушивание</a>
         <a class="btn btn-info" asp-page="OptionsForm">Настройки</a>
         <a class="btn btn-info" asp-page="AddTelegramUser">Добавить пользователя</a>
     </div>
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-5">
+    <h5 class="col-7">Настройки приложения:</h5>
+    <ul class="list-group col-7">
+        <li class="list-group-item">ApiKey: @Model.AppOptions.ApiKey</li>
+        <li class="list-group-item">CalandarId: @Model.AppOptions.CalandarId</li>
+        <li class="list-group-item">Token: @Model.AppOptions.Token</li>
+    </ul>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <h5 class="col-7 m-4">Разрешённые телеграм пользователи:</h5>
     @foreach (var user in Model.Users)
     {
         <div class="col-7">
             <form method="post">
                 <input type="hidden" value="@user.Id" name="userId" />
-                <p>UserName: @user.UserName <button class="btn btn-danger">Удалить</button></p>
+                <p>UserName: @user.UserName <button class="btn-sm btn-danger">Удалить</button></p>
             </form>
         </div>
     }

@@ -17,6 +17,7 @@ namespace TelegramWebApp.Pages.Admin
     {
         private readonly IMediator _mediator;
         private readonly UserProperties _user;
+        public WebAppOptions AppOptions { get; private set; }
 
         public AdminPanelModel(IMediator mediator, UserProperties user)
         {
@@ -33,6 +34,7 @@ namespace TelegramWebApp.Pages.Admin
             {
                 return RedirectToPage("/Account/Login");
             }
+            AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
             return Page();
         }
@@ -40,18 +42,21 @@ namespace TelegramWebApp.Pages.Admin
         public async Task OnPost(int userId)
         {
             await _mediator.Send(new RemoveUserCommand(userId));
+            AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
         }
 
         public async Task OnGetTurn()
         {
             Warning = await _mediator.Send(new StartTelegramReceivingCommand());
+            AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
         }
 
         public async Task OnGetTurnOff()
         {
             Warning = await _mediator.Send(new StopTelegramReceivingCommand());
+            AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
         }
     }
