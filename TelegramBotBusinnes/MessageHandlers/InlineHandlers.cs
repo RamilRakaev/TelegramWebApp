@@ -16,13 +16,11 @@ namespace TelegramBotBusiness.MessageHandlers
             {
                     new []
                     {
-                        InlineKeyboardButton.WithCallbackData("Вывести сообщение", "Выведенное сообщение"),
                         InlineKeyboardButton.WithCallbackData("Все события календаря", "/all_events"),
                     },
                     new []
                     {
                         InlineKeyboardButton.WithCallbackData("Отфильтрованные события", "/filtered_events_query"),
-                        InlineKeyboardButton.WithCallbackData("2.2", "22"),
                     },
                 });
 

@@ -26,14 +26,6 @@ namespace TelegramBotBusiness
                 "send inline keyboard",
                 (ITelegramBotClient botClient, Message message) => InlineHandlers.SendInlineKeyboard(botClient, message)),
 
-                new TextMessageHandler("/keyboard",
-                "send custom keyboard",
-                (ITelegramBotClient botClient, Message message) => KeyboardHandlers.SendReplyKeyboard(botClient, message)),
-
-                new TextMessageHandler("/remove_keyboard",
-                "remove custom keyboard",
-                (ITelegramBotClient botClient, Message message) => KeyboardHandlers.RemoveKeyboard(botClient, message)),
-
                 new TextMessageHandler("/photo",
                 "send a photo",
                 (ITelegramBotClient botClient, Message message) => FileHandlers.SendFile(botClient, message)),
@@ -44,14 +36,15 @@ namespace TelegramBotBusiness
 
                 new TextMessageHandler("/filtered_events",
                 "calendar events filtered by property",
-                (ITelegramBotClient botClient, Message message) => calendarHandlers.SendFilteredCalendarEvents(botClient, message))
+                (ITelegramBotClient botClient, Message message) => calendarHandlers.SendFilteredCalendarEvents(botClient, message)),
+
+                new TextMessageHandler("/all_events",
+                "calendar events filtered by property",
+                (ITelegramBotClient botClient, Message message) => calendarHandlers.SendAllCalendarEvents(botClient, message))
             };
 
             handlers.CallbackQueryHandlers = new List<CallbackQueryMessageHandler>()
             {
-                new CallbackQueryMessageHandler(
-                    "Выведенное сообщение",
-                    queryHandler.BotOnCallbackQueryReceived),
                 new CallbackQueryMessageHandler(
                     "/all_events",
                     queryHandler.BotOnGetAllEventsReceived),
