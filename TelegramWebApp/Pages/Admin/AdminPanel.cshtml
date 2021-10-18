@@ -24,14 +24,23 @@
 </div>
 
 <div class="row justify-content-center mt-5">
-    <h5 class="col-7 m-4">Разрешённые телеграм пользователи:</h5>
-    @foreach (var user in Model.Users)
-    {
-        <div class="col-7">
-            <form method="post">
-                <input type="hidden" value="@user.Id" name="userId" />
-                <p>UserName: @user.UserName <button class="btn-sm btn-danger">Удалить</button></p>
-            </form>
-        </div>
-    }
+    <div class="col-7">
+        <h5 class="mb-4">Разрешённые телеграм пользователи:</h5>
+        @foreach (var user in Model.Users)
+        {
+            <div class="container-fluid p-0">
+                <div class="row justify-content-start">
+                    <div class="col-4">
+                        <p>@user.UserName</p>
+                    </div>
+                    <div class="col-1">
+                        <form method="post">
+                            <input type="hidden" value="@user.Id" name="userId" />
+                            <button class="btn-sm btn-danger">Удалить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
