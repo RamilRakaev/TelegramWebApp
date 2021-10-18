@@ -4,7 +4,9 @@
     ViewData["Title"] = "Админ панель";
 }
 <div class="row justify-content-center">
-    <p>@Model.Warning</p>
+    <p class="text-danger">@Model.Warning</p>
+</div>
+<div class="row justify-content-center">
     <div class=" d-inline">
         <a class="btn btn-info" asp-page-handler="Turn">Включить прослушивание</a>
         <a class="btn btn-info" asp-page-handler="TurnOff">Отключить прослушивание</a>

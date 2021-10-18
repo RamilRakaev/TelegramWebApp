@@ -25,11 +25,11 @@ namespace TelegramBotService
 
         public async Task Start()
         {
-            _bot ??= new TelegramBotClient(_token);
+            _bot = new TelegramBotClient(_token);
 
             var me = await _bot.GetMeAsync();
 
-            cts ??= new CancellationTokenSource();
+            cts = new CancellationTokenSource();
 
             _bot.StartReceiving(
                 new DefaultUpdateHandler(
