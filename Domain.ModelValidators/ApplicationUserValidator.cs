@@ -19,8 +19,7 @@ namespace Domain.ModelValidators
             RuleFor(u => u.Password)
                 .NotNull()
                 .NotEmpty()
-                .Length(10, 50)
-                .Matches("^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$");
+                .Length(10, 50);
         }
     }
 }

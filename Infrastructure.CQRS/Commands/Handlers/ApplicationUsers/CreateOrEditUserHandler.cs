@@ -1,6 +1,7 @@
 ﻿using Domain.Model;
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +31,8 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
                 user.UserName = request.User.UserName;
                 user.Email = request.User.Email;
                 user.RoleId = request.User.RoleId;
-                await _userManager.ChangePasswordAsync(user, user.Password, request.User.Password);
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, request.User.Password);
                 return await _userManager.UpdateAsync(user);
             }
         }

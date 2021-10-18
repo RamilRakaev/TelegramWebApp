@@ -47,6 +47,7 @@ namespace TelegramWebApp.Pages.Admin
                 await _mediator.Send(new CreateOrEditUserCommand(applicationUser));
                 return RedirectToPage("ApplicationUsers");
             }
+            ApplicationUser = new ApplicationUser();
             return Page();
 
         }
