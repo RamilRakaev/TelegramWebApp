@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 internal-nlog.txt
+*.txt
