@@ -9,12 +9,13 @@ using GoogleCalendarService;
 using GoogleCalendarBusiness;
 using Infrastructure.Repositories;
 using Domain.Model;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Infrastructure.CQRS;
 using TelegramWebApp.Pages.Account;
 using Domain.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace TelegramWebApp
 {
@@ -35,7 +36,6 @@ namespace TelegramWebApp
             services.AddIdentity<ApplicationUser, ApplicationUserRole>()
                 .AddEntityFrameworkStores<DataContext>();
 
-            services.AddRazorPages();
             services.AddHostedService<MigrationManager>();
             services.AddTransient<IRepository<Option>, OptionRepository>();
             services.AddTransient<IRepository<TelegramUser>, TelegramUserRepository>();
@@ -46,7 +46,12 @@ namespace TelegramWebApp
 
             services.Configure<GoogleCalendarOptions>(Configuration.GetSection("GoogleCalendarOptions"));
             services.AddTransient<IGoogleCalendar, GoogleCalendar>();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            services.AddValidatorsFromAssembly(MethodsAssembly.GetAssembly());
             services.AddMediatR(MethodsAssembly.GetAssembly());
+
+            services.AddRazorPages().AddFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
