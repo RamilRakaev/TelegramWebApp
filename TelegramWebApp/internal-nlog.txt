@@ -1,5 +1,0 @@
-2021-10-18 13:22:51.6097 Info Message Template Auto Format enabled
-2021-10-18 13:22:51.6379 Info Loading assembly: NLog.Web.AspNetCore
-2021-10-18 13:22:51.7221 Info Adding target FileTarget(Name=allfile)
-2021-10-18 13:22:51.7627 Info Adding target FileTarget(Name=ownFile-web)
-2021-10-18 13:22:51.8103 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\Admin\source\repos\TelegramWebApp\TelegramWebApp\bin\Debug\netcoreapp3.1\nlog.config
