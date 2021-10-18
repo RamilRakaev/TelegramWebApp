@@ -16,7 +16,7 @@ namespace Infrastructure.CQRS.Queries.Handlers.Options
             }
             else
             {
-                return Task.FromResult("Бот не включён");
+                return Task.FromResult("Бот выключен");
             }
         }
     }

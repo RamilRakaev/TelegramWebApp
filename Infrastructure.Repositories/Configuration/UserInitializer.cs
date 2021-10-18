@@ -7,13 +7,13 @@ namespace Infrastructure.Repositories.Configuration
 {
     public class UserInitializer
     {
-        private static List<ApplicationUser> users = new List<ApplicationUser>()
+        private static readonly List<ApplicationUser> users = new List<ApplicationUser>()
         {
             new ApplicationUser(){ UserName = "DefaultUser", Email = "DefaultUser@gmail.com",
                     RoleId = 1},
         };
 
-        private static List<string> passwords = new List<string>()
+        private static readonly List<string> passwords = new List<string>()
         {
             "e23D!23df32"
         };

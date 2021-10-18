@@ -10,14 +10,15 @@ namespace TelegramBotBusiness
 {
     public class HandlerConfiguration : ITelegramConfiguration
     {
-        OutputCallbackQueryHandler queryHandler;
-        CalendarHandlers calendarHandlers;
+        private readonly OutputCallbackQueryHandler queryHandler;
+        private readonly CalendarHandlers calendarHandlers;
 
         public HandlerConfiguration(IGoogleCalendar googleCalendar)
         {
             queryHandler = new OutputCallbackQueryHandler(googleCalendar);
             calendarHandlers = new CalendarHandlers(googleCalendar);
         }
+
         public void Configurate(AbstractTelegramHandlers handlers)
         {
             handlers.TextMessageHandlers = new List<TextMessageHandler>()
