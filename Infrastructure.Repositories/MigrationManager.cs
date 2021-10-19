@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                throw ex;
+                throw;
             }
         }
 

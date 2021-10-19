@@ -25,14 +25,14 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
 
         public async Task<string> Handle(StartTelegramReceivingCommand request, CancellationToken cancellationToken)
         {
-            WebAppOptions webAppOptions = new WebAppOptions();
+            var webAppOptions = new WebAppOptions();
             var options = _optionRepository.GetAllAsNoTracking();
             var propertyNames = options.Select(o => o.PropertyName);
             string warning = "Не определены настройки: ";
             bool readiness = true;
             foreach (var property in webAppOptions.GetType().GetProperties())
             {
-                var value = await propertyNames.ContainsAsync(property.Name);
+                var value = await propertyNames.ContainsAsync(property.Name, cancellationToken: cancellationToken);
                 if (value == false)
                 {
                     readiness = false;
@@ -44,7 +44,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             {
                 try
                 {
-                    var bot = new TelegramBot(await options.ToArrayAsync(), GetHandlers());
+                    var bot = new TelegramBot(await options.ToArrayAsync(cancellationToken: cancellationToken), GetHandlers());
                     await bot.Start();
                     return "Телеграм бот запущен";
                 }

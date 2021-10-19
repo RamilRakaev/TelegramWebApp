@@ -31,7 +31,7 @@ namespace TelegramWebApp
             catch (Exception ex)
             {
                 logger.Error(ex, "Stopped program because of exception");
-                throw ex;
+                throw;
             }
             finally
             {
