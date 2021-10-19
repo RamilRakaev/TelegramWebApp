@@ -35,13 +35,13 @@ namespace GoogleCalendarBusiness
             {
                 foreach (var eventItem in events)
                 {
-                    var description = eventItem.Description != null ? eventItem.Description : "Описание отсутствует";
+                    var description = eventItem.Description ?? "Описание отсутствует";
                     var start = eventItem.Start.DateTime != null ? eventItem.Start.DateTime.Value.ToString("g") : "";
                     var end = eventItem.End.DateTime != null ? eventItem.End.DateTime.Value.ToString("g") : "";
                     output.Append(
-                        $"{eventItem.Summary} " +
+                        $"{eventItem.Summary}\n" +
                         $"({start} - {end}): \n" +
-                        $"{description}\n");
+                        $"{description}\n\n");
                 }
             }
             else
@@ -82,8 +82,7 @@ namespace GoogleCalendarBusiness
         {
             BaseClientService.Initializer initializer = new BaseClientService.Initializer
             {
-                ApiKey = _options["ApiKey"],
-                ApplicationName = "work"
+                ApiKey = _options["ApiKey"]
             };
             return new CalendarService(initializer);
         }
