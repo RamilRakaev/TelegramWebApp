@@ -45,7 +45,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
                 try
                 {
                     var bot = new TelegramBot(await optionsFromDb.ToArrayAsync(cancellationToken: cancellationToken), GetHandlers());
-                    await TelegramBot.Start();
+                    await TelegramBot.StartReceiving();
                     return "Телеграм бот запущен";
                 }
                 catch(Exception e)
