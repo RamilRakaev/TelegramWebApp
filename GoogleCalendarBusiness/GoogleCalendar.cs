@@ -6,6 +6,7 @@ using GoogleCalendarService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GoogleCalendarBusiness
@@ -28,8 +29,8 @@ namespace GoogleCalendarBusiness
 
         public async Task<string> ShowUpCommingEvents(Event[] events = null)
         {
-            string output = "";
-            events = events ?? await GetEvents();
+            var output = new StringBuilder("", 10000);
+            events ??= await GetEvents();
             if (events.Length > 0)
             {
                 foreach (var eventItem in events)
@@ -37,18 +38,18 @@ namespace GoogleCalendarBusiness
                     var description = eventItem.Description != null ? eventItem.Description : "Описание отсутствует";
                     var start = eventItem.Start.DateTime != null ? eventItem.Start.DateTime.Value.ToString("g") : "";
                     var end = eventItem.End.DateTime != null ? eventItem.End.DateTime.Value.ToString("g") : "";
-                    output += string
-                        .Concat($"{eventItem.Summary} " +
-                        $"({start} - " +
-                        $"{end}): \n" +
+                    output.Append(
+                        $"{eventItem.Summary} " +
+                        $"({start} - {end}): \n" +
                         $"{description}\n");
                 }
             }
             else
             {
-                output = "Нет запланированных событий";
+                output.Clear();
+                output.Append("Нет запланированных событий");
             }
-            return output;
+            return output.ToString();
         }
 
         public async Task<Event[]> GetEvents(
