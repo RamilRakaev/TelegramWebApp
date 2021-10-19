@@ -3,28 +3,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class MigrationManager : IHostedService, IDisposable
+    public class MigrationManager : IHostedService
     {
-        private readonly IHost _host;
+        private readonly IServiceProvider _service;
         private readonly ILogger<MigrationManager> _logger;
-        private Timer _timer;
 
-        public MigrationManager(IHost host,
+        public MigrationManager(IServiceProvider service,
             ILogger<MigrationManager> logger)
         {
-            _host = host;
+            _service = service;
             _logger = logger;
         }
 
-        private void MigrateDatabase(object state)
+        private void MigrateDatabase()
         {
-            using var scope = _host.Services.CreateScope();
+            using var scope = _service.CreateScope();
             using var appContext = scope.ServiceProvider.GetRequiredService<DataContext>();
             try
             {
@@ -40,21 +38,15 @@ namespace Infrastructure.Repositories
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(MigrateDatabase, null, TimeSpan.Zero, TimeSpan.FromHours(5));
             _logger.LogInformation($"Start timer of MigragionManager: {DateTime.Now:T}");
+            MigrateDatabase();
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _timer?.Change(Timeout.Infinite, 0);
             _logger.LogInformation($"Stop timer of MigragionManager: {DateTime.Now:T}");
             return Task.CompletedTask;
-        }
-
-        public void Dispose()
-        {
-            _timer?.Dispose();
         }
     }
 }

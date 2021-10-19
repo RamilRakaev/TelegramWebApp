@@ -10,8 +10,8 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
 {
     public class GetTelegramHandlers
     {
-        protected readonly IRepository<TelegramUser> _usersRep;
-        protected readonly IRepository<Option> _optionRep;
+        protected readonly IRepository<TelegramUser> _usersRepository;
+        protected readonly IRepository<Option> _optionRepository;
         private readonly IGoogleCalendar _calendar;
         private readonly ILogger<AbstractTelegramHandlers> _logger;
 
@@ -21,17 +21,17 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             IGoogleCalendar calendar,
             ILogger<AbstractTelegramHandlers> logger)
         {
-            _usersRep = usersRep;
-            _optionRep = optionRep;
+            _usersRepository = usersRep;
+            _optionRepository = optionRep;
             _calendar = calendar;
             _logger = logger;
         }
 
         public AbstractTelegramHandlers GetHandlers()
         {
-            var users = _usersRep.GetAllAsNoTracking().ToArray();
+            var users = _usersRepository.GetAllAsNoTracking().ToArray();
             var config = new HandlerConfiguration(_calendar);
-            return new TelegramHandlers(_optionRep.GetAllAsNoTracking().ToArray(), users, _logger, config);
+            return new TelegramHandlers(_optionRepository.GetAllAsNoTracking().ToArray(), users, _logger, config);
         }
     }
 }

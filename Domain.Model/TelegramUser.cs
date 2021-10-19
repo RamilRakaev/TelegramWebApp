@@ -1,9 +1,8 @@
 ﻿
 namespace Domain.Model
 {
-    public class TelegramUser
+    public class TelegramUser : BaseEntity
     {
-        public int Id { get; set; }
         public string UserName { get; set; }
     }
 }
