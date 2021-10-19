@@ -8,7 +8,7 @@ namespace TelegramBotService
 
         }
 
-        public TextMessageHandler(string command, string description, TelegramBotService.MessageHandlerReturningMessage handler)
+        public TextMessageHandler(string command, string description, MessageHandlerReturningMessage handler)
         {
             Command = command;
             Description = description;
@@ -17,6 +17,6 @@ namespace TelegramBotService
 
         public string Command { get; set; }
         public string Description { get; set; }
-        public TelegramBotService.MessageHandlerReturningMessage Handler { get; set; }
+        public MessageHandlerReturningMessage Handler { get; set; }
     }
 }
