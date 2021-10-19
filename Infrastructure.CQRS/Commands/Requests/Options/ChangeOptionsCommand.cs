@@ -1,6 +1,5 @@
 ﻿using Domain.Model;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Infrastructure.CQRS.Commands.Requests.Options
 {

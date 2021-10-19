@@ -19,7 +19,7 @@ namespace Infrastructure.CQRS.Queries.Handlers.Options
 
         public Task<WebAppOptions> Handle(GetWebAppOptionsQuery request, CancellationToken cancellationToken)
         {
-            WebAppOptions webAppOptions = new WebAppOptions();
+            var webAppOptions = new WebAppOptions();
             var options = _db.GetAllAsNoTracking();
             foreach (var property in webAppOptions.GetType().GetProperties())
             {
