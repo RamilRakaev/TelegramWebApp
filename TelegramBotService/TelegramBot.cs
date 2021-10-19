@@ -5,10 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Types;
 
 namespace TelegramBotService
 {
     public enum BotStatus{ On, Off }
+
     public class TelegramBot
     {
         private static TelegramBotClient _bot;
@@ -24,7 +26,15 @@ namespace TelegramBotService
             _handlers = handlers;
         }
 
-        public async Task Start()
+        public static async Task EchoAsync(Update update)
+        {
+            if(_bot != null)
+            {
+                await _handlers.HandleUpdateAsync(_bot, update, cts.Token);
+            }
+        }
+
+        public static async Task Start()
         {
             _bot = new TelegramBotClient(_token);
 

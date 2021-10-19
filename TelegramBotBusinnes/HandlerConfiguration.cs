@@ -1,7 +1,6 @@
 ﻿using Domain.Interfaces;
 using Domain.Model;
 using GoogleCalendarBusiness;
-using GoogleCalendarService;
 using System.Collections.Generic;
 using System.Linq;
 using Telegram.Bot;
