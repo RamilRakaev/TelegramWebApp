@@ -53,7 +53,7 @@ namespace TelegramBotService
                                cts.Token);
         }
 
-        public void Stop()
+        public static void Stop()
         {
             if (cts != null) { cts.Cancel(); }
         }
@@ -68,7 +68,7 @@ namespace TelegramBotService
                 cancellationToken: cts.Token);
         }
 
-        public async Task StopInterception()
+        public static async Task StopInterception()
         {
             if (_bot != null)
             {
