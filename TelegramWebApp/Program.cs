@@ -2,6 +2,7 @@ using Domain.Model;
 using Infrastructure.Repositories.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,12 @@ namespace TelegramWebApp
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+        Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(
+            builder =>
+            {
+                builder.AddJsonFile("appsettings.User.json", true);
+            }
+            )
           .ConfigureWebHostDefaults(webBuilder =>
           {
               webBuilder.UseStartup<Startup>();
