@@ -46,7 +46,7 @@ namespace TelegramBotBusiness
                 (ITelegramBotClient botClient, Message message) => calendarHandlers.SendFilteredCalendarEvents(botClient, message)),
 
                 new TextMessageHandler("/all_events",
-                "calendar events filtered by property",
+                "all calendar events",
                 (ITelegramBotClient botClient, Message message) => calendarHandlers.SendAllCalendarEvents(botClient, message))
             };
 
