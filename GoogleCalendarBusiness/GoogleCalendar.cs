@@ -1,15 +1,11 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using Domain.Model;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 using GoogleCalendarService;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace GoogleCalendarBusiness
@@ -18,16 +14,16 @@ namespace GoogleCalendarBusiness
     {
         public static string[] Scopes;
 
-        private readonly GoogleCalendarOptions _options;
+        private readonly Dictionary<string, string> _options;
 
         static GoogleCalendar()
         {
             Scopes = new string[] { CalendarService.Scope.Calendar };
         }
 
-        public GoogleCalendar(IOptions<GoogleCalendarOptions> options)
+        public GoogleCalendar(Option[] options)
         {
-            _options = options.Value;
+            _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
         }
 
         public async Task<string> ShowUpCommingEvents(Event[] events = null)
@@ -67,7 +63,7 @@ namespace GoogleCalendarBusiness
         {
             CalendarService service = GetService();
 
-            var request = service.Events.List(_options.CalendarId);
+            var request = service.Events.List(_options["CalendarId"]);
             request.Fields = "items(summary,description,start,end)";
             request.TimeMin = timeMin;
             request.TimeMax = timeMax;
@@ -85,8 +81,8 @@ namespace GoogleCalendarBusiness
         {
             BaseClientService.Initializer initializer = new BaseClientService.Initializer
             {
-                ApiKey = _options.ApiKey,
-                ApplicationName = _options.ApplicationName
+                ApiKey = _options["ApiKey"],
+                ApplicationName = "work"
             };
             return new CalendarService(initializer);
         }

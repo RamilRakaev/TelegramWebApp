@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using TelegramBotService;
 using System;
-using GoogleCalendarService;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Text;
@@ -16,13 +15,12 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
 {
     public class StartTelegramReceivingHandler : GetTelegramHandlers, IRequestHandler<StartTelegramReceivingCommand, string>
     {
-        private readonly string[] appOptions = { "ApiKey", "CalandarId", "Token" };
+        private readonly string[] appOptions = { "ApiKey", "CalendarId", "Token" };
 
         public StartTelegramReceivingHandler(
             IRepository<TelegramUser> usersRepository,
             IRepository<Option> optionRepository,
-            IGoogleCalendar calendar,
-            ILogger<AbstractTelegramHandlers> logger) : base(usersRepository, optionRepository, calendar, logger)
+            ILogger<AbstractTelegramHandlers> logger) : base(usersRepository, optionRepository, logger)
         {
         }
 

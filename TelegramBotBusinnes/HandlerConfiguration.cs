@@ -1,5 +1,9 @@
-﻿using GoogleCalendarService;
+﻿using Domain.Interfaces;
+using Domain.Model;
+using GoogleCalendarBusiness;
+using GoogleCalendarService;
 using System.Collections.Generic;
+using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBotBusiness.CallbackQueryHandlers;
@@ -13,8 +17,10 @@ namespace TelegramBotBusiness
         private readonly OutputCallbackQueryHandler queryHandler;
         private readonly CalendarHandlers calendarHandlers;
 
-        public HandlerConfiguration(IGoogleCalendar googleCalendar)
+        public HandlerConfiguration(IRepository<Option> optionRepository)
         {
+            var options = optionRepository.GetAllAsNoTracking().ToArray();
+            var googleCalendar = new GoogleCalendar(options);
             queryHandler = new OutputCallbackQueryHandler(googleCalendar);
             calendarHandlers = new CalendarHandlers(googleCalendar);
         }

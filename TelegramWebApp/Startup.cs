@@ -45,9 +45,6 @@ namespace TelegramWebApp
 
             services.AddTransient<UserProperties, UserProperties>();
 
-            services.Configure<GoogleCalendarOptions>(Configuration.GetSection("GoogleCalendarOptions"));
-            services.AddTransient<IGoogleCalendar, GoogleCalendar>();
-
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(MethodsAssembly.GetAssembly());
             services.AddMediatR(MethodsAssembly.GetAssembly());
