@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using TelegramBotBusiness.CallbackQueryHandlers;
+using TelegramBotBusiness.CallbackQueriesHandlers;
 using TelegramBotBusiness.MessageHandlers;
 using TelegramBotService;
 

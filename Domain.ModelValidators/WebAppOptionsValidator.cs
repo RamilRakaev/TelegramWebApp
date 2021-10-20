@@ -8,7 +8,7 @@ namespace Domain.ModelValidators
         public WebAppOptionsValidator()
         {
             RuleFor(o => o.ApiKey).NotNull().NotEmpty();
-            RuleFor(o => o.CalandarId).NotNull().NotEmpty();
+            RuleFor(o => o.CalendarId).NotNull().NotEmpty();
             RuleFor(o => o.Token).NotNull().NotEmpty();
         }
     }
