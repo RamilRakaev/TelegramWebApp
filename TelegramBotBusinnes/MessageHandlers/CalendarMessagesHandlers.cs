@@ -7,11 +7,11 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotBusiness.MessageHandlers
 {
-    public class CalendarHandlers
+    public class CalendarMessagesHandlers
     {
         private readonly IGoogleCalendar _googleCalendar;
 
-        public CalendarHandlers(IGoogleCalendar googleCalendar)
+        public CalendarMessagesHandlers(IGoogleCalendar googleCalendar)
         {
             _googleCalendar = googleCalendar;
         }

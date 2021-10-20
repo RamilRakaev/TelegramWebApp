@@ -1,14 +1,14 @@
 ﻿
 namespace TelegramBotService
 {
-    public class TextMessageHandler
+    public class TextMessageCommandHandler
     {
-        public TextMessageHandler()
+        public TextMessageCommandHandler()
         {
 
         }
 
-        public TextMessageHandler(string command, string description, MessageHandlerReturningMessage handler)
+        public TextMessageCommandHandler(string command, string description, MessageHandlerReturningMessage handler)
         {
             Command = command;
             Description = description;

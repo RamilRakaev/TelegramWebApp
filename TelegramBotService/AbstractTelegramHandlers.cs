@@ -18,6 +18,7 @@ namespace TelegramBotService
     public delegate Task<Message> MessageHandlerReturningMessage(ITelegramBotClient botClient, Message message);
     public delegate Task<MessageHandlerReturningMessage> CallbackQueryHandler(ITelegramBotClient botClient, CallbackQuery callbackQuery);
     public delegate Task InlineQueryHandler(ITelegramBotClient botClient, InlineQuery inlineQuery);
+
     public delegate Task ChosenInlineResultHandler(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult);
     public delegate Task UnknownUpdateHandler(ITelegramBotClient botClient, Update update);
     public delegate Task ShippingQueryHandler(ITelegramBotClient botClient, ShippingQuery shippingQuery);
@@ -30,8 +31,9 @@ namespace TelegramBotService
     {
         protected readonly TelegramUser[] _users;
         protected readonly ILogger<AbstractTelegramHandlers> _logger;
-        public List<TextMessageHandler> TextMessageHandlers;
-        public List<CallbackQueryMessageHandler> CallbackQueryHandlers;
+        public List<TextMessageCommandHandler> textMessageCommandHandlers;
+        public List<CallbackQueryCommandHandler> callbackQueryCommandHandlers;
+        public List<InlineQueryCommandHandler> inlineQueryCommandHandlers;
         protected MessageHandlerReturningMessage PendingInput;
 
         public AbstractTelegramHandlers(
@@ -71,7 +73,7 @@ namespace TelegramBotService
             bool access = true;
             if (message != null)
             {
-                access = _users.FirstOrDefault( u => u.UserName == message.From.Username) != null;
+                access = _users.FirstOrDefault(u => u.UserName == message.From.Username) != null;
                 if (access == false)
                 {
                     await botClient.SendTextMessageAsync(chatId: message.Chat.Id, "У вас нет прав для использования бота");
@@ -90,7 +92,7 @@ namespace TelegramBotService
                     UpdateType.ChannelPost => ChannelPostNotify?.Invoke(botClient, update.ChannelPost),
                     UpdateType.EditedChannelPost => EditedChannelPostNotify?.Invoke(botClient, update.EditedChannelPost),
                     UpdateType.ShippingQuery => ShippingQueryNotify?.Invoke(botClient, update.ShippingQuery),
-                    UpdateType.PreCheckoutQuery => PreCheckoutQueryNotify?.Invoke( botClient, update.PreCheckoutQuery),
+                    UpdateType.PreCheckoutQuery => PreCheckoutQueryNotify?.Invoke(botClient, update.PreCheckoutQuery),
                     UpdateType.Poll => PollNotify?.Invoke(botClient, update.Poll),
                     UpdateType.PollAnswer => PollAnswerNotify?.Invoke(botClient, update.PollAnswer),
                     UpdateType.MyChatMember => MyChatMemberUpdatedNotify?.Invoke(botClient, update.MyChatMember),
@@ -105,7 +107,10 @@ namespace TelegramBotService
                 };
                 try
                 {
-                    await handler;
+                    if (handler != null)
+                    {
+                        await handler;
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -116,21 +121,25 @@ namespace TelegramBotService
 
         private async Task ProcessingTextMessages(ITelegramBotClient botClient, Message message)
         {
-            if(PendingInput == null)
+            if (message.ViaBot == null)
             {
-                await BotOnMessageReceived(botClient, message);
+                if (PendingInput != null)
+                {
+                    await PendingInput(botClient, message);
+                    PendingInput = null;
+                }
+                else
+                {
+                    await BotOnMessageReceived(botClient, message);
+                }
             }
-            else
-            {
-                await PendingInput(botClient, message);
-                PendingInput = null;
-            }
+
         }
 
         protected async Task<Message> Usage(ITelegramBotClient botClient, Message message)
         {
             string usage = "Usage:\n";
-            foreach (var command in TextMessageHandlers)
+            foreach (var command in textMessageCommandHandlers)
             {
                 usage += $"{command.Command} - {command.Description}\n";
             }

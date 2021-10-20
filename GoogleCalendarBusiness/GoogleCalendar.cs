@@ -27,6 +27,15 @@ namespace GoogleCalendarBusiness
             _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
         }
 
+        public async Task<string> ShowDayEventsInTimeInterval(int startHours, int startMinutes, int endHours, int endMinutes)
+        {
+            var now = DateTime.Now;
+            var timeMin = new DateTime(now.Year, now.Month, now.Day, startHours, startMinutes, 0);
+            var timeMax = new DateTime(now.Year, now.Month, now.Day, endHours, endMinutes, 0);
+            var events = await GetEvents(timeMin, timeMax);
+            return await ShowUpCommingEvents(events);
+        }
+
         public async Task<string> ShowUpCommingEvents(Event[] events = null)
         {
             var output = new StringBuilder("", 10000);
@@ -35,7 +44,7 @@ namespace GoogleCalendarBusiness
             {
                 foreach (var eventItem in events)
                 {
-                    var description = eventItem.Description ?? "Описание отсутствует";
+                    var description = eventItem.Description ?? "Description is missing";
                     var start = eventItem.Start.DateTime != null ? eventItem.Start.DateTime.Value.ToString("g") : "";
                     var end = eventItem.End.DateTime != null ? eventItem.End.DateTime.Value.ToString("g") : "";
                     output.Append(
@@ -47,7 +56,7 @@ namespace GoogleCalendarBusiness
             else
             {
                 output.Clear();
-                output.Append("Нет запланированных событий");
+                output.Append("No scheduled events");
             }
             return output.ToString();
         }
@@ -75,7 +84,7 @@ namespace GoogleCalendarBusiness
             request.OrderBy = sortByModifiedDate ? EventsResource.ListRequest.OrderByEnum.Updated : EventsResource.ListRequest.OrderByEnum.StartTime;
             request.Q = q;
             Events events = await request.ExecuteAsync();
-            return events.Items != null && events.Items.Count > 0 ? events.Items.ToArray() : new Event[0];
+            return events.Items != null && events.Items.Count > 0 ? events.Items.ToArray() : Array.Empty<Event>();
         }
 
         private CalendarService GetService()

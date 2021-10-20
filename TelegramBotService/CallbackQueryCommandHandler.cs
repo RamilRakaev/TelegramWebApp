@@ -1,15 +1,14 @@
-﻿using TelegramBotService;
-
+﻿
 namespace TelegramBotService
 {
-    public class CallbackQueryMessageHandler
+    public class CallbackQueryCommandHandler
     {
-        public CallbackQueryMessageHandler()
+        public CallbackQueryCommandHandler()
         {
 
         }
 
-        public CallbackQueryMessageHandler(string command, CallbackQueryHandler handler)
+        public CallbackQueryCommandHandler(string command, CallbackQueryHandler handler)
         {
             Command = command;
             Handler = handler;

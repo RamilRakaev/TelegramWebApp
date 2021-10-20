@@ -28,6 +28,16 @@ namespace GoogleCalendarService
             string q = null,
             bool sortByModifiedDate = false);
 
+        /// <summary>
+        /// Вернуть список событий в определённом промежутке времени за сегодняшний день
+        /// </summary>
+        /// <param name="startHours">Часы начала интервала</param>
+        /// <param name="startMinutes">Минуты начала интервала</param>
+        /// <param name="endHours">Часы конца интервала</param>
+        /// <param name="endMinutes">Минуты конца интервала</param>
+        /// <returns>string</returns>
+        public Task<string> ShowDayEventsInTimeInterval(int startHours, int startMinutes, int endHours, int endMinutes);
+
         public Task<string> ShowUpCommingEvents(Event[] events = null);
     }
 }

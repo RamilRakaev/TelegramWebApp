@@ -6,6 +6,7 @@ using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBotBusiness.CallbackQueriesHandlers;
+using TelegramBotBusiness.InlineQueriesHandlers;
 using TelegramBotBusiness.MessageHandlers;
 using TelegramBotService;
 
@@ -14,49 +15,67 @@ namespace TelegramBotBusiness
     public class HandlerConfiguration : ITelegramConfiguration
     {
         private readonly OutputCallbackQueryHandler queryHandler;
-        private readonly CalendarHandlers calendarHandlers;
+        private readonly CalendarMessagesHandlers calendarMessagesHandlers;
+        private readonly CalendarInlineQueriesHandlers calendarInlineQueriesHandlers;
 
         public HandlerConfiguration(IRepository<Option> optionRepository)
         {
             var options = optionRepository.GetAllAsNoTracking().ToArray();
             var googleCalendar = new GoogleCalendar(options);
             queryHandler = new OutputCallbackQueryHandler(googleCalendar);
-            calendarHandlers = new CalendarHandlers(googleCalendar);
+            calendarMessagesHandlers = new CalendarMessagesHandlers(googleCalendar);
+            calendarInlineQueriesHandlers = new CalendarInlineQueriesHandlers(googleCalendar);
         }
 
         public void Configurate(AbstractTelegramHandlers handlers)
         {
-            handlers.TextMessageHandlers = new List<TextMessageHandler>()
+            handlers.textMessageCommandHandlers = new List<TextMessageCommandHandler>()
             {
-                new TextMessageHandler("/inline_mode",
+                new TextMessageCommandHandler("/inline_mode",
                 "send inline keyboard",
                 (ITelegramBotClient botClient, Message message) => InlineHandlers.SendInlineKeyboard(botClient, message)),
 
-                new TextMessageHandler("/photo",
+                new TextMessageCommandHandler("/photo",
                 "send a photo",
                 (ITelegramBotClient botClient, Message message) => FileHandlers.SendFile(botClient, message)),
 
-                new TextMessageHandler("/request",
+                new TextMessageCommandHandler("/request",
                 "request location or contact",
                 (ITelegramBotClient botClient, Message message) => RequestHandlers.RequestContactAndLocation(botClient, message)),
 
-                new TextMessageHandler("/filtered_events",
+                new TextMessageCommandHandler("/filtered_events",
                 "calendar events filtered by property",
-                (ITelegramBotClient botClient, Message message) => calendarHandlers.SendFilteredCalendarEvents(botClient, message)),
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendFilteredCalendarEvents(botClient, message)),
 
-                new TextMessageHandler("/all_events",
+                new TextMessageCommandHandler("/all_events",
                 "all calendar events",
-                (ITelegramBotClient botClient, Message message) => calendarHandlers.SendAllCalendarEvents(botClient, message))
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendAllCalendarEvents(botClient, message))
             };
 
-            handlers.CallbackQueryHandlers = new List<CallbackQueryMessageHandler>()
+            handlers.callbackQueryCommandHandlers = new List<CallbackQueryCommandHandler>()
             {
-                new CallbackQueryMessageHandler(
+                new CallbackQueryCommandHandler(
                     "/all_events",
                     queryHandler.BotOnGetAllEventsReceived),
-                new CallbackQueryMessageHandler(
+                new CallbackQueryCommandHandler(
                     "/filtered_events_query",
-                    queryHandler.BotOnGetFilteredEventsReceived)
+                    queryHandler.BotOnGetFilteredEventsReceived),
+                new CallbackQueryCommandHandler(
+                    "/events_in_interval_query",
+                    queryHandler.BotOnGetEventsInTimeIntervalReceived)
+            };
+
+            handlers.inlineQueryCommandHandlers = new List<InlineQueryCommandHandler>()
+            {
+                new InlineQueryCommandHandler("filtered events",
+                calendarInlineQueriesHandlers.BotOnGetFilteredEventsQueryReceived
+                ),
+                new InlineQueryCommandHandler("all events",
+                calendarInlineQueriesHandlers.BotOnGetAllEventsQueryReceived
+                ),
+                new InlineQueryCommandHandler("time interval",
+                calendarInlineQueriesHandlers.BotOnGetEventsInTimeIntervalQueryReceived
+                )
             };
         }
     }

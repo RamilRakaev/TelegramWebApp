@@ -22,6 +22,10 @@ namespace TelegramBotBusiness.MessageHandlers
                     {
                         InlineKeyboardButton.WithCallbackData("Отфильтрованные события", "/filtered_events_query"),
                     },
+                    new []
+                    {
+                        InlineKeyboardButton.WithCallbackData("Сегодняшние события в интервале времени", "/events_in_interval_query"),
+                    },
                 });
 
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,

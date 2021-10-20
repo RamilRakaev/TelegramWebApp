@@ -1,4 +1,5 @@
 ﻿using GoogleCalendarService;
+using System;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -43,12 +44,12 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
         public async Task<MessageHandlerReturningMessage> BotOnGetFilteredEventsReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
             await botClient.AnswerCallbackQueryAsync(
-                callbackQueryId: callbackQuery.Id,
-                text: "Введите заголовок или описание события для фильтрации");
+                 callbackQuery.Id,
+                "Enter the name or description of the event to filter");
 
             await botClient.SendTextMessageAsync(
-                chatId: callbackQuery.Message.Chat.Id,
-                text: "Введите заголовок или описание события для фильтрации");
+                callbackQuery.Message.Chat.Id,
+                "Enter the name or description of the event to filter");
             return WaitForThePropertyToBeEntered;
         }
 
@@ -57,6 +58,36 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
             var events = await _googleCalendar.GetEvents(q: message.Text);
             var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
             return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
+        }
+
+        public async Task<MessageHandlerReturningMessage> BotOnGetEventsInTimeIntervalReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
+        {
+            await botClient.AnswerCallbackQueryAsync(
+                callbackQuery.Id,
+                "Enter time interval for example: \"12:15-14:00\""
+                );
+            await botClient.SendTextMessageAsync(
+                callbackQuery.Message.Chat.Id,
+                "Enter time interval for example: \"12:15-14:00\"");
+            return WaitForTheTimeIntervalToBeEntered;
+        }
+
+        private async Task<Message> WaitForTheTimeIntervalToBeEntered(ITelegramBotClient botClient, Message message)
+        {
+            try
+            {
+                var text = message.Text;
+                int startHours = Convert.ToInt32(text.Substring(0, 2));
+                int startMinutes = Convert.ToInt32(text.Substring(3, 2));
+                int endHours = Convert.ToInt32(text.Substring(6, 2));
+                int endMinutes = Convert.ToInt32(text.Substring(9, 2));
+                var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
+                return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
+            }
+            catch
+            {
+                return await botClient.SendTextMessageAsync(message.Chat.Id, "Input error");
+            }
         }
     }
 }

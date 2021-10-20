@@ -37,7 +37,7 @@ namespace TelegramBotBusiness
                 return;
 
             string command = words.First();
-            foreach (var method in TextMessageHandlers)
+            foreach (var method in textMessageCommandHandlers)
             {
                 if (command == method.Command)
                 {
@@ -54,7 +54,7 @@ namespace TelegramBotBusiness
 
         protected override async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
-            var callbackQueryHandler = CallbackQueryHandlers.FirstOrDefault(c => c.Command == callbackQuery.Data);
+            var callbackQueryHandler = callbackQueryCommandHandlers.FirstOrDefault(c => c.Command == callbackQuery.Data);
             if (callbackQueryHandler != null)
             {
                 PendingInput = await callbackQueryHandler.Handler(botClient, callbackQuery);
@@ -65,21 +65,14 @@ namespace TelegramBotBusiness
         {
             _logger.LogInformation($"Received inline query from: {inlineQuery.From.Id}");
 
-            InlineQueryResultBase[] results = {
-                new InlineQueryResultArticle(
-                    id: "3",
-                    title: "TgBots",
-                    inputMessageContent: new InputTextMessageContent(
-                        "hello"
-                    )
-                )
-            };
+            foreach (var method in inlineQueryCommandHandlers)
+            {
+                if (inlineQuery.Query.StartsWith(method.Command))
+                {
+                    await method.Handler(botClient, inlineQuery);
+                }
+            }
 
-            await botClient.AnswerInlineQueryAsync(
-                inlineQueryId: inlineQuery.Id,
-                results: results,
-                isPersonal: true,
-                cacheTime: 0);
         }
 
         protected override Task BotOnChosenInlineResultReceived(ITelegramBotClient botClient, ChosenInlineResult chosenInlineResult)
