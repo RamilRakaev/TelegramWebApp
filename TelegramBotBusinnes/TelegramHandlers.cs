@@ -54,7 +54,7 @@ namespace TelegramBotBusiness
 
         protected override async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
-            var callbackQueryHandler = callbackQueryCommandHandlers.FirstOrDefault(c => c.Command == callbackQuery.Data);
+            var callbackQueryHandler = callbackQueryCommandHandlers.FirstOrDefault(c => callbackQuery.Data.Contains(c.Command));
             if (callbackQueryHandler != null)
             {
                 PendingInput = await callbackQueryHandler.Handler(botClient, callbackQuery);

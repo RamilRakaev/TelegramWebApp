@@ -43,13 +43,17 @@ namespace TelegramBotBusiness
                 "request location or contact",
                 (ITelegramBotClient botClient, Message message) => RequestHandlers.RequestContactAndLocation(botClient, message)),
 
-                new TextMessageCommandHandler("/filtered_events",
-                "calendar events filtered by property",
-                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendFilteredCalendarEvents(botClient, message)),
-
                 new TextMessageCommandHandler("/all_events",
                 "all calendar events",
-                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendAllCalendarEvents(botClient, message))
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendAllCalendarEvents(botClient, message)),
+
+                new TextMessageCommandHandler("/filtered_events",
+                "calendar events filtered by property for example: /filtered_events?(property)",
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendFilteredCalendarEvents(botClient, message)),
+
+                new TextMessageCommandHandler("/time_interval",
+                "today's events in specific time interval for example: /time_interval?10:00-20:00",
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendEventsInTimeInterval(botClient, message))
             };
 
             handlers.callbackQueryCommandHandlers = new List<CallbackQueryCommandHandler>()
@@ -61,7 +65,7 @@ namespace TelegramBotBusiness
                     "/filtered_events_query",
                     queryHandler.BotOnGetFilteredEventsReceived),
                 new CallbackQueryCommandHandler(
-                    "/events_in_interval_query",
+                    "/time_interval_query",
                     queryHandler.BotOnGetEventsInTimeIntervalReceived)
             };
 

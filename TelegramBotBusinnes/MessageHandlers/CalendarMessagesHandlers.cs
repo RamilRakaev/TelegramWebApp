@@ -1,5 +1,6 @@
 ﻿using GoogleCalendarService;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -41,6 +42,30 @@ namespace TelegramBotBusiness.MessageHandlers
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
                                                         text: text,
                                                         replyMarkup: new ReplyKeyboardRemove());
+        }
+
+        public async Task<Message> SendEventsInTimeInterval(ITelegramBotClient botClient, Message message)
+        {
+            try
+            {
+                var text = message.Text.Split('?').Last();
+                int startHours = Convert.ToInt32(text.Substring(0, 2));
+                int startMinutes = Convert.ToInt32(text.Substring(3, 2));
+                int endHours = Convert.ToInt32(text.Substring(6, 2));
+                int endMinutes = Convert.ToInt32(text.Substring(9, 2));
+                var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
+
+
+                return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                            text: textMessage,
+                                                            replyMarkup: new ReplyKeyboardRemove());
+            }
+            catch
+            {
+                return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                               text: "Input error",
+                                                               replyMarkup: new ReplyKeyboardRemove());
+            }
         }
     }
 }

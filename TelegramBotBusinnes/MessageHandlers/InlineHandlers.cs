@@ -24,7 +24,7 @@ namespace TelegramBotBusiness.MessageHandlers
                     },
                     new []
                     {
-                        InlineKeyboardButton.WithCallbackData("Сегодняшние события в интервале времени", "/events_in_interval_query"),
+                        InlineKeyboardButton.WithCallbackData("Сегодняшние события в интервале времени", "/time_interval_query"),
                     },
                 });
 

@@ -29,6 +29,13 @@ namespace GoogleCalendarService
             bool sortByModifiedDate = false);
 
         /// <summary>
+        /// Вывести свободные дни без запланированных событий отсчитывя от сегодняшней даты
+        /// </summary>
+        /// <param name="months">Количество месяцев</param>
+        /// <returns></returns>
+        public Task<string> ShowFreeDays(int months);
+
+        /// <summary>
         /// Вернуть список событий в определённом промежутке времени за сегодняшний день
         /// </summary>
         /// <param name="startHours">Часы начала интервала</param>

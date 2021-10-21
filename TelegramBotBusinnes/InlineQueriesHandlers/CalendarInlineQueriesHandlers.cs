@@ -14,7 +14,6 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
     public class CalendarInlineQueriesHandlers
     {
         private readonly IGoogleCalendar _googleCalendar;
-        private int id = 1;
 
         public CalendarInlineQueriesHandlers(IGoogleCalendar googleCalendar)
         {
@@ -41,22 +40,31 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
             return null;
         }
 
-        public async Task<InlineQueryHandler> BotOnGetFilteredEventsQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
+        public async Task BotOnGetFilteredEventsQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
         {
-            InlineQueryResultBase[] results = {
+            try
+            {
+                var property = inlineQuery.Query.Split(' ').Last();
+                var events = await _googleCalendar.GetEvents(q: property);
+                var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
+
+                InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
                     id: "3",
                     title: "filtered events",
-                    new InputTextMessageContent("Enter the name or description of the event to filter")
+                    new InputTextMessageContent(textMessage)
                     )
-            };
+                };
 
-            await botClient.AnswerInlineQueryAsync(
-                inlineQueryId: inlineQuery.Id,
-                results: results,
-                isPersonal: true,
-                cacheTime: 0);
-            return null;
+                await botClient.AnswerInlineQueryAsync(
+                    inlineQueryId: inlineQuery.Id,
+                    results: results,
+                    isPersonal: true,
+                    cacheTime: 0);
+            }
+            catch
+            { }
+
         }
 
         public async Task<Message> WaitForThePropertyToBeEntered(ITelegramBotClient botClient, Message message)
@@ -92,9 +100,7 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
                     cacheTime: 0);
             }
             catch
-            {
-
-            }
+            { }
         }
     }
 }

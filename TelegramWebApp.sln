@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.CQRS", "Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.ModelValidators", "Domain.ModelValidators\Domain.ModelValidators.csproj", "{981F418E-8F82-4100-BB3F-9B65A738E283}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniteTests", "UniteTests\UniteTests.csproj", "{78ECB0CF-7FA5-48CB-BE86-5B83F2604954}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{981F418E-8F82-4100-BB3F-9B65A738E283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981F418E-8F82-4100-BB3F-9B65A738E283}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981F418E-8F82-4100-BB3F-9B65A738E283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78ECB0CF-7FA5-48CB-BE86-5B83F2604954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78ECB0CF-7FA5-48CB-BE86-5B83F2604954}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78ECB0CF-7FA5-48CB-BE86-5B83F2604954}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78ECB0CF-7FA5-48CB-BE86-5B83F2604954}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

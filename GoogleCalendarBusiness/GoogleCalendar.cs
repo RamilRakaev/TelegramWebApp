@@ -13,8 +13,6 @@ namespace GoogleCalendarBusiness
 {
     public class GoogleCalendar : IGoogleCalendar
     {
-        public static string[] Scopes;
-
         private readonly Dictionary<string, string> _options;
 
         static GoogleCalendar()
@@ -26,6 +24,8 @@ namespace GoogleCalendarBusiness
         {
             _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
         }
+
+        public static string[] Scopes { get; private set; }
 
         public async Task<string> ShowDayEventsInTimeInterval(int startHours, int startMinutes, int endHours, int endMinutes)
         {
@@ -50,7 +50,8 @@ namespace GoogleCalendarBusiness
                     output.Append(
                         $"{eventItem.Summary}\n" +
                         $"({start} - {end}): \n" +
-                        $"{description}\n\n");
+                        $"{description}\n" +
+                        $"{eventItem.HtmlLink}\n\n");
                 }
             }
             else
@@ -59,6 +60,28 @@ namespace GoogleCalendarBusiness
                 output.Append("No scheduled events");
             }
             return output.ToString();
+        }
+
+        public async Task<string> ShowFreeDays(int months)
+        {
+            var now = DateTime.Now;
+            string freeDays = "";
+            var currentDay = now;
+            var events = await GetEvents();
+            while(currentDay.Month < now.Month + months)
+            {
+                var calendarEvent = events.FirstOrDefault(e => 
+                e.Start.DateTime.Value.Month == currentDay.Month &&
+                currentDay.Day >= e.Start.DateTime.Value.Day &&
+                currentDay.Day <= e.End.DateTime.Value.Day);
+
+                if(calendarEvent == null)
+                {
+                    freeDays += currentDay.ToString("d") + "\n";
+                }
+                currentDay += new TimeSpan(1, 0, 0, 0);
+            }
+            return freeDays;
         }
 
         public async Task<Event[]> GetEvents(
@@ -74,7 +97,7 @@ namespace GoogleCalendarBusiness
             CalendarService service = GetService();
 
             var request = service.Events.List(_options["CalendarId"]);
-            request.Fields = "items(summary,description,start,end)";
+            request.Fields = "items(summary,description,start,end,htmlLink)";
             request.TimeMin = timeMin;
             request.TimeMax = timeMax;
             request.ShowDeleted = showDeleted;
