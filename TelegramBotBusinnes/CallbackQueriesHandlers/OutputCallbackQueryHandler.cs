@@ -55,9 +55,9 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
 
         private async Task<Message> WaitForThePropertyToBeEntered(ITelegramBotClient botClient, Message message)
         {
-            var events = await _googleCalendar.GetEvents(q: message.Text);
-            var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
-            return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
+            //var events = await _googleCalendar.GetEvents(q: message.Text);
+            //var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
+            return await botClient.SendTextMessageAsync(message.Chat.Id, await _googleCalendar.FilteredEvents(message.Text));
         }
 
         public async Task<MessageHandlerReturningMessage> BotOnGetEventsInTimeIntervalReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
@@ -76,13 +76,13 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
         {
             try
             {
-                var text = message.Text;
-                int startHours = Convert.ToInt32(text.Substring(0, 2));
-                int startMinutes = Convert.ToInt32(text.Substring(3, 2));
-                int endHours = Convert.ToInt32(text.Substring(6, 2));
-                int endMinutes = Convert.ToInt32(text.Substring(9, 2));
-                var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
-                return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
+                //var text = message.Text;
+                //int startHours = Convert.ToInt32(text.Substring(0, 2));
+                //int startMinutes = Convert.ToInt32(text.Substring(3, 2));
+                //int endHours = Convert.ToInt32(text.Substring(6, 2));
+                //int endMinutes = Convert.ToInt32(text.Substring(9, 2));
+                //var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
+                return await botClient.SendTextMessageAsync(message.Chat.Id, await _googleCalendar.DayEventsInTimeInterval(message.Text));
             }
             catch
             {
@@ -106,12 +106,12 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
         {
             try
             {
-                var text = message.Text.Split("-");
-                var startDateTime = Convert.ToDateTime(text[0]);
-                var endDateTime = Convert.ToDateTime(text[1]);
-                var events = await _googleCalendar.GetEvents(startDateTime, endDateTime);
-                var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
-                return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
+                //var text = message.Text.Split("-");
+                //var startDateTime = Convert.ToDateTime(text[0]);
+                //var endDateTime = Convert.ToDateTime(text[1]);
+                //var events = await _googleCalendar.GetEvents(startDateTime, endDateTime);
+                //var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
+                return await botClient.SendTextMessageAsync(message.Chat.Id, await _googleCalendar.EventsInDateTimeInterval(message.Text));
             }
             catch
             {

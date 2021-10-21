@@ -67,7 +67,7 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
                 new InlineQueryResultArticle(
                     id: "4",
                     title: "events in time interval",
-                    new InputTextMessageContent(await _googleCalendar.ShowDayEventsInTimeInterval(inlineQuery.Query))
+                    new InputTextMessageContent(await _googleCalendar.DayEventsInTimeIntervalQueryHandler(inlineQuery.Query))
                     )
                 };
 
