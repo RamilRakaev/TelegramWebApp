@@ -33,7 +33,7 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
             var events = await _googleCalendar.ShowUpCommingEvents();
             await botClient.AnswerCallbackQueryAsync(
                 callbackQueryId: callbackQuery.Id,
-                text: events);
+                text: "/all_events");
 
             await botClient.SendTextMessageAsync(
                 chatId: callbackQuery.Message.Chat.Id,
