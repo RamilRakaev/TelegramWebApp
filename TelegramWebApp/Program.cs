@@ -21,13 +21,13 @@ namespace TelegramWebApp
             {
                 logger.Debug("init main");
                 var host = CreateHostBuilder(args).Build();
+                host.Run();
                 using (var scope = host.Services.CreateScope())
                 {
                     var services = scope.ServiceProvider;
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     await UserInitializer.InitializeAsync(userManager);
                 }
-                host.Run();
             }
             catch (Exception ex)
             {

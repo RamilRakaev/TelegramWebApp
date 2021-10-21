@@ -41,15 +41,11 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
         {
             try
             {
-                var property = inlineQuery.Query.Split(' ').Last();
-                var events = await _googleCalendar.GetEvents(q: property);
-                var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
-
                 InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
                     id: "3",
                     title: "filtered events",
-                    new InputTextMessageContent(textMessage)
+                    new InputTextMessageContent(await _googleCalendar.FilteredEventsInlineQueryHandler(inlineQuery.Query))
                     )
                 };
 
@@ -63,29 +59,15 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
             { }
         }
 
-        public async Task<Message> WaitForThePropertyToBeEntered(ITelegramBotClient botClient, Message message)
-        {
-            var events = await _googleCalendar.GetEvents(q: message.Text);
-            var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
-            return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
-        }
-
         public async Task BotOnGetEventsInTimeIntervalQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
         {
             try
             {
-                var text = inlineQuery.Query.Split(' ').Last();
-                int startHours = Convert.ToInt32(text.Substring(0, 2));
-                int startMinutes = Convert.ToInt32(text.Substring(3, 2));
-                int endHours = Convert.ToInt32(text.Substring(6, 2));
-                int endMinutes = Convert.ToInt32(text.Substring(9, 2));
-                var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
-
                 InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
                     id: "4",
                     title: "events in time interval",
-                    new InputTextMessageContent(textMessage)
+                    new InputTextMessageContent(await _googleCalendar.ShowDayEventsInTimeInterval(inlineQuery.Query))
                     )
                 };
 
@@ -123,7 +105,7 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
                     isPersonal: true,
                     cacheTime: 0);
             }
-            catch(Exception e)
+            catch
             { }
         }
     }

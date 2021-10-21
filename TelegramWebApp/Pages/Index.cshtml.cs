@@ -1,5 +1,4 @@
-﻿using GoogleCalendarService;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TelegramWebApp.Pages.Account;
@@ -19,11 +18,8 @@ namespace TelegramWebApp.Pages
 
         public IActionResult OnGet()
         {
-            if (_user.RoleId != 1)
-            {
-                return RedirectToPage("/Account/Login");
-            }
-            return Page();
+            _logger.LogInformation("Index page visited");
+            return RedirectToPage("/Account/Login");
         }
     }
 }
