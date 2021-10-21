@@ -1,8 +1,6 @@
 ﻿using GoogleCalendarService;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -22,7 +20,6 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
 
         public async Task<InlineQueryHandler> BotOnGetAllEventsQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
         {
-
             InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
                     "2",
@@ -64,7 +61,6 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
             }
             catch
             { }
-
         }
 
         public async Task<Message> WaitForThePropertyToBeEntered(ITelegramBotClient botClient, Message message)

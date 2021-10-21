@@ -1,8 +1,5 @@
-﻿using Domain.Interfaces;
-using Domain.Model;
-using GoogleCalendarBusiness;
+﻿using GoogleCalendarService;
 using System.Collections.Generic;
-using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBotBusiness.CallbackQueriesHandlers;
@@ -18,10 +15,8 @@ namespace TelegramBotBusiness
         private readonly CalendarMessagesHandlers calendarMessagesHandlers;
         private readonly CalendarInlineQueriesHandlers calendarInlineQueriesHandlers;
 
-        public HandlerConfiguration(IRepository<Option> optionRepository)
+        public HandlerConfiguration(IGoogleCalendar googleCalendar)
         {
-            var options = optionRepository.GetAllAsNoTracking().ToArray();
-            var googleCalendar = new GoogleCalendar(options);
             queryHandler = new OutputCallbackQueryHandler(googleCalendar);
             calendarMessagesHandlers = new CalendarMessagesHandlers(googleCalendar);
             calendarInlineQueriesHandlers = new CalendarInlineQueriesHandlers(googleCalendar);
@@ -48,11 +43,11 @@ namespace TelegramBotBusiness
                 (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendAllCalendarEvents(botClient, message)),
 
                 new TextMessageCommandHandler("/filtered_events",
-                "calendar events filtered by property for example: /filtered_events?(property)",
+                "calendar events filtered by property for example: filtered_events?(property)",
                 (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendFilteredCalendarEvents(botClient, message)),
 
                 new TextMessageCommandHandler("/time_interval",
-                "today's events in specific time interval for example: /time_interval?10:00-20:00",
+                "today's events in specific time interval for example: time_interval?10:00-20:00",
                 (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendEventsInTimeInterval(botClient, message))
             };
 

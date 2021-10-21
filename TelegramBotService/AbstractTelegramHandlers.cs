@@ -29,7 +29,7 @@ namespace TelegramBotService
 
     public abstract class AbstractTelegramHandlers
     {
-        protected readonly TelegramUser[] _users;
+        protected readonly string[] _users;
         protected readonly ILogger<AbstractTelegramHandlers> _logger;
         public List<TextMessageCommandHandler> textMessageCommandHandlers;
         public List<CallbackQueryCommandHandler> callbackQueryCommandHandlers;
@@ -37,7 +37,7 @@ namespace TelegramBotService
         protected MessageHandlerReturningMessage PendingInput;
 
         public AbstractTelegramHandlers(
-            TelegramUser[] users,
+            string[] users,
             ILogger<AbstractTelegramHandlers> logger,
             ITelegramConfiguration configuration)
         {
@@ -73,7 +73,7 @@ namespace TelegramBotService
             bool access = true;
             if (message != null)
             {
-                access = _users.FirstOrDefault(u => u.UserName == message.From.Username) != null;
+                access = _users.Contains(message.From.Username);
                 if (access == false)
                 {
                     await botClient.SendTextMessageAsync(chatId: message.Chat.Id, "У вас нет прав для использования бота");

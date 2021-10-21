@@ -1,4 +1,5 @@
-﻿using Domain.Model;
+﻿using Domain.Interfaces;
+using Domain.Model;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
@@ -18,6 +19,11 @@ namespace GoogleCalendarBusiness
         static GoogleCalendar()
         {
             Scopes = new string[] { CalendarService.Scope.Calendar };
+        }
+
+        public GoogleCalendar(IRepository<Option> oprionRpository)
+        {
+            _options = oprionRpository.GetAllAsNoTracking().ToDictionary(o => o.PropertyName, o => o.Value);
         }
 
         public GoogleCalendar(Option[] options)
@@ -68,14 +74,14 @@ namespace GoogleCalendarBusiness
             string freeDays = "";
             var currentDay = now;
             var events = await GetEvents();
-            while(currentDay.Month < now.Month + months)
+            while (currentDay.Month < now.Month + months)
             {
-                var calendarEvent = events.FirstOrDefault(e => 
+                var calendarEvent = events.FirstOrDefault(e =>
                 e.Start.DateTime.Value.Month == currentDay.Month &&
                 currentDay.Day >= e.Start.DateTime.Value.Day &&
                 currentDay.Day <= e.End.DateTime.Value.Day);
 
-                if(calendarEvent == null)
+                if (calendarEvent == null)
                 {
                     freeDays += currentDay.ToString("d") + "\n";
                 }
@@ -112,11 +118,15 @@ namespace GoogleCalendarBusiness
 
         private CalendarService GetService()
         {
-            BaseClientService.Initializer initializer = new BaseClientService.Initializer
+            if (_options != null)
             {
-                ApiKey = _options["ApiKey"]
-            };
-            return new CalendarService(initializer);
+                var initializer = new BaseClientService.Initializer
+                {
+                    ApiKey = _options["ApiKey"]
+                };
+                return new CalendarService(initializer);
+            }
+            throw new NullReferenceException();
         }
     }
 }

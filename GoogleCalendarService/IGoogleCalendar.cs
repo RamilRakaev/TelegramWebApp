@@ -1,4 +1,5 @@
-﻿using Google.Apis.Calendar.v3.Data;
+﻿using Domain.Model;
+using Google.Apis.Calendar.v3.Data;
 using System;
 using System.Threading.Tasks;
 

@@ -1,4 +1,5 @@
-﻿using Domain.Model;
+﻿using Domain.Interfaces;
+using Domain.Model;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.InlineQueryResults;
 using TelegramBotService;
 
 namespace TelegramBotBusiness
@@ -14,12 +14,12 @@ namespace TelegramBotBusiness
     public class TelegramHandlers : AbstractTelegramHandlers
     {
         public TelegramHandlers(
-            Option[] options,
-            TelegramUser[] users,
+            IRepository<TelegramUser> userRepository,
             ILogger<AbstractTelegramHandlers> logger,
             ITelegramConfiguration configuration)
-            : base(users, logger, configuration)
+            : base(userRepository.GetAllAsNoTracking().Select(u => u.UserName).ToArray(), logger, configuration)
         {
+            
         }
 
         protected override async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
