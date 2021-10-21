@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class MigrationManager : IHostedService
+    public class MigrationService : IHostedService
     {
         private readonly IServiceProvider _service;
-        private readonly ILogger<MigrationManager> _logger;
+        private readonly ILogger<MigrationService> _logger;
 
-        public MigrationManager(IServiceProvider service,
-            ILogger<MigrationManager> logger)
+        public MigrationService(IServiceProvider service,
+            ILogger<MigrationService> logger)
         {
             _service = service;
             _logger = logger;
@@ -29,23 +29,23 @@ namespace Infrastructure.Repositories
                 appContext.Database.Migrate();
                 _logger.LogInformation($"Migrate: {DateTime.Now:T}");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(e.Message);
                 throw;
             }
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Start timer of MigragionManager: {DateTime.Now:T}");
+            _logger.LogInformation($"Start MigrationService: {DateTime.Now:T}");
             MigrateDatabase();
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Stop timer of MigragionManager: {DateTime.Now:T}");
+            _logger.LogInformation($"Stop MigrationService: {DateTime.Now:T}");
             return Task.CompletedTask;
         }
     }

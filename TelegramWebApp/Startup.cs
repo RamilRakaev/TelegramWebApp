@@ -39,7 +39,8 @@ namespace TelegramWebApp
 
             services.AddTransient<IRepository<Option>, OptionRepository>();
             services.AddTransient<IRepository<TelegramUser>, TelegramUserRepository>();
-            services.AddHostedService<MigrationManager>();
+            services.AddHostedService<MigrationService>();
+            services.AddHostedService<UserService>();
 
             services.AddTransient<IGoogleCalendar, GoogleCalendar>();
             services.AddTransient<ITelegramConfiguration, HandlerConfiguration>();

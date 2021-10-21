@@ -1,20 +1,15 @@
-using Domain.Model;
-using Infrastructure.Repositories.Configuration;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
-using System.Threading.Tasks;
 
 namespace TelegramWebApp
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
@@ -22,12 +17,6 @@ namespace TelegramWebApp
                 logger.Debug("init main");
                 var host = CreateHostBuilder(args).Build();
                 host.Run();
-                using (var scope = host.Services.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    await UserInitializer.InitializeAsync(userManager);
-                }
             }
             catch (Exception ex)
             {
