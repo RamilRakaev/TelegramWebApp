@@ -19,19 +19,19 @@ namespace TelegramBotBusiness.MessageHandlers
 
         public async Task<Message> SendFilteredCalendarEvents(ITelegramBotClient botClient, Message message)
         {
-            var words = message.Text.Split(new char[] { '?', '@' }, StringSplitOptions.RemoveEmptyEntries);
-            string text;
-            if (words.Length != 2)
-            {
-                text = "Enter the property by which the elements will be filtered: /filtered_events?(property)";
-            }
-            else
-            {
-                var events = await _googleCalendar.GetEvents(q: words[1]);
-                text = await _googleCalendar.ShowUpCommingEvents(events);
-            }
+            //var words = message.Text.Split(new char[] { '?', '@' }, StringSplitOptions.RemoveEmptyEntries);
+            //string text;
+            //if (words.Length != 2)
+            //{
+            //    text = "Enter the property by which the elements will be filtered: /filtered_events?(property)";
+            //}
+            //else
+            //{
+            //    var events = await _googleCalendar.GetEvents(q: words[1]);
+            //    text = await _googleCalendar.ShowUpCommingEvents(events);
+            //}
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: text,
+                                                        text: await _googleCalendar.FilteredEventsInlineCommandHandler(message.Text),
                                                         replyMarkup: new ReplyKeyboardRemove());
         }
 
@@ -48,16 +48,15 @@ namespace TelegramBotBusiness.MessageHandlers
         {
             try
             {
-                var text = message.Text.Split('?').Last();
-                int startHours = Convert.ToInt32(text.Substring(0, 2));
-                int startMinutes = Convert.ToInt32(text.Substring(3, 2));
-                int endHours = Convert.ToInt32(text.Substring(6, 2));
-                int endMinutes = Convert.ToInt32(text.Substring(9, 2));
-                var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
-
+                //var text = message.Text.Split('?').Last();
+                //int startHours = Convert.ToInt32(text.Substring(0, 2));
+                //int startMinutes = Convert.ToInt32(text.Substring(3, 2));
+                //int endHours = Convert.ToInt32(text.Substring(6, 2));
+                //int endMinutes = Convert.ToInt32(text.Substring(9, 2));
+                //var textMessage = await _googleCalendar.ShowDayEventsInTimeInterval(startHours, startMinutes, endHours, endMinutes);
 
                 return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                            text: textMessage,
+                                                            text: await _googleCalendar.DayEventsInTimeIntervalCommandHandler(message.Text),
                                                             replyMarkup: new ReplyKeyboardRemove());
             }
             catch
