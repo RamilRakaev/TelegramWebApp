@@ -89,5 +89,34 @@ namespace TelegramBotBusiness.CallbackQueriesHandlers
                 return await botClient.SendTextMessageAsync(message.Chat.Id, "Input error");
             }
         }
+
+        public async Task<MessageHandlerReturningMessage> BotOnGetEventsInDateTimeIntervalReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
+        {
+            await botClient.AnswerCallbackQueryAsync(
+                callbackQuery.Id,
+                "Enter time interval for example: \"10:15-19:23\""
+                );
+            await botClient.SendTextMessageAsync(
+                callbackQuery.Message.Chat.Id,
+                "Enter time interval for example: \"21.10.2021 12:15 - 24.10.2021 14:00\"");
+            return WaitForTheDateTimeIntervalToBeEntered;
+        }
+
+        private async Task<Message> WaitForTheDateTimeIntervalToBeEntered(ITelegramBotClient botClient, Message message)
+        {
+            try
+            {
+                var text = message.Text.Split("-");
+                var startDateTime = Convert.ToDateTime(text[0]);
+                var endDateTime = Convert.ToDateTime(text[1]);
+                var events = await _googleCalendar.GetEvents(startDateTime, endDateTime);
+                var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
+                return await botClient.SendTextMessageAsync(message.Chat.Id, textMessage);
+            }
+            catch
+            {
+                return await botClient.SendTextMessageAsync(message.Chat.Id, "Input error");
+            }
+        }
     }
 }

@@ -84,7 +84,7 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
                 InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
                     id: "4",
-                    title: "events in interval",
+                    title: "events in time interval",
                     new InputTextMessageContent(textMessage)
                     )
                 };
@@ -96,6 +96,34 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
                     cacheTime: 0);
             }
             catch
+            { }
+        }
+
+        public async Task BotOnGetEventsInDateTimeIntervalQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
+        {
+            try
+            {
+                var text = inlineQuery.Query[(inlineQuery.Query.LastIndexOf("l") + 1)..].Split('-');
+                var startDateTime = Convert.ToDateTime(text[0]);
+                var endDateTime = Convert.ToDateTime(text[1]);
+                var events = await _googleCalendar.GetEvents(startDateTime, endDateTime);
+                var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
+
+                InlineQueryResultBase[] results = {
+                new InlineQueryResultArticle(
+                    id: "5",
+                    title: "events in  datetime interval",
+                    new InputTextMessageContent(textMessage)
+                    )
+                };
+
+                await botClient.AnswerInlineQueryAsync(
+                    inlineQueryId: inlineQuery.Id,
+                    results: results,
+                    isPersonal: true,
+                    cacheTime: 0);
+            }
+            catch(Exception e)
             { }
         }
     }

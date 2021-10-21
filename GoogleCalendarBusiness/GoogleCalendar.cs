@@ -100,7 +100,7 @@ namespace GoogleCalendarBusiness
             string q = null,
             bool sortByModifiedDate = false)
         {
-            CalendarService service = GetService();
+            var service = GetService();
 
             var request = service.Events.List(_options["CalendarId"]);
             request.Fields = "items(summary,description,start,end,htmlLink)";

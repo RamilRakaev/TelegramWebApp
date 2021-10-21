@@ -67,5 +67,28 @@ namespace TelegramBotBusiness.MessageHandlers
                                                                replyMarkup: new ReplyKeyboardRemove());
             }
         }
+
+        public async Task<Message> SendEventsInDateTimeInterval(ITelegramBotClient botClient, Message message)
+        {
+            try
+            {
+                var text = message.Text.Substring(message.Text.IndexOf('?') + 1).Split('-');
+                var startDateTime = Convert.ToDateTime(text[0]);
+                var endDateTime = Convert.ToDateTime(text[1]);
+                var events = await _googleCalendar.GetEvents(startDateTime, endDateTime);
+                var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
+
+
+                return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                            text: textMessage,
+                                                            replyMarkup: new ReplyKeyboardRemove());
+            }
+            catch
+            {
+                return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
+                                                               text: "Input error",
+                                                               replyMarkup: new ReplyKeyboardRemove());
+            }
+        }
     }
 }

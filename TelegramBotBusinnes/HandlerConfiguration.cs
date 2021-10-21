@@ -48,7 +48,11 @@ namespace TelegramBotBusiness
 
                 new TextMessageCommandHandler("/time_interval",
                 "today's events in specific time interval for example: time_interval?10:00-20:00",
-                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendEventsInTimeInterval(botClient, message))
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendEventsInTimeInterval(botClient, message)),
+
+                new TextMessageCommandHandler("/datetime_interval",
+                "events in specific datetime interval for example: datetime_interval?21.10.2021 12:15 - 24.10.2021 14:00",
+                (ITelegramBotClient botClient, Message message) => calendarMessagesHandlers.SendEventsInDateTimeInterval(botClient, message))
             };
 
             handlers.callbackQueryCommandHandlers = new List<CallbackQueryCommandHandler>()
@@ -61,7 +65,10 @@ namespace TelegramBotBusiness
                     queryHandler.BotOnGetFilteredEventsReceived),
                 new CallbackQueryCommandHandler(
                     "/time_interval_query",
-                    queryHandler.BotOnGetEventsInTimeIntervalReceived)
+                    queryHandler.BotOnGetEventsInTimeIntervalReceived),
+                new CallbackQueryCommandHandler(
+                    "/datetime_interval_query",
+                    queryHandler.BotOnGetEventsInDateTimeIntervalReceived)
             };
 
             handlers.inlineQueryCommandHandlers = new List<InlineQueryCommandHandler>()
@@ -74,6 +81,9 @@ namespace TelegramBotBusiness
                 ),
                 new InlineQueryCommandHandler("time interval",
                 calendarInlineQueriesHandlers.BotOnGetEventsInTimeIntervalQueryReceived
+                ),
+                new InlineQueryCommandHandler("datetime interval",
+                calendarInlineQueriesHandlers.BotOnGetEventsInDateTimeIntervalQueryReceived
                 )
             };
         }
