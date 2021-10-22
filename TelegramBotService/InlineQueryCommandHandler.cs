@@ -14,7 +14,15 @@ namespace TelegramBotService
             Handler = handler;
         }
 
+        public InlineQueryCommandHandler(string command, string description, InlineQueryHandler handler)
+        {
+            Command = command;
+            Description = description;
+            Handler = handler;
+        }
+
         public string Command { get; set; }
+        public string Description { get; set; }
         public InlineQueryHandler Handler { get; set; }
     }
 }

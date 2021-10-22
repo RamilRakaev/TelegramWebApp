@@ -13,9 +13,9 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
         public ChangingAllUserPropertiesHandler(UserManager<ApplicationUser> db) : base(db)
         { }
 
-        public async Task<Domain.Model.ApplicationUser> Handle(ChangingAllPropertiesCommand command, CancellationToken cancellationToken)
+        public async Task<ApplicationUser> Handle(ChangingAllPropertiesCommand command, CancellationToken cancellationToken)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == command.Id);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == command.Id, cancellationToken: cancellationToken);
             user.UserName = command.Name;
             user.Email = command.Email;
             user.Password = command.Password;

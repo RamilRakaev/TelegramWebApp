@@ -8,12 +8,13 @@
     <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.RazorPages" Version="2.2.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domain.Interfaces\Domain.Interfaces.csproj" />
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj" />
-    <ProjectReference Include="..\Infrastructure.Repositories\Infrastructure.Repositories.csproj" />
-    <ProjectReference Include="..\TelegramBotBusinnes\TelegramBotBusiness.csproj" />
+    <ProjectReference Include="..\GoogleCalendarService\GoogleCalendarService.csproj" />
     <ProjectReference Include="..\TelegramBotService\TelegramBotService.csproj" />
   </ItemGroup>
 

@@ -138,10 +138,15 @@ namespace TelegramBotService
 
         protected async Task<Message> Usage(ITelegramBotClient botClient, Message message)
         {
-            string usage = "Usage:\n";
+            string usage = "Commands:\n";
             foreach (var command in textMessageCommandHandlers)
             {
-                usage += $"{command.Command} - {command.Description}\n";
+                usage += $"\"{command.Command}\" - {command.Description}\n";
+            }
+            usage += "\nInline queries:\n";
+            foreach (var command in inlineQueryCommandHandlers)
+            {
+                usage += $"\"{command.Command}\" - {command.Description}\n";
             }
             return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
                                                         text: usage,

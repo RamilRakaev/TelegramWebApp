@@ -74,15 +74,19 @@ namespace TelegramBotBusiness
             handlers.inlineQueryCommandHandlers = new List<InlineQueryCommandHandler>()
             {
                 new InlineQueryCommandHandler("filtered events",
+                "show events filtered by property for example: \"filtered events (property)\"",
                 calendarInlineQueriesHandlers.BotOnGetFilteredEventsQueryReceived
                 ),
                 new InlineQueryCommandHandler("all events",
+                "show all events for example: \"all events\"",
                 calendarInlineQueriesHandlers.BotOnGetAllEventsQueryReceived
                 ),
                 new InlineQueryCommandHandler("time interval",
+                "today's events in specific time interval for example: \"time interval 10:00-20:00\"",
                 calendarInlineQueriesHandlers.BotOnGetEventsInTimeIntervalQueryReceived
                 ),
                 new InlineQueryCommandHandler("datetime interval",
+                "events in specific datetime interval for example: \"datetime interval 21.10.2021 12:15 - 24.10.2021 14:00\"",
                 calendarInlineQueriesHandlers.BotOnGetEventsInDateTimeIntervalQueryReceived
                 )
             };

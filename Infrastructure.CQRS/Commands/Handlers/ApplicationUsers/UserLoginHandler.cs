@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Domain.Model;
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 

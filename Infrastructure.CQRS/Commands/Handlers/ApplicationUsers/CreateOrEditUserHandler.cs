@@ -1,7 +1,6 @@
 ﻿using Domain.Model;
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;

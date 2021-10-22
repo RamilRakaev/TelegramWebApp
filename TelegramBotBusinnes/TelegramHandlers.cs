@@ -18,9 +18,7 @@ namespace TelegramBotBusiness
             ILogger<AbstractTelegramHandlers> logger,
             ITelegramConfiguration configuration)
             : base(userRepository.GetAllAsNoTracking().Select(u => u.UserName).ToArray(), logger, configuration)
-        {
-            
-        }
+        { }
 
         protected override async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
         {
