@@ -9,6 +9,7 @@ using Infrastructure.CQRS.Queries.Request.Options;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using TelegramBotService;
 using TelegramWebApp.Pages.Account;
 
 namespace TelegramWebApp.Pages.Admin
@@ -27,7 +28,7 @@ namespace TelegramWebApp.Pages.Admin
 
         public TelegramUser[] Users { get; set; }
         public string Warning { get; set; } = string.Empty;
-
+        
         public async Task<IActionResult> OnGet()
         {
             if (_user.RoleId != 1)
@@ -48,9 +49,9 @@ namespace TelegramWebApp.Pages.Admin
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
         }
 
-        public async Task OnGetTurn()
+        public async Task OnPostTurn(Mode mode)
         {
-            Warning = await _mediator.Send(new StartTelegramReceivingCommand());
+            Warning = await _mediator.Send(new StartTelegramReceivingCommand(mode));
             AppOptions = await _mediator.Send(new GetWebAppOptionsQuery());
             Users = await _mediator.Send(new GetAllTelegramUsersQuery());
         }

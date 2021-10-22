@@ -24,7 +24,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Options
             foreach (var property in request.Options.GetType().GetProperties())
             {
 
-                var option = await options.FirstOrDefaultAsync(o => o.PropertyName == property.Name);
+                var option = await options.FirstOrDefaultAsync(o => o.PropertyName == property.Name, cancellationToken: cancellationToken);
                 var value = property.GetValue(request.Options);
                 if (value != null)
                 {

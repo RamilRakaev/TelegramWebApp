@@ -47,10 +47,10 @@ namespace TelegramWebApp
             services.AddTransient<ITelegramHandlerConfiguration, HandlerConfiguration>();
             services.AddTransient<AbstractTelegramHandlers, TelegramHandlers>();
 
+            services.Configure<TelegramOptions>(Configuration.GetSection("TelegramOptions"));
             services.AddTransient<AbstractTelegramBot, TelegramBot>();
 
             //Настройка телеграм бота для перехвата запросов
-            //services.Configure<TelegramBot>(t => t.ConfigureWebhook(Configuration.GetConnectionString("Webhook")));
             //services.AddHostedService<ConfigureWebhookService>();
 
             services.AddTransient<UserProperties, UserProperties>();
@@ -59,7 +59,7 @@ namespace TelegramWebApp
             services.AddValidatorsFromAssembly(MethodsAssembly.GetAssembly());
             services.AddMediatR(MethodsAssembly.GetAssembly());
 
-            services.AddTransient<IValidator<WebAppOptions>, WebAppOptionsValidator>();
+            services.AddTransient<IValidator<WebAppOptions>, CalendarOptionsValidator>();
             services.AddTransient<IValidator<ApplicationUser>, ApplicationUserValidator>();
             services.AddTransient<IValidator<TelegramUser>, TelegramUserValidator>();
 

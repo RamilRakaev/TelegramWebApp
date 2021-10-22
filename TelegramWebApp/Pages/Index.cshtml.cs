@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TelegramWebApp.Pages.Account;
-using TelegramBotService;
 
 namespace TelegramWebApp.Pages
 {
@@ -10,7 +8,7 @@ namespace TelegramWebApp.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger, AbstractTelegramBot telegramBot)
+        public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
         }

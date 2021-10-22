@@ -1,5 +1,6 @@
 ﻿@page
 @model TelegramWebApp.Pages.Admin.AdminPanelModel
+@using TelegramBotService;
 @{
     ViewData["Title"] = "Админ панель";
 }
@@ -8,18 +9,26 @@
 </div>
 <div class="row justify-content-center">
     <div class=" d-inline">
-        <a class="btn btn-info" asp-page-handler="Turn">Включить прослушивание</a>
-        <a class="btn btn-info" asp-page-handler="TurnOff">Отключить прослушивание</a>
-        <a class="btn btn-info" asp-page="OptionsForm">Настройки</a>
-        <a class="btn btn-info" asp-page="AddTelegramUser">Добавить телеграм пользователя</a>
+        <form method="post" class="form-inline" asp-page-handler="Turn">
+            <label class="col-form-label m-3">Режим прослушивания</label>
+            <select class="form-control m-3" name="mode">
+                <option value="@Mode.Updates" selected>updates</option>
+                <option value="@Mode.Webhook">webhook</option>
+            </select>
+            <button class="btn btn-info m-3">Включить прослушивание</button>
+        </form>
+        <a class="btn btn-info m-3" asp-page-handler="TurnOff">Отключить прослушивание</a>
+        <a class="btn btn-info m-3" asp-page="OptionsForm">Настройки</a>
+        <a class="btn btn-info m-3" asp-page="AddTelegramUser">Добавить телеграм пользователя</a>
     </div>
 </div>
 <div class="row justify-content-center mt-5">
     <h5 class="col-7">Настройки приложения:</h5>
     <ul class="list-group col-7">
-        <li class="list-group-item">ApiKey: @Model.AppOptions.ApiKey</li>
-        <li class="list-group-item">CalendarId: @Model.AppOptions.CalendarId</li>
-        <li class="list-group-item">Token: @Model.AppOptions.Token</li>
+        <li class="list-group-item">Api Key: @Model.AppOptions.ApiKey</li>
+        <li class="list-group-item">Calendar Id: @Model.AppOptions.CalendarId</li>
+        <li class="list-group-item">Bot Token: @Model.AppOptions.BotToken</li>
+        <li class="list-group-item">Host Address: @Model.AppOptions.HostAddress</li>
     </ul>
 </div>
 

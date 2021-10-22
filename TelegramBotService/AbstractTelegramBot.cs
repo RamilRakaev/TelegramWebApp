@@ -1,106 +1,62 @@
 ﻿using Domain.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace TelegramBotService
 {
-    public enum BotStatus { On, Off }
-
+    public enum Mode { Updates, Webhook }
+    public enum BotStatus { OnInUpdatesMode, OnInWebhookMode, Off }
+    
     public abstract class AbstractTelegramBot
     {
-        private static TelegramBotClient _bot;
-        private static CancellationTokenSource cts;
         private static string _token;
-        private static AbstractTelegramHandlers _handlers;
-        private readonly Dictionary<string, string> _options;
 
-        public AbstractTelegramBot(Option[] options, AbstractTelegramHandlers handlers)
+        public AbstractTelegramBot(AbstractTelegramHandlers handlers)
         {
-            _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
-            if (_options.ContainsKey("Token"))
+            Handlers = handlers;
+        }
+
+        protected static CancellationTokenSource Cts { get; private set; }
+        protected static AbstractTelegramHandlers Handlers { get; private set; }
+        protected static TelegramBotClient Bot { get; private set; }
+
+        public virtual Task ConfigureTelegramBot(TelegramOptions options)
+        {
+            _token = options.Token;
+            return Task.CompletedTask;
+        }
+
+        protected static void CreateBot()
+        {
+            if (_token != null)
             {
-                _token = _options["Token"];
+                Bot = new TelegramBotClient(_token);
+                Cts = new CancellationTokenSource();
             }
             else
             {
-                throw new ArgumentNullException("Token is null");
+                throw new NullReferenceException("Token is null");
             }
-            _handlers = handlers;
-        }
-
-        public Task ConfigureWebhook(string Webhook)
-        {
-            _options.Add("Webhook", Webhook);
-            return Task.CompletedTask;
         }
 
         public static async Task EchoAsync(Update update)
         {
-            if (_bot != null)
+            if (Bot != null)
             {
-                await _handlers.HandleUpdateAsync(_bot, update, cts.Token);
+                await Handlers.HandleUpdateAsync(Bot, update, Cts.Token);
             }
         }
 
-        public Task StartReceiving()
-        {
-            StopReceiving();
+        public abstract Task StartAsync(Mode mode);
 
-            _bot = new TelegramBotClient(_token);
-
-            cts = new CancellationTokenSource();
-
-            _bot.StartReceiving(
-                new DefaultUpdateHandler(
-                _handlers.HandleUpdateAsync,
-                _handlers.HandleErrorAsync),
-                               cts.Token);
-
-            return Task.CompletedTask;
-        }
-
-        public static void StopReceiving()
-        {
-            if (cts != null) { cts.Cancel(); }
-        }
-
-        public async Task StartInterception()
-        {
-            await StopInterception();
-
-            _bot = new TelegramBotClient(_token);
-            cts = new CancellationTokenSource();
-            if (_options.ContainsKey("Webhook"))
-            {
-                await _bot.SetWebhookAsync(
-                    url: _options["Webhook"],
-                    allowedUpdates: Array.Empty<UpdateType>(),
-                    cancellationToken: cts.Token);
-            }
-            else
-            {
-                throw new NullReferenceException("Webhook is null");
-            }
-        }
-
-        public static async Task StopInterception()
-        {
-            if (_bot != null)
-            {
-                await _bot.DeleteWebhookAsync(cancellationToken: cts.Token);
-            }
-        }
+        public abstract Task StopAsync();
 
         public static bool IsIncluded()
         {
-            if (_bot == null)
+            if (Bot == null)
             {
                 return false;
             }
