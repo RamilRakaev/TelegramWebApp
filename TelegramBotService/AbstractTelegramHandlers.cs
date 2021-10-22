@@ -39,7 +39,7 @@ namespace TelegramBotService
         public AbstractTelegramHandlers(
             string[] users,
             ILogger<AbstractTelegramHandlers> logger,
-            ITelegramConfiguration configuration)
+            ITelegramHandlerConfiguration configuration)
         {
             _users = users;
             _logger = logger;

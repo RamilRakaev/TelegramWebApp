@@ -13,21 +13,32 @@ namespace TelegramBotService
 {
     public enum BotStatus { On, Off }
 
-    public class TelegramBot
+    public abstract class AbstractTelegramBot
     {
         private static TelegramBotClient _bot;
         private static CancellationTokenSource cts;
         private static string _token;
         private static AbstractTelegramHandlers _handlers;
-        private static Dictionary<string, string> _options;
+        private readonly Dictionary<string, string> _options;
 
-        public TelegramBot(Option[] options, AbstractTelegramHandlers handlers)
+        public AbstractTelegramBot(Option[] options, AbstractTelegramHandlers handlers)
         {
             _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
-            _token = _options["Token"];
-            if (_token == null)
+            if (_options.ContainsKey("Token"))
+            {
+                _token = _options["Token"];
+            }
+            else
+            {
                 throw new ArgumentNullException("Token is null");
+            }
             _handlers = handlers;
+        }
+
+        public Task ConfigureWebhook(string Webhook)
+        {
+            _options.Add("Webhook", Webhook);
+            return Task.CompletedTask;
         }
 
         public static async Task EchoAsync(Update update)
@@ -38,11 +49,11 @@ namespace TelegramBotService
             }
         }
 
-        public async Task StartReceiving()
+        public Task StartReceiving()
         {
-            _bot = new TelegramBotClient(_token);
+            StopReceiving();
 
-            var me = await _bot.GetMeAsync();
+            _bot = new TelegramBotClient(_token);
 
             cts = new CancellationTokenSource();
 
@@ -51,21 +62,32 @@ namespace TelegramBotService
                 _handlers.HandleUpdateAsync,
                 _handlers.HandleErrorAsync),
                                cts.Token);
+
+            return Task.CompletedTask;
         }
 
-        public static void Stop()
+        public static void StopReceiving()
         {
             if (cts != null) { cts.Cancel(); }
         }
 
         public async Task StartInterception()
         {
+            await StopInterception();
+
             _bot = new TelegramBotClient(_token);
             cts = new CancellationTokenSource();
-            await _bot.SetWebhookAsync(
-                url: _options["Webhook"],
-                allowedUpdates: Array.Empty<UpdateType>(),
-                cancellationToken: cts.Token);
+            if (_options.ContainsKey("Webhook"))
+            {
+                await _bot.SetWebhookAsync(
+                    url: _options["Webhook"],
+                    allowedUpdates: Array.Empty<UpdateType>(),
+                    cancellationToken: cts.Token);
+            }
+            else
+            {
+                throw new NullReferenceException("Webhook is null");
+            }
         }
 
         public static async Task StopInterception()

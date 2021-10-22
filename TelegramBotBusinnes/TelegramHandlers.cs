@@ -16,7 +16,7 @@ namespace TelegramBotBusiness
         public TelegramHandlers(
             IRepository<TelegramUser> userRepository,
             ILogger<AbstractTelegramHandlers> logger,
-            ITelegramConfiguration configuration)
+            ITelegramHandlerConfiguration configuration)
             : base(userRepository.GetAllAsNoTracking().Select(u => u.UserName).ToArray(), logger, configuration)
         { }
 

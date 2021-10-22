@@ -1,7 +1,7 @@
 ﻿
 namespace TelegramBotService
 {
-    public interface ITelegramConfiguration
+    public interface ITelegramHandlerConfiguration
     {
         public void Configurate(AbstractTelegramHandlers handlers);
     }

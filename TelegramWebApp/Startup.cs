@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TelegramBotService;
 using TelegramBotBusiness;
+using TelegramBotBusiness.Services;
 using GoogleCalendarService;
 using GoogleCalendarBusiness;
 using Infrastructure.Repositories;
@@ -43,8 +44,14 @@ namespace TelegramWebApp
             services.AddHostedService<UserService>();
 
             services.AddTransient<IGoogleCalendar, GoogleCalendar>();
-            services.AddTransient<ITelegramConfiguration, HandlerConfiguration>();
+            services.AddTransient<ITelegramHandlerConfiguration, HandlerConfiguration>();
             services.AddTransient<AbstractTelegramHandlers, TelegramHandlers>();
+
+            services.AddTransient<AbstractTelegramBot, TelegramBot>();
+
+            //Настройка телеграм бота для перехвата запросов
+            //services.Configure<TelegramBot>(t => t.ConfigureWebhook(Configuration.GetConnectionString("Webhook")));
+            //services.AddHostedService<ConfigureWebhookService>();
 
             services.AddTransient<UserProperties, UserProperties>();
 

@@ -9,7 +9,7 @@ using TelegramBotService;
 
 namespace TelegramBotBusiness
 {
-    public class HandlerConfiguration : ITelegramConfiguration
+    public class HandlerConfiguration : ITelegramHandlerConfiguration
     {
         private readonly OutputCallbackQueryHandler queryHandler;
         private readonly CalendarMessagesHandlers calendarMessagesHandlers;

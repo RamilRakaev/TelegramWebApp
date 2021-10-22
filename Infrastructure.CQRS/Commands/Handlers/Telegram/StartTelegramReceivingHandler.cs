@@ -10,31 +10,24 @@ using System;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Text;
-using GoogleCalendarService;
 
 namespace Infrastructure.CQRS.Commands.Handlers.Telegram
 {
-    public class StartTelegramReceivingHandler :  IRequestHandler<StartTelegramReceivingCommand, string>
+    public class StartTelegramReceivingHandler : IRequestHandler<StartTelegramReceivingCommand, string>
     {
         private readonly string[] appOptions = { "ApiKey", "CalendarId", "Token" };
         private readonly ILogger<StartTelegramReceivingHandler> _logger;
-        protected readonly IRepository<TelegramUser> _usersRepository;
-        protected readonly IRepository<Option> _optionRepository;
-        protected readonly IGoogleCalendar _googleCalendar;
-        private readonly AbstractTelegramHandlers _abstractTelegramHandlers;
+        private readonly IRepository<Option> _optionRepository;
+        private readonly AbstractTelegramBot _bot;
 
         public StartTelegramReceivingHandler(
-            IRepository<TelegramUser> usersRepository,
             IRepository<Option> optionRepository,
-            IGoogleCalendar googleCalendar,
-            AbstractTelegramHandlers abstractTelegramHandlers,
-            ILogger<StartTelegramReceivingHandler> logger)
+            ILogger<StartTelegramReceivingHandler> logger,
+            AbstractTelegramBot bot)
         {
-            _usersRepository = usersRepository;
             _optionRepository = optionRepository;
-            _googleCalendar = googleCalendar;
-            _abstractTelegramHandlers = abstractTelegramHandlers;
             _logger = logger;
+            _bot = bot;
         }
 
         public async Task<string> Handle(StartTelegramReceivingCommand request, CancellationToken cancellationToken)
@@ -42,7 +35,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             _logger.LogInformation("Telegram Bot starting");
             var optionsFromDb = _optionRepository.GetAllAsNoTracking();
             var propertyNames = optionsFromDb.Select(o => o.PropertyName);
-            var warning =  new StringBuilder("Не определены настройки: ");
+            var warning = new StringBuilder("Не определены настройки: ");
             bool readiness = true;
             foreach (var appOption in appOptions)
             {
@@ -58,11 +51,10 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             {
                 try
                 {
-                    var bot = new TelegramBot(await optionsFromDb.ToArrayAsync(cancellationToken: cancellationToken), _abstractTelegramHandlers);
-                    await bot.StartReceiving();
+                    await _bot.StartReceiving();
                     return "Телеграм бот запущен";
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     warning.Clear();
                     warning.Append(e.Message);

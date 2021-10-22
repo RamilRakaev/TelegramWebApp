@@ -10,7 +10,7 @@ namespace Infrastructure.CQRS.Queries.Handlers.Options
     {
         public Task<string> Handle(GetBotStatusQuery request, CancellationToken cancellationToken)
         {
-            if (TelegramBot.IsIncluded())
+            if (AbstractTelegramBot.IsIncluded())
             {
                 return Task.FromResult("Бот включён");
             }
