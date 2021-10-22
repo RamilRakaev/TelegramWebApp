@@ -1,6 +1,4 @@
 ﻿using GoogleCalendarService;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -85,12 +83,6 @@ namespace TelegramBotBusiness.InlineQueriesHandlers
         {
             try
             {
-                //    var text = inlineQuery.Query[(inlineQuery.Query.LastIndexOf("l") + 1)..].Split('-');
-                //    var startDateTime = Convert.ToDateTime(text[0]);
-                //    var endDateTime = Convert.ToDateTime(text[1]);
-                //    var events = await _googleCalendar.GetEvents(startDateTime, endDateTime);
-                //    var textMessage = await _googleCalendar.ShowUpCommingEvents(events);
-
                 InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
                     id: "5",
