@@ -17,7 +17,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             string warning = "Бот отключён";
             try
             {
-                await AbstractTelegramBot.StopAsync();
+                await BaseTelegramBot.StopAsync();
             }
             catch(Exception e)
             {

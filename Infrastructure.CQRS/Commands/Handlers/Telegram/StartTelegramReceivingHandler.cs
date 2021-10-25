@@ -17,12 +17,12 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
     {
         private readonly ILogger<StartTelegramReceivingHandler> _logger;
         private readonly IRepository<Option> _optionRepository;
-        private readonly AbstractTelegramBot _bot;
+        private readonly BaseTelegramBot _bot;
 
         public StartTelegramReceivingHandler(
             IRepository<Option> optionRepository,
             ILogger<StartTelegramReceivingHandler> logger,
-            AbstractTelegramBot bot)
+            BaseTelegramBot bot)
         {
             _optionRepository = optionRepository;
             _logger = logger;

@@ -5,10 +5,7 @@ using TelegramBotService;
 
 namespace TelegramBotBusiness
 {
-    public enum Mode : int { Updates, Webhook }
-    public enum BotStatus { OnInUpdatesMode, OnInWebhookMode, Off }
-
-    public class TelegramBot : AbstractTelegramBot
+    public class TelegramBot : BaseTelegramBot
     {
         public TelegramBot(AbstractTelegramHandlers handlers, IRepository<Option> repository) :
             base(handlers, repository.GetAllAsNoTracking().ToArray())

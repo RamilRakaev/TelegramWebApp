@@ -11,17 +11,17 @@ using Telegram.Bot.Types.Enums;
 
 namespace TelegramBotService
 {
-    public enum Mode : int { Updates, Webhook }
+    public enum Mode { Updates, Webhook }
     public enum BotStatus { OnInUpdatesMode, OnInWebhookMode, Off }
 
-    public abstract class AbstractTelegramBot
+    public class BaseTelegramBot
     {
         protected static Dictionary<string, string> _options;
         protected static TelegramBotClient _bot;
         protected static CancellationTokenSource _cts;
         protected static AbstractTelegramHandlers _handlers;
 
-        public AbstractTelegramBot(AbstractTelegramHandlers handlers, Option[] options)
+        public BaseTelegramBot(AbstractTelegramHandlers handlers, Option[] options)
         {
             _handlers = handlers;
             _options = options.ToDictionary(o => o.PropertyName, o => o.Value);

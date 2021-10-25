@@ -48,7 +48,7 @@ namespace TelegramWebApp
             services.AddTransient<AbstractTelegramHandlers, TelegramHandlers>();
 
             //services.Configure<TelegramOptions>(Configuration.GetSection("TelegramOptions"));
-            services.AddTransient<AbstractTelegramBot, TelegramBot>();
+            services.AddTransient<BaseTelegramBot, TelegramBot>();
 
             //Настройка телеграм бота для перехвата запросов
             //services.AddHostedService<ConfigureWebhookService>();
