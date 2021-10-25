@@ -16,10 +16,10 @@ namespace TelegramBotService
 
     public class BaseTelegramBot
     {
-        protected static Dictionary<string, string> _options;
-        protected static TelegramBotClient _bot;
-        protected static CancellationTokenSource _cts;
-        protected static AbstractTelegramHandlers _handlers;
+        private static Dictionary<string, string> _options;
+        private static TelegramBotClient _bot;
+        private static CancellationTokenSource _cts;
+        private static AbstractTelegramHandlers _handlers;
 
         public BaseTelegramBot(AbstractTelegramHandlers handlers, Option[] options)
         {
