@@ -1,6 +1,7 @@
-﻿using Domain.Model;
-using Microsoft.Extensions.Options;
+﻿using Domain.Interfaces;
+using Domain.Model;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
@@ -9,32 +10,31 @@ using TelegramBotService;
 
 namespace TelegramBotBusiness
 {
-
     public class TelegramBot : AbstractTelegramBot
     {
-        public TelegramBot(AbstractTelegramHandlers handlers, IOptions<TelegramOptions> options) : 
+        
+        public TelegramBot(AbstractTelegramHandlers handlers, IRepository<Option> repository) : 
             base(handlers)
         {
-            ConfigureTelegramBot(options.Value);
+            ConfigureTelegramBot(repository.GetAllAsNoTracking().ToArray());
         }
 
         public static BotStatus BotStatus { get; protected set; } = BotStatus.Off;
-        protected static string HostAddress { get; private set; }
-
-        public override Task ConfigureTelegramBot(TelegramOptions options)
+        
+        public override Task ConfigureTelegramBot(Option[] options)
         {
-            HostAddress = options.HostAddress;
-            return ConfigureTelegramBot(options);
+            _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
+            return Task.CompletedTask;
         }
 
-        public override async Task StartAsync(Mode mode)
+        public override async Task StartAsync(int mode)
         {
-            if(mode == Mode.Updates)
+            if(mode == (int)Mode.Updates)
             {
                 await StartReceiving();
                 BotStatus = BotStatus.OnInUpdatesMode;
             }
-            else if(mode == Mode.Webhook)
+            else if(mode == (int)Mode.Webhook)
             {
                 await StartInterception();
                 BotStatus = BotStatus.OnInWebhookMode;
@@ -56,10 +56,10 @@ namespace TelegramBotBusiness
         {
             await StopAsync();
             CreateBot();
-            if (HostAddress != null)
+            if (_options["HostAddress"] != null)
             {
                 await Bot.SetWebhookAsync(
-                    url: HostAddress,
+                    url: _options["HostAddress"],
                     allowedUpdates: Array.Empty<UpdateType>(),
                     cancellationToken: Cts.Token);
             }
@@ -69,7 +69,7 @@ namespace TelegramBotBusiness
             }
         }
 
-        public override async Task StopAsync()
+        public new static async Task  StopAsync()
         {
             if (BotStatus == BotStatus.OnInUpdatesMode)
             {

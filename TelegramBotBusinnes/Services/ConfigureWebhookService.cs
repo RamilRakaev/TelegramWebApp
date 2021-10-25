@@ -29,7 +29,7 @@ namespace TelegramBotBusiness.Services
             {
                 using var scope = _service.CreateScope();
                 _bot = scope.ServiceProvider.GetRequiredService<AbstractTelegramBot>();
-                await _bot.StartInterception();
+                await _bot.StartAsync((int)Mode.Updates);
                 _logger.LogInformation("Webhook started!");
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace TelegramBotBusiness.Services
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Webhook stoped!");
-            await AbstractTelegramBot.StopInterception();
+            await AbstractTelegramBot.StopAsync();
         }
     }
 }

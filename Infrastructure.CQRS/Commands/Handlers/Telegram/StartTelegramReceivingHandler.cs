@@ -15,7 +15,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
 {
     public class StartTelegramReceivingHandler : IRequestHandler<StartTelegramReceivingCommand, string>
     {
-        private readonly string[] appOptions = { "ApiKey", "CalendarId" };
+        private readonly string[] appOptions = { "ApiKey", "CalendarId", "Token" };
         private readonly ILogger<StartTelegramReceivingHandler> _logger;
         private readonly IRepository<Option> _optionRepository;
         private readonly AbstractTelegramBot _bot;
@@ -51,7 +51,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             {
                 try
                 {
-                    await _bot.StartAsync(request.Mode);
+                    await _bot.StartAsync((int)request.Mode);
                     return "Телеграм бот запущен";
                 }
                 catch (Exception e)

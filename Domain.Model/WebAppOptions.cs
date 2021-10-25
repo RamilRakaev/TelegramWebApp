@@ -1,30 +1,20 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Domain.Model
 {
-    public class WebAppOptions : IEnumerable
+    public class WebAppOptions
     {
         public string ApiKey { get; set; }
         public string CalendarId { get; set; }
         public string BotToken { get; set; }
         public string HostAddress { get; set; }
 
-        private Dictionary<string, string> properties = new Dictionary<string, string>
-        {
-            {"ApiKey","" },
-            {"CalendarId","" },
-            {"BotToken","" },
-            {"HostAddress","" },
-        };
-
-        public IEnumerator GetEnumerator()
-        {
-            foreach(var propertyName in properties.Keys)
-            {
-                yield return properties[propertyName];
-            }
-        }
+        //public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>
+        //{
+        //    {"ApiKey","" },
+        //    {"CalendarId","" },
+        //    {"BotToken","" },
+        //    {"HostAddress","" },
+        //};
     }
 }
