@@ -9,18 +9,21 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
 {
     public class StopTelegramReceivingHandler : IRequestHandler<StopTelegramReceivingCommand, string>
     {
-        public Task<string> Handle(StopTelegramReceivingCommand request, CancellationToken cancellationToken)
+        public StopTelegramReceivingHandler()
+        { }
+
+        public async Task<string> Handle(StopTelegramReceivingCommand request, CancellationToken cancellationToken)
         {
             string warning = "Бот отключён";
             try
             {
-                AbstractTelegramBot.StopAsync();
+                await AbstractTelegramBot.StopAsync();
             }
             catch(Exception e)
             {
                 warning = e.Message;
             }
-            return Task.FromResult(warning);
+            return warning;
         }
     }
 }

@@ -21,23 +21,17 @@ namespace Infrastructure.CQRS.Commands.Handlers.Options
         public async Task<Option[]> Handle(ChangeOptionsCommand request, CancellationToken cancellationToken)
         {
             var options = _db.GetAll();
-            foreach (var property in request.Options.GetType().GetProperties())
+            foreach (var property in request.Options.Properties.Keys)
             {
-
-                var option = await options.FirstOrDefaultAsync(o => o.PropertyName == property.Name, cancellationToken: cancellationToken);
-                var value = property.GetValue(request.Options);
-                if (value != null)
+                var option = await options.FirstOrDefaultAsync(o => o.PropertyName == property, cancellationToken: cancellationToken);
+                if (option != null)
                 {
-                    if (option != null)
-                    {
-                        option.Value = value.ToString();
-                    }
-                    else
-                    {
-                        await _db.AddAsync(new Option(property.Name, value.ToString()));
-                    }
+                    option.Value = request.Options[property];
                 }
-
+                else
+                {
+                    await _db.AddAsync(new Option(property, request.Options[property]));
+                }
             }
             await _db.SaveAsync();
             return options.ToArray();

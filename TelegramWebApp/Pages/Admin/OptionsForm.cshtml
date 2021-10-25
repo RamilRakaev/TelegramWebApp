@@ -3,7 +3,7 @@
 @using Domain.Model;
 @{
     ViewData["Title"] = "Настройки";
-    var appOptions = new WebAppOptions();
+    var appOptions = new WebAppOptionsEnum();
 }
 <div class="row justify-content-center">
     <form method="post">
@@ -16,6 +16,16 @@
             <label class="col-form-label">CalandarId</label>
             <span asp-validation-for="@appOptions.CalendarId"></span>
             <input class="form-control" asp-for="@appOptions.CalendarId" />
+        </div>
+        <div class="form-group">
+            <label class="col-form-label">Bot Token</label>
+            <span asp-validation-for="@appOptions.BotToken"></span>
+            <input class="form-control" asp-for="@appOptions.BotToken" />
+        </div>
+        <div class="form-group">
+            <label class="col-form-label">Host Address</label>
+            <span asp-validation-for="@appOptions.HostAddress"></span>
+            <input class="form-control" asp-for="@appOptions.HostAddress" />
         </div>
         <button class="btn btn-dark">Отправить</button>
         <a class="btn btn-danger" asp-page="AdminPanel">Назад</a>

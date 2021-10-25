@@ -1,37 +1,96 @@
 ﻿using Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace TelegramBotService
 {
     public enum Mode : int { Updates, Webhook }
     public enum BotStatus { OnInUpdatesMode, OnInWebhookMode, Off }
-    
+
     public abstract class AbstractTelegramBot
     {
         protected static Dictionary<string, string> _options;
-        public AbstractTelegramBot(AbstractTelegramHandlers handlers)
+        protected static TelegramBotClient _bot;
+        protected static CancellationTokenSource _cts;
+        protected static AbstractTelegramHandlers _handlers;
+
+        public AbstractTelegramBot(AbstractTelegramHandlers handlers, Option[] options)
         {
-            Handlers = handlers;
+            _handlers = handlers;
+            _options = options.ToDictionary(o => o.PropertyName, o => o.Value);
         }
 
-        protected static CancellationTokenSource Cts { get; private set; }
-        protected static AbstractTelegramHandlers Handlers { get; private set; }
-        protected static TelegramBotClient Bot { get; private set; }
+        public static BotStatus BotStatus { get; protected set; } = BotStatus.Off;
 
-        public abstract Task ConfigureTelegramBot(Option[] options);
+        public async Task StartAsync(Mode mode)
+        {
+            await StopAsync();
+            CreateBot();
+            if (mode == Mode.Updates)
+            {
+                await StartReceiving();
+                BotStatus = BotStatus.OnInUpdatesMode;
+            }
+            else if (mode == Mode.Webhook)
+            {
+                await StartInterception();
+                BotStatus = BotStatus.OnInWebhookMode;
+            }
+        }
+
+        private Task StartReceiving()
+        {
+            _bot.StartReceiving(
+                new DefaultUpdateHandler(
+                _handlers.HandleUpdateAsync,
+                _handlers.HandleErrorAsync),
+                               _cts.Token);
+            return Task.CompletedTask;
+        }
+
+        private async Task StartInterception()
+        {
+            if (_options["HostAddress"] != null)
+            {
+                await _bot.SetWebhookAsync(
+                    url: _options["HostAddress"],
+                    allowedUpdates: Array.Empty<UpdateType>(),
+                    cancellationToken: _cts.Token);
+            }
+            else
+            {
+                throw new NullReferenceException("HostAddress is null");
+            }
+        }
+
+        public static async Task StopAsync()
+        {
+            if (BotStatus == BotStatus.OnInUpdatesMode)
+            {
+                if (_cts != null) { _cts.Cancel(); }
+            }
+            else if (BotStatus == BotStatus.OnInWebhookMode)
+            {
+                if (_bot != null)
+                {
+                    await _bot.DeleteWebhookAsync(cancellationToken: _cts.Token);
+                }
+            }
+        }
         
-
         protected static void CreateBot()
         {
-            if (_options["Token"] != null)
+            if (_options["BotToken"] != null)
             {
-                Bot = new TelegramBotClient(_options["Token"]);
-                Cts = new CancellationTokenSource();
+                _bot = new TelegramBotClient(_options["BotToken"]);
+                _cts = new CancellationTokenSource();
             }
             else
             {
@@ -41,19 +100,15 @@ namespace TelegramBotService
 
         public static async Task EchoAsync(Update update)
         {
-            if (Bot != null)
+            if (_bot != null)
             {
-                await Handlers.HandleUpdateAsync(Bot, update, Cts.Token);
+                await _handlers.HandleUpdateAsync(_bot, update, _cts.Token);
             }
         }
 
-        public abstract Task StartAsync(int mode);
-
-        public static Task StopAsync() { throw new Exception(); }
-
         public static bool IsIncluded()
         {
-            if (Bot == null)
+            if (_bot == null)
             {
                 return false;
             }

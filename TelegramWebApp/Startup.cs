@@ -59,7 +59,7 @@ namespace TelegramWebApp
             services.AddValidatorsFromAssembly(MethodsAssembly.GetAssembly());
             services.AddMediatR(MethodsAssembly.GetAssembly());
 
-            services.AddTransient<IValidator<WebAppOptions>, CalendarOptionsValidator>();
+            services.AddTransient<IValidator<WebAppOptionsEnum>, WebAppOptionsValidator>();
             services.AddTransient<IValidator<ApplicationUser>, ApplicationUserValidator>();
             services.AddTransient<IValidator<TelegramUser>, TelegramUserValidator>();
 

@@ -2,19 +2,12 @@
 
 namespace Domain.Model
 {
-    public class WebAppOptions
-    {
-        public string ApiKey { get; set; }
-        public string CalendarId { get; set; }
-        public string BotToken { get; set; }
-        public string HostAddress { get; set; }
+    //public class WebAppOptions
+    //{
+    //    public string ApiKey { get; set; }
+    //    public string CalendarId { get; set; }
+    //    public string BotToken { get; set; }
+    //    public string HostAddress { get; set; }
 
-        //public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>
-        //{
-        //    {"ApiKey","" },
-        //    {"CalendarId","" },
-        //    {"BotToken","" },
-        //    {"HostAddress","" },
-        //};
-    }
+    //}
 }
