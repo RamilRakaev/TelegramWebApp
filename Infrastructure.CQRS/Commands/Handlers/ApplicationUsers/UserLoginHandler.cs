@@ -9,19 +9,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 {
-    public class UserLoginHandler : IRequestHandler<UserLoginCommand, string>
+    public class UserLoginHandler : UserHandler, IRequestHandler<UserLoginCommand, string>
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<UserLoginHandler> _logger;
 
         public UserLoginHandler(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<UserLoginHandler> logger)
+            ILogger<UserLoginHandler> logger) : base(userManager, logger)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
         }
 
         public async Task<string> Handle(UserLoginCommand request, CancellationToken cancellationToken)

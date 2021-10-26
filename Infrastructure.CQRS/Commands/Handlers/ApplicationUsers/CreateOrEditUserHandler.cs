@@ -2,19 +2,16 @@
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 {
-    public class CreateOrEditUserHandler : IRequestHandler<CreateOrEditUserCommand, IdentityResult>
+    public class CreateOrEditUserHandler : UserHandler, IRequestHandler<CreateOrEditUserCommand, IdentityResult>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public CreateOrEditUserHandler(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
+        public CreateOrEditUserHandler(UserManager<ApplicationUser> userManager, ILogger<CreateOrEditUserHandler> logger) : base(userManager, logger)
+        { }
 
         public async Task<IdentityResult> Handle(CreateOrEditUserCommand request, CancellationToken cancellationToken)
         {
@@ -31,6 +28,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
                 user.RoleId = request.RoleId;
                 await _userManager.RemovePasswordAsync(user);
                 await _userManager.AddPasswordAsync(user, request.Password);
+                _logger.LogInformation("Edited user password");
                 return await _userManager.UpdateAsync(user);
             }
         }
