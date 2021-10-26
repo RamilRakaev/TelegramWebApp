@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Domain.Model;
 using Infrastructure.CQRS.Commands.Requests.ApplicationUsers;
 using Infrastructure.CQRS.Queries.Request.ApplicationUsers;
 using MediatR;
