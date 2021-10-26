@@ -20,7 +20,7 @@ namespace TelegramWebApp.Pages.Admin
             _user = user;
         }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public CreateOrEditUserCommand ApplicationUser { get; set; }
 
         public async Task<IActionResult> OnGet(int? userId)
         {
@@ -30,24 +30,25 @@ namespace TelegramWebApp.Pages.Admin
             }
             if (userId != null)
             {
-                ApplicationUser = await _mediator.Send(new GetUserQuery(userId.Value));
+                    var user = await _mediator.Send(new GetUserQuery(userId.Value));
+                ApplicationUser = new CreateOrEditUserCommand(user.Email, "", user.RoleId);
             }
             else
             {
-                ApplicationUser = new ApplicationUser();
+                ApplicationUser = new CreateOrEditUserCommand();
             }
             return Page();
         }
 
-        public async Task<IActionResult> OnPost(ApplicationUser applicationUser)
+        public async Task<IActionResult> OnPost(CreateOrEditUserCommand applicationUser)
         {
             if (ModelState.IsValid)
             {
                 applicationUser.RoleId = 1;
-                await _mediator.Send(new CreateOrEditUserCommand(applicationUser));
+                var result = await _mediator.Send(applicationUser);
                 return RedirectToPage("ApplicationUsers");
             }
-            ApplicationUser = new ApplicationUser();
+            ApplicationUser = new CreateOrEditUserCommand();
             return Page();
 
         }

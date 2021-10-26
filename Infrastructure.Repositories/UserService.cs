@@ -16,14 +16,25 @@ namespace Infrastructure.Repositories
         private readonly ILogger<MigrationService> _logger;
         private readonly List<ApplicationUser> users = new()
         {
-            new ApplicationUser(){ UserName = "DefaultUser", Email = "DefaultUser@gmail.com",
-                    RoleId = 1},
+            new ApplicationUser()
+            {
+                UserName = "DefaultUser",
+                Email = "DefaultUser@gmail.com",
+                RoleId = 1
+            },
         };
         private readonly List<string> passwords = new()
         {
             "e23D!23df32"
         };
-
+        private readonly List<ApplicationUserRole> roles = new()
+        {
+            new ApplicationUserRole()
+            {
+                Id = 1,
+                Name = "admin"
+            },
+        };
         public UserService(IServiceProvider service,
             ILogger<MigrationService> logger)
         {
@@ -45,7 +56,7 @@ namespace Infrastructure.Repositories
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e.Message);
                 throw;

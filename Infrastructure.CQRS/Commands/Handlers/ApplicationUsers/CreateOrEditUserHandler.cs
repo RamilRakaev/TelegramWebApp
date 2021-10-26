@@ -18,20 +18,18 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 
         public async Task<IdentityResult> Handle(CreateOrEditUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.User.Id.ToString());
-            if(user == null)
+            var user = await _userManager.FindByIdAsync(request.Id.ToString());
+            if (user == null)
             {
-                var password = request.User.Password;
-                request.User.Password = null;
-                return await _userManager.CreateAsync(request.User, password);
+                var newUser = new ApplicationUser() { UserName = request.Email, Email = request.Email, RoleId = request.RoleId };
+                return await _userManager.CreateAsync(newUser, request.Password);
             }
             else
             {
-                user.UserName = request.User.UserName;
-                user.Email = request.User.Email;
-                user.RoleId = request.User.RoleId;
+                user.Email = request.Email;
+                user.RoleId = request.RoleId;
                 await _userManager.RemovePasswordAsync(user);
-                await _userManager.AddPasswordAsync(user, request.User.Password);
+                await _userManager.AddPasswordAsync(user, request.Password);
                 return await _userManager.UpdateAsync(user);
             }
         }

@@ -6,11 +6,6 @@
     <form method="post">
         <input type="hidden" asp-for="@Model.ApplicationUser.Id" />
         <div class="form-group">
-            <label>Имя пользователя:</label>
-            <span asp-validation-for="@Model.ApplicationUser.UserName"></span>
-            <input class="form-control" asp-for="@Model.ApplicationUser.UserName" />
-        </div>
-        <div class="form-group">
             <label>Почта:</label>
             <span asp-validation-for="@Model.ApplicationUser.Email"></span>
             <input class="form-control" asp-for="@Model.ApplicationUser.Email" />
