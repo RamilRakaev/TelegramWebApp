@@ -44,7 +44,7 @@ namespace TelegramWebApp.Pages.Account
                 login.Page = this;
                 string message = await _mediator.Send(login);
                 ModelState.AddModelError(string.Empty, message);
-                return RedirectToPage("/Admin/AdminPanel");
+                return RedirectToPage("/Account/Login");
             }
             else
             {

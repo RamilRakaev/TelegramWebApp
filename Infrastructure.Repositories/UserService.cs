@@ -27,14 +27,6 @@ namespace Infrastructure.Repositories
         {
             "e23D!23df32"
         };
-        private readonly List<ApplicationUserRole> roles = new()
-        {
-            new ApplicationUserRole()
-            {
-                Id = 1,
-                Name = "admin"
-            },
-        };
         public UserService(IServiceProvider service,
             ILogger<MigrationService> logger)
         {
