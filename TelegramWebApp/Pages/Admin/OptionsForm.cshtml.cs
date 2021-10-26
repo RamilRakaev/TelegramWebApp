@@ -28,7 +28,7 @@ namespace TelegramWebApp.Pages.Admin
             return Page();
         }
 
-        public async Task<IActionResult> OnPost(WebAppOptionsEnum appOptions)
+        public async Task<IActionResult> OnPost(WebAppOptions appOptions)
         {
             if (ModelState.IsValid)
             {

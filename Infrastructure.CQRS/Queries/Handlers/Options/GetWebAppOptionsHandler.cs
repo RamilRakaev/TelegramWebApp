@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.CQRS.Queries.Handlers.Options
 {
-    public class GetWebAppOptionsHandler : IRequestHandler<GetWebAppOptionsQuery, WebAppOptionsEnum>
+    public class GetWebAppOptionsHandler : IRequestHandler<GetWebAppOptionsQuery, WebAppOptions>
     {
         private readonly IRepository<Option> _db;
 
@@ -17,9 +17,9 @@ namespace Infrastructure.CQRS.Queries.Handlers.Options
             _db = db;
         }
 
-        public Task<WebAppOptionsEnum> Handle(GetWebAppOptionsQuery request, CancellationToken cancellationToken)
+        public Task<WebAppOptions> Handle(GetWebAppOptionsQuery request, CancellationToken cancellationToken)
         {
-            var webAppOptions = new WebAppOptionsEnum();
+            var webAppOptions = new WebAppOptions();
             var options = _db.GetAllAsNoTracking();
             foreach (var property in webAppOptions.Properties.Keys)
             {

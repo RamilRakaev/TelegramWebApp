@@ -18,7 +18,7 @@ namespace TelegramWebApp.Pages.Admin
     {
         private readonly IMediator _mediator;
         private readonly UserProperties _user;
-        public WebAppOptionsEnum AppOptions { get; private set; }
+        public WebAppOptions AppOptions { get; private set; }
 
         public AdminPanelModel(IMediator mediator, UserProperties user)
         {

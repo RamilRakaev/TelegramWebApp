@@ -36,7 +36,7 @@ namespace Infrastructure.CQRS.Commands.Handlers.Telegram
             var propertyNames = optionsFromDb.Select(o => o.PropertyName);
             var warning = new StringBuilder("Не определены настройки календаря: ");
             bool readiness = true;
-            var options = new WebAppOptionsEnum();
+            var options = new WebAppOptions();
             foreach (var appOption in options.Properties.Keys)
             {
                 var value = await propertyNames.ContainsAsync(appOption, cancellationToken: cancellationToken);

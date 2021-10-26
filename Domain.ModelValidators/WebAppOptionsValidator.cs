@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Domain.ModelValidators
 {
-    public class WebAppOptionsValidator : AbstractValidator<WebAppOptionsEnum>
+    public class WebAppOptionsValidator : AbstractValidator<WebAppOptions>
     {
         public WebAppOptionsValidator()
         {

@@ -5,11 +5,11 @@ namespace Infrastructure.CQRS.Commands.Requests.Options
 {
     public class ChangeOptionsCommand : IRequest<Option[]>
     {
-        public ChangeOptionsCommand(WebAppOptionsEnum options)
+        public ChangeOptionsCommand(WebAppOptions options)
         {
             Options = options;
         }
 
-        public WebAppOptionsEnum Options { get; set; }
+        public WebAppOptions Options { get; set; }
     }
 }
