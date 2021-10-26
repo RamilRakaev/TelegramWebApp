@@ -30,8 +30,8 @@ namespace TelegramWebApp.Pages.Admin
             }
             if (userId != null)
             {
-                    var user = await _mediator.Send(new GetUserQuery(userId.Value));
-                ApplicationUser = new CreateOrEditUserCommand(user.Email, "", user.RoleId);
+                var user = await _mediator.Send(new GetUserQuery(userId.Value));
+                ApplicationUser = new CreateOrEditUserCommand(user.Email, "", user.Id);
             }
             else
             {
@@ -46,7 +46,8 @@ namespace TelegramWebApp.Pages.Admin
             {
                 applicationUser.RoleId = 1;
                 var result = await _mediator.Send(applicationUser);
-                return RedirectToPage("ApplicationUsers");
+                if (result.Succeeded)
+                    return RedirectToPage("ApplicationUsers");
             }
             ApplicationUser = new CreateOrEditUserCommand();
             return Page();

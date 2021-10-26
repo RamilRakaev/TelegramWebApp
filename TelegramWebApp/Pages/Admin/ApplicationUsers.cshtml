@@ -12,7 +12,7 @@
     @foreach (var user in Model.ApplicationUsers)
     {
         <div class="col-5 list-group-item">
-            <p>Имя: @user.UserName Почта: @user.Email</p>
+            <p>@user.Email</p>
         </div>
         <div class="col-2">
             <form method="post">
