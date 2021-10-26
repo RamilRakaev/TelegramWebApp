@@ -6,11 +6,11 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 {
     public class UserHandler
     {
-        protected readonly UserManager<ApplicationUser> _db;
+        protected readonly UserManager<ApplicationUser> _userManager;
 
         public UserHandler(UserManager<ApplicationUser> db)
         {
-            _db = db ?? throw new ArgumentNullException(nameof(UserManager<ApplicationUser>));
+            _userManager = db ?? throw new ArgumentNullException(nameof(UserManager<ApplicationUser>));
         }
     }
 }

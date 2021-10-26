@@ -11,15 +11,16 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 {
     public class ChangePasswordHandler : UserHandler, IRequestHandler<ChangePasswordCommand, ApplicationUser>
     {
-        public ChangePasswordHandler(UserManager<ApplicationUser> db) : base(db)
+        public ChangePasswordHandler(UserManager<ApplicationUser> userManager) : base(userManager)
         { }
 
-        public async Task<Domain.Model.ApplicationUser> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ApplicationUser> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
             if (user != null)
             {
-                user.Password = request.Password;
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, request.Password);
                 return user;
             }
             else

@@ -15,12 +15,12 @@ namespace Infrastructure.CQRS.Commands.Handlers.ApplicationUsers
 
         public async Task<ApplicationUser> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _db.FindByIdAsync(request.Id.ToString());
+            var user = await _userManager.FindByIdAsync(request.Id.ToString());
             if (user == null)
             {
                 throw new ArgumentNullException();
             }
-            await _db.DeleteAsync(user);
+            await _userManager.DeleteAsync(user);
             return user;
         }
     }

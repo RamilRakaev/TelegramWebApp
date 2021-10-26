@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
             mb.Ignore<IdentityUserClaim<string>>();
             mb.Ignore<IdentityUserToken<string>>();
 
-            mb.ApplyConfiguration(new UserConfiguration());
+            mb.ApplyConfiguration(new ApplicationUserConfiguration());
             base.OnModelCreating(mb);
         }
     }
