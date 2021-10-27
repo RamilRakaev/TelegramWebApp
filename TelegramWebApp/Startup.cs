@@ -18,6 +18,7 @@ using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Domain.ModelValidators;
+using Infrastructure.Services.Repositories;
 
 namespace TelegramWebApp
 {

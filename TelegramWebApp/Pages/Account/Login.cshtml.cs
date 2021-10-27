@@ -32,7 +32,7 @@ namespace TelegramWebApp.Pages.Account
                 switch (_user.RoleId)
                 {
                     case 1:
-                        return RedirectToPage("/Admin/AdminPanel");
+                        return RedirectToPage("/Index");
                 }
             return Page();
         }

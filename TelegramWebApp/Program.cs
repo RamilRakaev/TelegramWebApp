@@ -15,8 +15,7 @@ namespace TelegramWebApp
             try
             {
                 logger.Debug("init main");
-                var host = CreateHostBuilder(args).Build();
-                host.Run();
+                CreateHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
             {

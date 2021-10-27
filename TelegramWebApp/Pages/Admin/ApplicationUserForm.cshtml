@@ -5,16 +5,17 @@
 }
 <div class="row justify-content-center">
     <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
         <input type="hidden" asp-for="@Model.ApplicationUser.Id" />
         <div class="form-group">
             <label>Почта:</label>
-            <span asp-validation-for="@Model.ApplicationUser.Email"></span>
             <input class="form-control" asp-for="@Model.ApplicationUser.Email" />
+            <span asp-validation-for="@Model.ApplicationUser.Email"></span>
         </div>
         <div class="form-group">
             <label>Пароль:</label>
-            <span asp-validation-for="@Model.ApplicationUser.Password"></span>
             <input class="form-control" asp-for="@Model.ApplicationUser.Password" />
+            <span asp-validation-for="@Model.ApplicationUser.Password"></span>
         </div>
         <button class="btn btn-dark">Отправить</button>
     </form>
